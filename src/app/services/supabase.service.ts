@@ -96,7 +96,11 @@ export class SupabaseService {
 
   async signUp(email: string, password: string): Promise<void> {
     if (!this.client) throw new Error('Supabase não configurado.');
-    const { error } = await this.client.auth.signUp({ email, password });
+    const { error } = await this.client.auth.signUp({
+      email,
+      password,
+      options: { emailRedirectTo: 'https://zingy-praline-4bf85e.netlify.app/' }
+    });
     if (error) throw error;
   }
 

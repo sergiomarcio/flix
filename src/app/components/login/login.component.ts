@@ -60,10 +60,7 @@ export class LoginComponent {
         this.router.navigate(['/']);
       } else {
         await this.supabase.signUp(this.email, this.password);
-        this.successMessage = 'Conta criada! Verifique seu e-mail para confirmar o cadastro.';
-        this.email = '';
-        this.password = '';
-        this.confirmPassword = '';
+        this.router.navigate(['/']);
       }
     } catch (err: unknown) {
       this.errorMessage = this.parseError(err);
