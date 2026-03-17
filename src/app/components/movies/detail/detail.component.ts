@@ -1,10 +1,11 @@
+import { Location } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { SafeUrlPipe } from '../../../pipes/safe-url.pipe';
 import { SupabaseService, WatchStatus } from '../../../services/supabase.service';
-import { Movie, MovieDetail, MovieVideo, TmdbService } from '../../../services/tmdb.service';
+import { Movie, MovieCastMember, MovieCrewMember, MovieDetail, MovieImage, MovieVideo, TmdbService } from '../../../services/tmdb.service';
 import { MovieCardComponent } from '../card/card.component';
 
 @Component({
@@ -24,9 +25,16 @@ export class MovieDetailComponent implements OnInit {
   saving = false;
   showTrailer = false;
 
+  director: MovieCrewMember | null = null;
+  writers: MovieCrewMember[] = [];
+  cast: MovieCastMember[] = [];
+  photos: MovieImage[] = [];
+  showAllCast = false;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private location: Location,
     private tmdbService: TmdbService,
     private supabaseService: SupabaseService
   ) { }
@@ -41,16 +49,25 @@ export class MovieDetailComponent implements OnInit {
   loadMovie(id: number): void {
     this.loading = true;
     this.showTrailer = false;
+    this.showAllCast = false;
 
     forkJoin({
       detail: this.tmdbService.getMovieDetail(id),
       videos: this.tmdbService.getMovieVideos(id),
-      similar: this.tmdbService.getSimilarMovies(id)
+      similar: this.tmdbService.getSimilarMovies(id),
+      credits: this.tmdbService.getMovieCredits(id),
+      images: this.tmdbService.getMovieImages(id)
     }).subscribe({
-      next: ({ detail, videos, similar }) => {
+      next: ({ detail, videos, similar, credits, images }) => {
         this.movie = detail;
         this.similarMovies = similar.results.slice(0, 6);
         this.trailer = videos.results.find(v => v.type === 'Trailer' && v.site === 'YouTube') || null;
+
+        this.director = credits.crew.find(c => c.job === 'Director') || null;
+        this.writers = credits.crew.filter(c => c.job === 'Screenplay' || c.job === 'Writer' || c.job === 'Story').slice(0, 3);
+        this.cast = credits.cast.slice(0, 15);
+        this.photos = images.backdrops.slice(0, 12);
+
         this.loading = false;
         this.loadStatus(id);
         window.scrollTo(0, 0);
@@ -128,6 +145,15 @@ export class MovieDetailComponent implements OnInit {
     return this.tmdbService.getImageUrl(this.movie.poster_path, 'w500');
   }
 
+  getProfileUrl(path: string | null): string {
+    if (!path) return 'assets/no-poster.jpg';
+    return this.tmdbService.getImageUrl(path, 'w185');
+  }
+
+  getPhotoUrl(path: string): string {
+    return this.tmdbService.getImageUrl(path, 'w780');
+  }
+
   getYear(): string {
     if (!this.movie?.release_date) return '';
     return this.movie.release_date.substring(0, 4);
@@ -154,7 +180,7 @@ export class MovieDetailComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/']);
+    this.location.back();
   }
 
   openTrailer(): void {
@@ -163,5 +189,9 @@ export class MovieDetailComponent implements OnInit {
 
   closeTrailer(): void {
     this.showTrailer = false;
+  }
+
+  get visibleCast(): MovieCastMember[] {
+    return this.showAllCast ? this.cast : this.cast.slice(0, 6);
   }
 }

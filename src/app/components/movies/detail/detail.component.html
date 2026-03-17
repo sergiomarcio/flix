@@ -77,6 +77,26 @@
           <p class="overview">{{ movie.overview || 'Sinopse não disponível.' }}</p>
         </div>
 
+        <!-- Direção e Roteiro -->
+        <div class="section crew-section" *ngIf="director || writers.length">
+          <div class="crew-row" *ngIf="director">
+            <span class="crew-role">Direção</span>
+            <div class="crew-person">
+              <img [src]="getProfileUrl(director.profile_path)" [alt]="director.name" class="crew-photo" />
+              <span class="crew-name">{{ director.name }}</span>
+            </div>
+          </div>
+          <div class="crew-row" *ngIf="writers.length">
+            <span class="crew-role">Roteiro</span>
+            <div class="crew-persons">
+              <div class="crew-person" *ngFor="let w of writers">
+                <img [src]="getProfileUrl(w.profile_path)" [alt]="w.name" class="crew-photo" />
+                <span class="crew-name">{{ w.name }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="section" *ngIf="movie.production_companies?.length">
           <h3>Produção</h3>
           <p class="companies">{{ getCompanies() }}</p>
@@ -85,6 +105,32 @@
         <button class="trailer-btn" *ngIf="trailer" (click)="openTrailer()">
           ▶ Assistir Trailer
         </button>
+      </div>
+    </div>
+
+    <!-- Elenco -->
+    <div class="cast-section" *ngIf="cast.length">
+      <h2 class="section-title">Elenco</h2>
+      <div class="cast-grid">
+        <div class="cast-card" *ngFor="let member of visibleCast">
+          <img [src]="getProfileUrl(member.profile_path)" [alt]="member.name" class="cast-photo" />
+          <div class="cast-info">
+            <span class="cast-name">{{ member.name }}</span>
+            <span class="cast-character">{{ member.character }}</span>
+          </div>
+        </div>
+      </div>
+      <button class="show-more-btn" *ngIf="cast.length > 6" (click)="showAllCast = !showAllCast">
+        {{ showAllCast ? '▲ Ver menos' : '▼ Ver elenco completo (' + cast.length + ')' }}
+      </button>
+    </div>
+
+    <!-- Fotos -->
+    <div class="photos-section" *ngIf="photos.length">
+      <h2 class="section-title">Fotos</h2>
+      <div class="photos-grid">
+        <img *ngFor="let photo of photos" [src]="getPhotoUrl(photo.file_path)" alt="Foto do filme"
+          class="photo-item" loading="lazy" />
       </div>
     </div>
 

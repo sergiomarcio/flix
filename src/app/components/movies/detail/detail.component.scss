@@ -362,13 +362,159 @@
   }
 }
 
-.similar-section {
-  .section-title {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 1.5rem;
+// Crew (Direção / Roteiro)
+.crew-section {
+  .crew-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    .crew-role {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #D4AF37;
+      min-width: 70px;
+      padding-top: 0.6rem;
+    }
+
+    .crew-persons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .crew-person {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      .crew-photo {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        object-fit: cover;
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .crew-name {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.85);
+        white-space: nowrap;
+      }
+    }
   }
+}
+
+// Cast
+.cast-section {
+  margin-bottom: 3rem;
+
+  .cast-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .cast-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+
+    &:hover {
+      transform: translateY(-3px);
+      border-color: rgba(212, 175, 55, 0.3);
+    }
+
+    .cast-photo {
+      width: 100%;
+      aspect-ratio: 2/3;
+      object-fit: cover;
+      display: block;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .cast-info {
+      padding: 0.6rem 0.7rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+
+      .cast-name {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.9);
+        line-height: 1.2;
+      }
+
+      .cast-character {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.4);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+
+  .show-more-btn {
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.6);
+    padding: 0.5rem 1.4rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+    display: block;
+    margin: 0 auto;
+
+    &:hover {
+      border-color: #D4AF37;
+      color: #D4AF37;
+    }
+  }
+}
+
+// Photos
+.photos-section {
+  margin-bottom: 3rem;
+
+  .photos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 0.8rem;
+  }
+
+  .photo-item {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+    background: rgba(255, 255, 255, 0.04);
+    transition: transform 0.2s, opacity 0.2s;
+
+    &:hover {
+      transform: scale(1.02);
+      opacity: 0.9;
+    }
+  }
+}
+
+.section-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 1.5rem;
+}
+
+.similar-section {
 
   .movies-grid {
     display: grid;

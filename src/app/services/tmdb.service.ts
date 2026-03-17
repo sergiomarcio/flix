@@ -26,6 +26,38 @@ export interface MovieDetail extends Movie {
   production_companies: { id: number; name: string; logo_path: string }[];
 }
 
+export interface MovieCastMember {
+  id: number;
+  name: string;
+  character: string;
+  profile_path: string | null;
+  order: number;
+}
+
+export interface MovieCrewMember {
+  id: number;
+  name: string;
+  job: string;
+  department: string;
+  profile_path: string | null;
+}
+
+export interface MovieCredits {
+  cast: MovieCastMember[];
+  crew: MovieCrewMember[];
+}
+
+export interface MovieImage {
+  file_path: string;
+  width: number;
+  height: number;
+}
+
+export interface MovieImages {
+  backdrops: MovieImage[];
+  posters: MovieImage[];
+}
+
 export interface MovieResponse {
   page: number;
   results: Movie[];
@@ -199,6 +231,19 @@ export class TmdbService {
   getSimilarMovies(id: number): Observable<MovieResponse> {
     return this.http.get<MovieResponse>(
       `${this.baseUrl}/movie/${id}/similar?${this.buildParams()}`
+    );
+  }
+
+  getMovieCredits(id: number): Observable<MovieCredits> {
+    return this.http.get<MovieCredits>(
+      `${this.baseUrl}/movie/${id}/credits?${this.buildParams()}`
+    );
+  }
+
+  getMovieImages(id: number): Observable<MovieImages> {
+    const params = new URLSearchParams({ api_key: this.apiKey, include_image_language: 'null' });
+    return this.http.get<MovieImages>(
+      `${this.baseUrl}/movie/${id}/images?${params.toString()}`
     );
   }
 
