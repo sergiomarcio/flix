@@ -64,6 +64,7 @@ export class SeasonDetailComponent implements OnInit {
       poster_path: this.showDetail.poster_path,
       first_air_date: this.showDetail.first_air_date,
       vote_average: this.showDetail.vote_average,
+      number_of_seasons: this.showDetail.number_of_seasons,
       status: 'watching'
     });
   }

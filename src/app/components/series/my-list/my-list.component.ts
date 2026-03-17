@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 import { SeriesStatus, SupabaseService, UserSeries } from '../../../services/supabase.service';
 import { TmdbService } from '../../../services/tmdb.service';
 
@@ -15,6 +16,8 @@ export class MySeriesListComponent implements OnInit {
   allSeries: UserSeries[] = [];
   filteredSeries: UserSeries[] = [];
   activeFilter: SeriesStatus | 'all' = 'all';
+  sortBy: 'name' | 'year' = 'name';
+  sortDir: 'asc' | 'desc' = 'asc';
   loading = true;
   stats = { watching: 0, watched: 0, want_to_watch: 0 };
 
@@ -22,7 +25,7 @@ export class MySeriesListComponent implements OnInit {
     private supabaseService: SupabaseService,
     private tmdbService: TmdbService,
     public router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadSeries();
@@ -34,11 +37,24 @@ export class MySeriesListComponent implements OnInit {
       this.allSeries = await this.supabaseService.getUserSeries();
       this.computeStats();
       this.applyFilter(this.activeFilter);
+      this.enrichSeasonsCount();
     } catch (err) {
       console.error('Erro ao carregar séries:', err);
     } finally {
       this.loading = false;
     }
+  }
+
+  private async enrichSeasonsCount(): Promise<void> {
+    const missing = this.allSeries;
+    await Promise.all(missing.map(async s => {
+      try {
+        const detail = await firstValueFrom(this.tmdbService.getShowDetail(s.series_id));
+        s.number_of_seasons = detail.number_of_seasons;
+      } catch { }
+    }));
+    this.allSeries = [...this.allSeries];
+    this.applyFilter(this.activeFilter);
   }
 
   private computeStats(): void {
@@ -48,9 +64,27 @@ export class MySeriesListComponent implements OnInit {
 
   applyFilter(filter: SeriesStatus | 'all'): void {
     this.activeFilter = filter;
-    this.filteredSeries = filter === 'all'
-      ? [...this.allSeries]
-      : this.allSeries.filter(s => s.status === filter);
+    const base = filter === 'all' ? [...this.allSeries] : this.allSeries.filter(s => s.status === filter);
+    this.filteredSeries = this.sortList(base);
+  }
+
+  setSort(sort: 'name' | 'year'): void {
+    if (this.sortBy === sort) {
+      this.sortDir = this.sortDir === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortBy = sort;
+      this.sortDir = 'asc';
+    }
+    this.applyFilter(this.activeFilter);
+  }
+
+  private sortList(list: UserSeries[]): UserSeries[] {
+    return [...list].sort((a, b) => {
+      const cmp = this.sortBy === 'name'
+        ? a.series_name.localeCompare(b.series_name)
+        : (a.first_air_date || '').localeCompare(b.first_air_date || '');
+      return this.sortDir === 'asc' ? cmp : -cmp;
+    });
   }
 
   getPosterUrl(path: string): string {
@@ -59,8 +93,8 @@ export class MySeriesListComponent implements OnInit {
 
   getStatusLabel(status: SeriesStatus): string {
     switch (status) {
-      case 'watching':     return '▶ Assistindo';
-      case 'watched':      return '✅ Concluída';
+      case 'watching': return '▶ Assistindo';
+      case 'watched': return '✅ Concluída';
       case 'want_to_watch': return '⭐ Quero Ver';
       default: return '';
     }
@@ -84,6 +118,6 @@ export class MySeriesListComponent implements OnInit {
       this.allSeries = this.allSeries.filter(s => s.series_id !== seriesId);
       this.computeStats();
       this.applyFilter(this.activeFilter);
-    } catch {}
+    } catch { }
   }
 }

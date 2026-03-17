@@ -108,6 +108,7 @@ export class SeriesDetailComponent implements OnInit {
           poster_path: this.show!.poster_path,
           first_air_date: this.show!.first_air_date,
           vote_average: this.show!.vote_average,
+          number_of_seasons: this.show!.number_of_seasons,
           status: 'watching'
         });
         this.status = 'watching';
@@ -146,6 +147,7 @@ export class SeriesDetailComponent implements OnInit {
         poster_path: this.show.poster_path,
         first_air_date: this.show.first_air_date,
         vote_average: this.show.vote_average,
+        number_of_seasons: this.show.number_of_seasons,
         status: newStatus
       });
       this.status = newStatus;

@@ -14,6 +14,7 @@ export interface UserSeries {
   poster_path: string;
   first_air_date: string;
   vote_average: number;
+  number_of_seasons?: number;
   status: SeriesStatus;
   created_at?: string;
   updated_at?: string;

@@ -46,6 +46,17 @@
     </button>
   </div>
 
+  <!-- Sort -->
+  <div class="sort-bar">
+    <span class="sort-label">Ordenar:</span>
+    <button [class.active]="sortBy === 'name'" (click)="setSort('name')">
+      Nome {{ sortBy === 'name' ? (sortDir === 'asc' ? '↑' : '↓') : '' }}
+    </button>
+    <button [class.active]="sortBy === 'year'" (click)="setSort('year')">
+      Ano {{ sortBy === 'year' ? (sortDir === 'asc' ? '↑' : '↓') : '' }}
+    </button>
+  </div>
+
   <!-- Loading -->
   <div class="loading-container" *ngIf="loading">
     <div class="film-reel">📺</div>
@@ -67,6 +78,7 @@
         <h3 class="movie-title">{{ series.series_name }}</h3>
         <div class="movie-meta">
           <span class="year">{{ getYear(series.first_air_date) }}</span>
+          <span *ngIf="series.number_of_seasons" class="seasons">{{ series.number_of_seasons }} temp.</span>
           <span class="rating">★ {{ series.vote_average.toFixed(1) }}</span>
         </div>
       </div>

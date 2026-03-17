@@ -70,6 +70,34 @@
   }
 }
 
+.sort-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.2rem;
+
+  .sort-label {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.35);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  button {
+    padding: 0.3rem 0.9rem;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover { border-color: rgba(99, 102, 241, 0.4); color: #a5b4fc; }
+    &.active { border-color: #6366f1; color: #a5b4fc; background: rgba(99, 102, 241, 0.1); }
+  }
+}
+
 .filters {
   display: flex;
   gap: 0.6rem;
