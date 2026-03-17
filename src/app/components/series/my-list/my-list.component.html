@@ -11,6 +11,7 @@
       <span class="stat-number">{{ stats.watching }}</span>
       <span class="stat-label">Assistindo</span>
     </div>
+
     <div class="stat-card watched clickable" (click)="router.navigate(['/series-stats'])">
       <span class="stat-icon">✅</span>
       <span class="stat-number">{{ stats.watched }}</span>
@@ -22,6 +23,7 @@
       <span class="stat-number">{{ stats.want_to_watch }}</span>
       <span class="stat-label">Quero Ver</span>
     </div>
+
     <div class="stat-card total">
       <span class="stat-icon">📺</span>
       <span class="stat-number">{{ allSeries.length }}</span>

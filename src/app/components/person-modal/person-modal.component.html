@@ -1,0 +1,76 @@
+<div class="person-overlay" (click)="close()">
+  <div class="person-panel" (click)="$event.stopPropagation()">
+
+    <button class="close-btn" (click)="close()">✕</button>
+
+    <!-- Loading -->
+    <div class="modal-loading" *ngIf="loading">
+      <div class="spinner">🎬</div>
+      <p>Carregando filmografia...</p>
+    </div>
+
+    <ng-container *ngIf="!loading && person">
+
+      <!-- Header -->
+      <div class="person-header">
+        <img [src]="getProfileUrl(person.profile_path)" [alt]="person.name" class="person-photo" />
+        <div class="person-info">
+          <h2 class="person-name">{{ person.name }}</h2>
+          <p class="person-dept">{{ person.known_for_department }}</p>
+          <p class="person-birth" *ngIf="person.birthday">
+            {{ person.birthday | date:'dd/MM/yyyy' }}
+            <span *ngIf="person.place_of_birth"> · {{ person.place_of_birth }}</span>
+          </p>
+          <p class="person-bio" *ngIf="person.biography">{{ person.biography }}</p>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls">
+        <!-- Type filter -->
+        <div class="type-tabs">
+          <button [class.active]="typeFilter === 'all'" (click)="typeFilter = 'all'">
+            Todos ({{ credits.length }})
+          </button>
+          <button [class.active]="typeFilter === 'movie'" (click)="typeFilter = 'movie'">
+            🎬 Filmes ({{ movieCount }})
+          </button>
+          <button [class.active]="typeFilter === 'tv'" (click)="typeFilter = 'tv'">
+            📺 Séries ({{ tvCount }})
+          </button>
+        </div>
+
+        <!-- Sort -->
+        <div class="sort-bar">
+          <button [class.active]="sortBy === 'year'" (click)="setSort('year')">
+            Ano {{ sortBy === 'year' ? (sortDir === 'desc' ? '↓' : '↑') : '' }}
+          </button>
+          <button [class.active]="sortBy === 'name'" (click)="setSort('name')">
+            Nome {{ sortBy === 'name' ? (sortDir === 'asc' ? '↑' : '↓') : '' }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Credits list -->
+      <div class="credits-list">
+        <div class="credit-card" *ngFor="let c of filteredCredits" (click)="navigate(c)">
+          <img [src]="getPosterUrl(c.poster_path)" [alt]="c.title" class="credit-poster" />
+          <div class="credit-info">
+            <div class="credit-top">
+              <span class="credit-title">{{ c.title }}</span>
+              <span class="type-badge" [class.movie]="c.type === 'movie'" [class.tv]="c.type === 'tv'">
+                {{ c.type === 'movie' ? 'Filme' : 'Série' }}
+              </span>
+            </div>
+            <span class="credit-year">{{ getYear(c.date) }}</span>
+            <span class="credit-character" *ngIf="c.character">{{ c.character }}</span>
+          </div>
+        </div>
+
+        <p class="empty" *ngIf="filteredCredits.length === 0">Nenhum resultado.</p>
+      </div>
+
+    </ng-container>
+
+  </div>
+</div>

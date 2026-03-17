@@ -293,7 +293,7 @@
 
 @media (max-width: 600px) {
   .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .movie-row .movie-status {
@@ -303,7 +303,7 @@
 
 @media (max-width: 480px) {
   .my-list-page { padding: 84px 1rem 3rem; }
-  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+  .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
   .filters { gap: 0.4rem; button { padding: 0.4rem 0.8rem; font-size: 0.78rem; } }
   .movies-list .movie-row { padding: 0.6rem; gap: 0.6rem; }
 }

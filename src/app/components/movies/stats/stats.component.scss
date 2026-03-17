@@ -164,16 +164,12 @@
 
   .like-cards {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
     margin-top: 1rem;
 
     @media (max-width: 600px) {
       grid-template-columns: 1fr 1fr;
-
-      .like-card.unevaluated {
-        grid-column: 1 / -1;
-      }
     }
   }
 

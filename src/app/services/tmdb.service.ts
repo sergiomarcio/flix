@@ -76,6 +76,35 @@ export interface WatchProvidersResponse {
   results: Record<string, WatchProviderResult>;
 }
 
+export interface PersonDetails {
+  id: number;
+  name: string;
+  biography: string;
+  profile_path: string | null;
+  birthday: string | null;
+  place_of_birth: string | null;
+  known_for_department: string;
+}
+
+export interface PersonMovieCredit {
+  id: number;
+  title: string;
+  poster_path: string | null;
+  release_date: string;
+  character: string;
+  vote_average: number;
+}
+
+export interface PersonTVCredit {
+  id: number;
+  name: string;
+  poster_path: string | null;
+  first_air_date: string;
+  character: string;
+  vote_average: number;
+  episode_count: number;
+}
+
 export interface MovieResponse {
   page: number;
   results: Movie[];
@@ -310,6 +339,43 @@ export class TmdbService {
   getTopRatedShows(page = 1): Observable<TVResponse> {
     return this.http.get<TVResponse>(
       `${this.baseUrl}/tv/top_rated?${this.buildParams({ page: page.toString() })}`
+    );
+  }
+
+  getShowWatchProviders(id: number): Observable<WatchProvidersResponse> {
+    return this.http.get<WatchProvidersResponse>(
+      `${this.baseUrl}/tv/${id}/watch/providers?${this.buildParams()}`
+    );
+  }
+
+  getShowImages(id: number): Observable<MovieImages> {
+    const params = new URLSearchParams({ api_key: this.apiKey, include_image_language: 'null' });
+    return this.http.get<MovieImages>(
+      `${this.baseUrl}/tv/${id}/images?${params.toString()}`
+    );
+  }
+
+  getShowCredits(id: number): Observable<MovieCredits> {
+    return this.http.get<MovieCredits>(
+      `${this.baseUrl}/tv/${id}/credits?${this.buildParams()}`
+    );
+  }
+
+  getPersonDetails(id: number): Observable<PersonDetails> {
+    return this.http.get<PersonDetails>(
+      `${this.baseUrl}/person/${id}?${this.buildParams()}`
+    );
+  }
+
+  getPersonMovieCredits(id: number): Observable<{ cast: PersonMovieCredit[] }> {
+    return this.http.get<{ cast: PersonMovieCredit[] }>(
+      `${this.baseUrl}/person/${id}/movie_credits?${this.buildParams()}`
+    );
+  }
+
+  getPersonTVCredits(id: number): Observable<{ cast: PersonTVCredit[] }> {
+    return this.http.get<{ cast: PersonTVCredit[] }>(
+      `${this.baseUrl}/person/${id}/tv_credits?${this.buildParams()}`
     );
   }
 

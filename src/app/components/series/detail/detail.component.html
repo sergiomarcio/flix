@@ -54,9 +54,67 @@
           <p class="overview">{{ show.overview || 'Sinopse não disponível.' }}</p>
         </div>
 
+        <!-- Streaming / Aluguel / Compra -->
+        <div class="streaming-section" *ngIf="streamingProviders.length || rentProviders.length || buyProviders.length">
+          <div class="providers-group" *ngIf="streamingProviders.length">
+            <span class="providers-label">Streaming</span>
+            <div class="providers-list">
+              <a *ngFor="let p of streamingProviders" [href]="providersLink" target="_blank" rel="noopener"
+                class="provider-item" [title]="p.provider_name">
+                <img [src]="getProviderLogoUrl(p.logo_path)" [alt]="p.provider_name" class="provider-logo" />
+              </a>
+            </div>
+          </div>
+          <div class="providers-group" *ngIf="rentProviders.length">
+            <span class="providers-label">Aluguel</span>
+            <div class="providers-list">
+              <a *ngFor="let p of rentProviders" [href]="providersLink" target="_blank" rel="noopener"
+                class="provider-item" [title]="p.provider_name">
+                <img [src]="getProviderLogoUrl(p.logo_path)" [alt]="p.provider_name" class="provider-logo" />
+              </a>
+            </div>
+          </div>
+          <div class="providers-group" *ngIf="buyProviders.length">
+            <span class="providers-label">Compra</span>
+            <div class="providers-list">
+              <a *ngFor="let p of buyProviders" [href]="providersLink" target="_blank" rel="noopener"
+                class="provider-item" [title]="p.provider_name">
+                <img [src]="getProviderLogoUrl(p.logo_path)" [alt]="p.provider_name" class="provider-logo" />
+              </a>
+            </div>
+          </div>
+          <p class="providers-source">Fonte: JustWatch</p>
+        </div>
+
         <button class="trailer-btn" *ngIf="trailer" (click)="openTrailer()">
           ▶ Assistir Trailer
         </button>
+      </div>
+    </div>
+
+    <!-- Elenco -->
+    <div class="cast-section" *ngIf="cast.length">
+      <h2 class="section-title">Elenco</h2>
+      <div class="cast-grid">
+        <div class="cast-card" *ngFor="let member of visibleCast" (click)="selectedPersonId = member.id">
+          <img [src]="getProfileUrl(member.profile_path)" [alt]="member.name" class="cast-photo" />
+          <div class="cast-info">
+            <span class="cast-name">{{ member.name }}</span>
+            <span class="cast-character">{{ member.character }}</span>
+          </div>
+        </div>
+      </div>
+      <button class="show-more-btn" *ngIf="cast.length > 6" (click)="showAllCast = !showAllCast">
+        {{ showAllCast ? '▲ Ver menos' : '▼ Ver elenco completo (' + cast.length + ')' }}
+      </button>
+    </div>
+
+    <!-- Fotos -->
+    <div class="photos-section" *ngIf="photos.length">
+      <h2 class="section-title">Fotos</h2>
+      <div class="photos-grid">
+        <img *ngFor="let photo of photos" [src]="getPhotoUrl(photo.file_path)" alt="Foto da série"
+          class="photo-item" loading="lazy" />
       </div>
     </div>
 
@@ -94,6 +152,13 @@
     </div>
   </div>
 </div>
+
+<!-- Person Modal -->
+<app-person-modal
+  *ngIf="selectedPersonId"
+  [personId]="selectedPersonId"
+  (closed)="selectedPersonId = null">
+</app-person-modal>
 
 <!-- Trailer Modal -->
 <div class="trailer-modal" *ngIf="showTrailer" (click)="closeTrailer()">

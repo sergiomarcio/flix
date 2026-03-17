@@ -244,13 +244,44 @@
 }
 
 @media (max-width: 600px) {
-  .stats-grid { grid-template-columns: repeat(3, 1fr); }
-  .movie-row .movie-status { display: none; }
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.6rem;
+
+    .stat-card {
+      padding: 0.8rem 0.4rem;
+      .stat-icon { font-size: 1.1rem; }
+      .stat-number { font-size: 1.6rem; }
+      .stat-label { font-size: 0.65rem; letter-spacing: 0; }
+    }
+  }
+
+  .sort-bar {
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    button { font-size: 0.75rem; padding: 0.3rem 0.7rem; }
+  }
+
+  .filters {
+    gap: 0.4rem;
+    button { padding: 0.4rem 0.8rem; font-size: 0.78rem; }
+  }
+
+  .movies-list .movie-row {
+    padding: 0.6rem;
+    gap: 0.6rem;
+
+    .movie-poster { width: 42px; height: 63px; }
+
+    .movie-info {
+      .movie-title { font-size: 0.88rem; }
+      .movie-meta span { font-size: 0.75rem; }
+    }
+
+    .movie-status { display: none; }
+  }
 }
 
 @media (max-width: 480px) {
   .my-list-page { padding: 84px 1rem 3rem; }
-  .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 0.5rem; .stat-number { font-size: 1.5rem; } }
-  .filters { gap: 0.4rem; button { padding: 0.4rem 0.8rem; font-size: 0.78rem; } }
-  .movies-list .movie-row { padding: 0.6rem; gap: 0.6rem; }
 }

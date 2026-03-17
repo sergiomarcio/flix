@@ -1,15 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { firstValueFrom, forkJoin } from 'rxjs';
 import { SafeUrlPipe } from '../../../pipes/safe-url.pipe';
 import { SeriesStatus, SupabaseService, WatchedEpisode } from '../../../services/supabase.service';
-import { MovieVideo, TVSeason, TVShowDetail, TmdbService } from '../../../services/tmdb.service';
+import { MovieCastMember, MovieImage, MovieVideo, TVSeason, TVShowDetail, TmdbService, WatchProvider } from '../../../services/tmdb.service';
+import { PersonModalComponent } from '../../person-modal/person-modal.component';
 
 @Component({
   selector: 'app-series-detail',
   standalone: true,
-  imports: [CommonModule, SafeUrlPipe],
+  imports: [CommonModule, SafeUrlPipe, PersonModalComponent],
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss'
 })
@@ -22,10 +24,19 @@ export class SeriesDetailComponent implements OnInit {
   showTrailer = false;
   seasonWatchedMap: Map<number, Set<number>> = new Map();
   markingSet = new Set<number>();
+  streamingProviders: WatchProvider[] = [];
+  rentProviders: WatchProvider[] = [];
+  buyProviders: WatchProvider[] = [];
+  providersLink = '';
+  photos: MovieImage[] = [];
+  cast: MovieCastMember[] = [];
+  showAllCast = false;
+  selectedPersonId: number | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private location: Location,
     private tmdb: TmdbService,
     private supabase: SupabaseService
   ) {}
@@ -40,11 +51,23 @@ export class SeriesDetailComponent implements OnInit {
     this.loading = true;
     forkJoin({
       detail: this.tmdb.getShowDetail(id),
-      videos: this.tmdb.getShowVideos(id)
+      videos: this.tmdb.getShowVideos(id),
+      providers: this.tmdb.getShowWatchProviders(id),
+      images: this.tmdb.getShowImages(id),
+      credits: this.tmdb.getShowCredits(id)
     }).subscribe({
-      next: ({ detail, videos }) => {
+      next: ({ detail, videos, providers, images, credits }) => {
         this.show = detail;
         this.trailer = videos.results.find(v => v.type === 'Trailer' && v.site === 'YouTube') || null;
+
+        const br = providers.results['BR'];
+        this.streamingProviders = br?.flatrate ?? [];
+        this.rentProviders = br?.rent ?? [];
+        this.buyProviders = br?.buy ?? [];
+        this.providersLink = br?.link ?? '';
+        this.photos = images.backdrops.slice(0, 12);
+        this.cast = credits.cast.slice(0, 15);
+
         this.loading = false;
         this.loadStatus(id);
         this.loadSeasonWatched(id);
@@ -213,11 +236,28 @@ export class SeriesDetailComponent implements OnInit {
     return labels[s];
   }
 
+  getProfileUrl(path: string | null): string {
+    if (!path) return 'assets/no-poster.jpg';
+    return this.tmdb.getImageUrl(path, 'w185');
+  }
+
+  get visibleCast(): MovieCastMember[] {
+    return this.showAllCast ? this.cast : this.cast.slice(0, 6);
+  }
+
+  getProviderLogoUrl(path: string): string {
+    return this.tmdb.getImageUrl(path, 'w185');
+  }
+
+  getPhotoUrl(path: string): string {
+    return this.tmdb.getImageUrl(path, 'w780');
+  }
+
   get visibleSeasons(): TVSeason[] {
     return (this.show?.seasons || []).filter(s => s.season_number > 0);
   }
 
-  goBack(): void { this.router.navigate(['/series']); }
+  goBack(): void { this.location.back(); }
   openTrailer(): void { this.showTrailer = true; }
   closeTrailer(): void { this.showTrailer = false; }
 }

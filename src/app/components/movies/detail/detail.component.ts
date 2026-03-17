@@ -6,12 +6,13 @@ import { forkJoin } from 'rxjs';
 import { SafeUrlPipe } from '../../../pipes/safe-url.pipe';
 import { SupabaseService, WatchStatus } from '../../../services/supabase.service';
 import { Movie, MovieCastMember, MovieCrewMember, MovieDetail, MovieImage, MovieVideo, TmdbService, WatchProvider } from '../../../services/tmdb.service';
+import { PersonModalComponent } from '../../person-modal/person-modal.component';
 import { MovieCardComponent } from '../card/card.component';
 
 @Component({
   selector: 'app-movie-detail',
   standalone: true,
-  imports: [CommonModule, MovieCardComponent, SafeUrlPipe],
+  imports: [CommonModule, MovieCardComponent, SafeUrlPipe, PersonModalComponent],
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss'
 })
@@ -30,6 +31,7 @@ export class MovieDetailComponent implements OnInit {
   cast: MovieCastMember[] = [];
   photos: MovieImage[] = [];
   showAllCast = false;
+  selectedPersonId: number | null = null;
   streamingProviders: WatchProvider[] = [];
   rentProviders: WatchProvider[] = [];
   buyProviders: WatchProvider[] = [];
