@@ -11,7 +11,7 @@
     {
       "src": "assets/favicon.ico",
       "sizes": "any",
-      "type": "image/svg+xml",
+      "type": "image/ico",
       "purpose": "any maskable"
     }
   ]
