@@ -1,0 +1,33 @@
+<div class="series-list-page">
+  <div class="page-header">
+    <h1><span class="icon">{{ pageIcon }}</span> {{ pageTitle }}</h1>
+  </div>
+
+  <div class="loading-container" *ngIf="loading && shows.length === 0">
+    <div class="spinner">📺</div>
+    <p>Carregando...</p>
+  </div>
+
+  <div class="shows-grid" *ngIf="shows.length > 0">
+    <div class="show-card" *ngFor="let show of shows" (click)="goToShow(show)">
+      <div class="card-poster">
+        <img [src]="getImageUrl(show.poster_path)" [alt]="show.name" loading="lazy" />
+        <div class="rating-badge">
+          <span class="star">★</span> {{ show.vote_average.toFixed(1) }}
+        </div>
+      </div>
+      <div class="card-info">
+        <h3 class="card-title">{{ show.name }}</h3>
+        <span class="card-year">{{ getYear(show.first_air_date) }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="load-more" *ngIf="currentPage < totalPages && !loading">
+    <button class="load-more-btn" (click)="loadMore()">Carregar Mais</button>
+  </div>
+
+  <div class="loading-more" *ngIf="loading && shows.length > 0">
+    <span>📺 Carregando mais...</span>
+  </div>
+</div>

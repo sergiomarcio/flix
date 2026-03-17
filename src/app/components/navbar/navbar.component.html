@@ -16,7 +16,7 @@
     <div class="nav-group">
       <span class="nav-group-label">🎬 Filmes</span>
       <div class="nav-group-links">
-        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="menuOpen = false">Início</a>
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="menuOpen = false">Explorar</a>
         <a routerLink="/popular" routerLinkActive="active" (click)="menuOpen = false">Populares</a>
         <a routerLink="/top-rated" routerLinkActive="active" (click)="menuOpen = false">Mais Votados</a>
         <a routerLink="/now-playing" routerLinkActive="active" (click)="menuOpen = false">Em Cartaz</a>
@@ -32,6 +32,8 @@
       <span class="nav-group-label">📺 Séries</span>
       <div class="nav-group-links">
         <a routerLink="/series" routerLinkActive="active" (click)="menuOpen = false">Explorar</a>
+        <a routerLink="/series-popular" routerLinkActive="active" (click)="menuOpen = false">Populares</a>
+        <a routerLink="/series-top-rated" routerLinkActive="active" (click)="menuOpen = false">Mais Votadas</a>
         <a routerLink="/my-series-list" routerLinkActive="active" class="pill indigo" (click)="menuOpen = false">📋 Minha Lista</a>
         <a routerLink="/series-stats" routerLinkActive="active" class="pill indigo" (click)="menuOpen = false">⏱️ Stats</a>
       </div>

@@ -232,6 +232,18 @@ export class TmdbService {
     );
   }
 
+  getPopularShows(page = 1): Observable<TVResponse> {
+    return this.http.get<TVResponse>(
+      `${this.baseUrl}/tv/popular?${this.buildParams({ page: page.toString() })}`
+    );
+  }
+
+  getTopRatedShows(page = 1): Observable<TVResponse> {
+    return this.http.get<TVResponse>(
+      `${this.baseUrl}/tv/top_rated?${this.buildParams({ page: page.toString() })}`
+    );
+  }
+
   getShowVideos(id: number): Observable<{ results: MovieVideo[] }> {
     return this.http.get<{ results: MovieVideo[] }>(
       `${this.baseUrl}/tv/${id}/videos?${this.buildParams()}`

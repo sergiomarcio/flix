@@ -8,6 +8,7 @@ import { MovieStatsComponent } from './components/movies/stats/stats.component';
 import { SeriesDetailComponent } from './components/series/detail/detail.component';
 import { SeriesHomeComponent } from './components/series/home/home.component';
 import { MySeriesListComponent } from './components/series/my-list/my-list.component';
+import { SeriesListComponent } from './components/series/list/list.component';
 import { SeasonDetailComponent } from './components/series/season-detail/season-detail.component';
 import { SeriesStatsComponent } from './components/series/stats/stats.component';
 import { SobreComponent } from './components/sobre/sobre.component';
@@ -28,6 +29,8 @@ export const routes: Routes = [
   // Séries
   { path: 'my-series-list', component: MySeriesListComponent, canActivate: [authGuard] },
   { path: 'series', component: SeriesHomeComponent, canActivate: [authGuard] },
+  { path: 'series-popular', component: SeriesListComponent, data: { type: 'popular' }, canActivate: [authGuard] },
+  { path: 'series-top-rated', component: SeriesListComponent, data: { type: 'top-rated' }, canActivate: [authGuard] },
   { path: 'series-stats', component: SeriesStatsComponent, canActivate: [authGuard] },
   { path: 'series/:id', component: SeriesDetailComponent, canActivate: [authGuard] },
   { path: 'series/:id/season/:season', component: SeasonDetailComponent, canActivate: [authGuard] },
