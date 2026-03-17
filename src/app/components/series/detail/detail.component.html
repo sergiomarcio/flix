@@ -136,11 +136,11 @@
           <ng-container *ngIf="!markingSet.has(season.season_number); else loadingBtn">
             <button *ngIf="!isSeasonFullyWatched(season) && season.episode_count > 0" class="mark-all-btn"
               (click)="markSeasonAllWatched(season, $event)" title="Marcar todos como assistidos">
-              ✓ Todos
+              ✓ Marcar Todos
             </button>
             <button *ngIf="isSeasonFullyWatched(season)" class="mark-all-btn done"
               (click)="unmarkSeasonAllWatched(season, $event)" title="Desmarcar todos os episódios">
-              ✅ Desmarcar
+              ✅ Desmarcar Todos
             </button>
           </ng-container>
           <ng-template #loadingBtn>
