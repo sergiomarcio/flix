@@ -196,19 +196,33 @@
     margin-bottom: 1.5rem;
 
     h2 {
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       font-weight: 700;
       color: #fff;
+      font-family: "Ubuntu", sans-serif;
+      letter-spacing: 0.3px;
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+
+      &::after {
+        content: '';
+        display: block;
+        width: 32px;
+        height: 3px;
+        background: linear-gradient(to right, #D4AF37, transparent);
+        border-radius: 2px;
+        margin-left: 0.4rem;
+        align-self: center;
+      }
 
       .highlight {
         color: #D4AF37;
       }
 
       .section-icon {
-        font-size: 1.2rem;
+        font-size: 1.3rem;
       }
     }
 
@@ -254,4 +268,18 @@
   .movies-section .movies-grid {
     grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
   }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    height: 65vh;
+    min-height: 320px;
+    .hero-content {
+      padding: 0 1.2rem;
+      .hero-title { font-size: 1.6rem; }
+      .hero-overview { font-size: 0.85rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    }
+  }
+  .search-section { padding: 1rem 1rem; }
+  .movies-section { padding: 0 1rem 3rem; }
 }

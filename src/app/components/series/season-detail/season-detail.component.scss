@@ -114,3 +114,10 @@
   .ep-still { display: none; }
   .ep-overview { display: none; }
 }
+
+@media (max-width: 480px) {
+  .season-page { padding: 76px 1rem 3rem; }
+  .progress-header { flex-wrap: wrap; gap: 0.4rem; }
+  .mark-all-btn { width: 100%; margin-top: 0.3rem; }
+  .episodes-list .episode-row .ep-info .ep-name { font-size: 0.82rem; }
+}

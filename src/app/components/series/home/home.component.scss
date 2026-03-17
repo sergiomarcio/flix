@@ -164,10 +164,27 @@
 }
 
 .section-title {
-  font-size: 1.3rem;
+  font-size: 1.35rem;
   font-weight: 700;
   color: #fff;
+  font-family: "Ubuntu", sans-serif;
+  letter-spacing: 0.3px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   margin-bottom: 1.5rem;
+
+  &::after {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 3px;
+    background: linear-gradient(to right, #D4AF37, transparent);
+    border-radius: 2px;
+    margin-left: 0.2rem;
+    align-self: center;
+  }
 }
 
 .shows-grid {
@@ -281,4 +298,20 @@
   .shows-grid {
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   }
+}
+
+@media (max-width: 480px) {
+  .series-home { padding-top: 56px; }
+  .hero {
+    height: 60vh;
+    min-height: 300px;
+    .hero-content {
+      padding: 0 1.2rem;
+      .hero-title { font-size: 1.6rem; }
+      .hero-overview { font-size: 0.85rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    }
+  }
+  .search-section { padding: 1rem; }
+  .content-section { padding: 0 1rem 3rem; }
+  .shows-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 0.8rem; }
 }

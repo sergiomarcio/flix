@@ -35,12 +35,12 @@ export class MovieListComponent implements OnInit, OnDestroy {
       loader: (p) => this.tmdbService.getPopularMovies(p)
     },
     'top-rated': {
-      title: 'Mais Votados',
+      title: 'Filmes Mais Votados',
       icon: '🏆',
       loader: (p) => this.tmdbService.getTopRatedMovies(p)
     },
     'now-playing': {
-      title: 'Em Cartaz',
+      title: 'Filmes Em Cartaz',
       icon: '🎭',
       loader: (p) => this.tmdbService.getNowPlayingMovies(p)
     }

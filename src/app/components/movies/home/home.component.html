@@ -52,7 +52,7 @@
 <!-- Trending -->
 <section class="movies-section" *ngIf="!isSearching && !loading">
   <div class="section-header">
-    <h2><span class="section-icon">🔥</span> Em Alta Esta Semana</h2>
+    <h2><span class="section-icon">🔥</span>Filmes Em Alta Esta Semana</h2>
   </div>
   <div class="movies-grid">
     <app-movie-card *ngFor="let movie of trendingMovies" [movie]="movie" (click)="goToMovie(movie)">

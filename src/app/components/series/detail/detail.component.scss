@@ -150,3 +150,10 @@
     .poster-img { max-width: 200px; margin: 0 auto; }
   }
 }
+
+@media (max-width: 480px) {
+  .detail-content { padding: 76px 1rem 3rem; }
+  .show-title { font-size: 1.5rem !important; }
+  .show-meta { gap: 0.6rem; flex-wrap: wrap; }
+  .seasons-grid { grid-template-columns: 1fr !important; }
+}

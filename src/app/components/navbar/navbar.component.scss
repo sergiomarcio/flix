@@ -200,6 +200,10 @@
 // Mobile
 @media (max-width: 900px) {
   .navbar {
+    padding: 0 1rem;
+
+    .brand-name { font-size: 1.6rem; letter-spacing: 4px; }
+
     .menu-toggle {
       display: flex;
     }

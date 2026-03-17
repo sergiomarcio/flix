@@ -7,11 +7,27 @@
     margin-bottom: 2.5rem;
 
     h1 {
-      font-size: 2rem;
-      font-weight: 900;
+      font-size: clamp(1.3rem, 3vw, 1.35rem);
+      font-weight: 700;
       color: #fff;
-      font-family: 'Georgia', serif;
+      font-family: "Ubuntu", sans-serif;
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
       margin-bottom: 0.3rem;
+
+      &::after {
+        content: '';
+        display: block;
+        width: 32px;
+        height: 3px;
+        background: linear-gradient(to right, #D4AF37, transparent);
+        border-radius: 2px;
+        margin-left: 0.2rem;
+        align-self: center;
+      }
     }
 
     .subtitle {
@@ -469,4 +485,12 @@
   .time-equivalents {
     gap: 1.5rem;
   }
+}
+
+@media (max-width: 480px) {
+  .stats-page { padding: 84px 1rem 3rem; }
+  .time-hero { padding: 1.5rem 1rem; }
+  .time-separator { font-size: 3rem; }
+  .time-equivalents { gap: 1rem; flex-wrap: wrap; justify-content: center; }
+  .counters-grid { grid-template-columns: repeat(2, 1fr); }
 }

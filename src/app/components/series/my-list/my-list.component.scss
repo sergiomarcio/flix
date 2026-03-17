@@ -7,10 +7,26 @@
     margin-bottom: 2rem;
 
     h1 {
-      font-size: 2rem;
-      font-weight: 900;
+      font-size: clamp(1.3rem, 3vw, 1.35rem);
+      font-weight: 700;
       color: #fff;
-      font-family: 'Georgia', serif;
+      font-family: "Ubuntu", sans-serif;
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
+
+      &::after {
+        content: '';
+        display: block;
+        width: 32px;
+        height: 3px;
+        background: linear-gradient(to right, #D4AF37, transparent);
+        border-radius: 2px;
+        margin-left: 0.2rem;
+        align-self: center;
+      }
     }
 
     .subtitle {
@@ -208,4 +224,11 @@
 @media (max-width: 600px) {
   .stats-grid { grid-template-columns: repeat(3, 1fr); }
   .movie-row .movie-status { display: none; }
+}
+
+@media (max-width: 480px) {
+  .my-list-page { padding: 84px 1rem 3rem; }
+  .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 0.5rem; .stat-number { font-size: 1.5rem; } }
+  .filters { gap: 0.4rem; button { padding: 0.4rem 0.8rem; font-size: 0.78rem; } }
+  .movies-list .movie-row { padding: 0.6rem; gap: 0.6rem; }
 }
