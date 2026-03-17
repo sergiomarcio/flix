@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { SafeUrlPipe } from '../../../pipes/safe-url.pipe';
 import { SupabaseService, WatchStatus } from '../../../services/supabase.service';
-import { Movie, MovieCastMember, MovieCrewMember, MovieDetail, MovieImage, MovieVideo, TmdbService } from '../../../services/tmdb.service';
+import { Movie, MovieCastMember, MovieCrewMember, MovieDetail, MovieImage, MovieVideo, TmdbService, WatchProvider } from '../../../services/tmdb.service';
 import { MovieCardComponent } from '../card/card.component';
 
 @Component({
@@ -30,6 +30,10 @@ export class MovieDetailComponent implements OnInit {
   cast: MovieCastMember[] = [];
   photos: MovieImage[] = [];
   showAllCast = false;
+  streamingProviders: WatchProvider[] = [];
+  rentProviders: WatchProvider[] = [];
+  buyProviders: WatchProvider[] = [];
+  providersLink = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -56,9 +60,10 @@ export class MovieDetailComponent implements OnInit {
       videos: this.tmdbService.getMovieVideos(id),
       similar: this.tmdbService.getSimilarMovies(id),
       credits: this.tmdbService.getMovieCredits(id),
-      images: this.tmdbService.getMovieImages(id)
+      images: this.tmdbService.getMovieImages(id),
+      providers: this.tmdbService.getMovieWatchProviders(id)
     }).subscribe({
-      next: ({ detail, videos, similar, credits, images }) => {
+      next: ({ detail, videos, similar, credits, images, providers }) => {
         this.movie = detail;
         this.similarMovies = similar.results.slice(0, 6);
         this.trailer = videos.results.find(v => v.type === 'Trailer' && v.site === 'YouTube') || null;
@@ -67,6 +72,12 @@ export class MovieDetailComponent implements OnInit {
         this.writers = credits.crew.filter(c => c.job === 'Screenplay' || c.job === 'Writer' || c.job === 'Story').slice(0, 3);
         this.cast = credits.cast.slice(0, 15);
         this.photos = images.backdrops.slice(0, 12);
+
+        const br = providers.results['BR'];
+        this.streamingProviders = br?.flatrate ?? [];
+        this.rentProviders = br?.rent ?? [];
+        this.buyProviders = br?.buy ?? [];
+        this.providersLink = br?.link ?? '';
 
         this.loading = false;
         this.loadStatus(id);
@@ -152,6 +163,10 @@ export class MovieDetailComponent implements OnInit {
 
   getPhotoUrl(path: string): string {
     return this.tmdbService.getImageUrl(path, 'w780');
+  }
+
+  getProviderLogoUrl(path: string): string {
+    return this.tmdbService.getImageUrl(path, 'w185');
   }
 
   getYear(): string {

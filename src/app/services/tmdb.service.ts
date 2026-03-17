@@ -58,6 +58,24 @@ export interface MovieImages {
   posters: MovieImage[];
 }
 
+export interface WatchProvider {
+  provider_id: number;
+  provider_name: string;
+  logo_path: string;
+  display_priority: number;
+}
+
+export interface WatchProviderResult {
+  link: string;
+  flatrate?: WatchProvider[];
+  rent?: WatchProvider[];
+  buy?: WatchProvider[];
+}
+
+export interface WatchProvidersResponse {
+  results: Record<string, WatchProviderResult>;
+}
+
 export interface MovieResponse {
   page: number;
   results: Movie[];
@@ -237,6 +255,12 @@ export class TmdbService {
   getMovieCredits(id: number): Observable<MovieCredits> {
     return this.http.get<MovieCredits>(
       `${this.baseUrl}/movie/${id}/credits?${this.buildParams()}`
+    );
+  }
+
+  getMovieWatchProviders(id: number): Observable<WatchProvidersResponse> {
+    return this.http.get<WatchProvidersResponse>(
+      `${this.baseUrl}/movie/${id}/watch/providers?${this.buildParams()}`
     );
   }
 

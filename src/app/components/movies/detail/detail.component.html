@@ -102,6 +102,35 @@
           <p class="companies">{{ getCompanies() }}</p>
         </div>
 
+        <!-- Streaming / Aluguel / Compra -->
+        <div class="streaming-section" *ngIf="streamingProviders.length || rentProviders.length || buyProviders.length">
+          <div class="providers-group" *ngIf="streamingProviders.length">
+            <span class="providers-label">Streaming</span>
+            <div class="providers-list">
+              <a *ngFor="let p of streamingProviders" rel="noopener" class="provider-item" [title]="p.provider_name">
+                <img [src]="getProviderLogoUrl(p.logo_path)" [alt]="p.provider_name" class="provider-logo" />
+              </a>
+            </div>
+          </div>
+          <div class="providers-group" *ngIf="rentProviders.length">
+            <span class="providers-label">Aluguel</span>
+            <div class="providers-list">
+              <a *ngFor="let p of rentProviders" rel="noopener" class="provider-item" [title]="p.provider_name">
+                <img [src]="getProviderLogoUrl(p.logo_path)" [alt]="p.provider_name" class="provider-logo" />
+              </a>
+            </div>
+          </div>
+          <div class="providers-group" *ngIf="buyProviders.length">
+            <span class="providers-label">Compra</span>
+            <div class="providers-list">
+              <a *ngFor="let p of buyProviders" rel="noopener" class="provider-item" [title]="p.provider_name">
+                <img [src]="getProviderLogoUrl(p.logo_path)" [alt]="p.provider_name" class="provider-logo" />
+              </a>
+            </div>
+          </div>
+          <p class="providers-source">Fonte: JustWatch</p>
+        </div>
+
         <button class="trailer-btn" *ngIf="trailer" (click)="openTrailer()">
           ▶ Assistir Trailer
         </button>
@@ -129,8 +158,8 @@
     <div class="photos-section" *ngIf="photos.length">
       <h2 class="section-title">Fotos</h2>
       <div class="photos-grid">
-        <img *ngFor="let photo of photos" [src]="getPhotoUrl(photo.file_path)" alt="Foto do filme"
-          class="photo-item" loading="lazy" />
+        <img *ngFor="let photo of photos" [src]="getPhotoUrl(photo.file_path)" alt="Foto do filme" class="photo-item"
+          loading="lazy" />
       </div>
     </div>
 

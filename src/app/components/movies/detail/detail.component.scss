@@ -342,6 +342,60 @@
       }
     }
 
+    .streaming-section {
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+
+      .providers-group {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        flex-wrap: wrap;
+
+        .providers-label {
+          font-size: 0.75rem;
+          text-transform: uppercase;
+          letter-spacing: 1.5px;
+          color: #D4AF37;
+          min-width: 60px;
+        }
+      }
+
+      .providers-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        align-items: center;
+      }
+
+      .provider-item {
+        display: block;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.2s, box-shadow 0.2s;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+        }
+
+        .provider-logo {
+          width: 44px;
+          height: 44px;
+          object-fit: cover;
+          display: block;
+        }
+      }
+
+      .providers-source {
+        font-size: 0.7rem;
+        color: rgba(255, 255, 255, 0.25);
+        margin-top: 0.2rem;
+      }
+    }
+
     .trailer-btn {
       background: linear-gradient(135deg, #D4AF37, #f0cb5a);
       color: #000;
