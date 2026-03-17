@@ -11,11 +11,6 @@
       <span class="stat-number">{{ stats.watched }}</span>
       <span class="stat-label">Vi</span>
     </div>
-    <div class="stat-card not-watched">
-      <span class="stat-icon">❌</span>
-      <span class="stat-number">{{ stats.not_watched }}</span>
-      <span class="stat-label">Não Vi</span>
-    </div>
     <div class="stat-card want-to-watch">
       <span class="stat-icon">⭐</span>
       <span class="stat-number">{{ stats.want_to_watch }}</span>
@@ -35,9 +30,6 @@
     </button>
     <button [class.active]="activeFilter === 'watched'" (click)="applyFilter('watched')">
       ✅ Vi ({{ stats.watched }})
-    </button>
-    <button [class.active]="activeFilter === 'not_watched'" (click)="applyFilter('not_watched')">
-      ❌ Não Vi ({{ stats.not_watched }})
     </button>
     <button [class.active]="activeFilter === 'want_to_watch'" (click)="applyFilter('want_to_watch')">
       ⭐ Quero Ver ({{ stats.want_to_watch }})

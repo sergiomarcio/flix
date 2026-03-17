@@ -27,10 +27,6 @@
               (click)="setStatus('watched')">
               ✅ Vi
             </button>
-            <button class="status-btn not-watched" [class.active]="status === 'not_watched'" [disabled]="saving"
-              (click)="setStatus('not_watched')">
-              ❌ Não Vi
-            </button>
             <button class="status-btn want-to-watch" [class.active]="status === 'want_to_watch'" [disabled]="saving"
               (click)="setStatus('want_to_watch')">
               ⭐ Quero Ver
@@ -39,12 +35,16 @@
           <div class="like-section" *ngIf="status === 'watched'">
             <p class="like-label">Gostou do filme?</p>
             <div class="like-buttons">
-              <button class="like-btn liked" [class.active]="liked === true" [disabled]="saving"
-                (click)="setLike(true)">
+              <button class="like-btn liked" [class.active]="liked === 'liked'" [disabled]="saving"
+                (click)="setLike('liked')">
                 👍 Gostei
               </button>
-              <button class="like-btn disliked" [class.active]="liked === false" [disabled]="saving"
-                (click)="setLike(false)">
+              <button class="like-btn neutral" [class.active]="liked === 'neutral'" [disabled]="saving"
+                (click)="setLike('neutral')">
+                😐 Mais ou Menos
+              </button>
+              <button class="like-btn disliked" [class.active]="liked === 'disliked'" [disabled]="saving"
+                (click)="setLike('disliked')">
                 👎 Não gostei
               </button>
             </div>

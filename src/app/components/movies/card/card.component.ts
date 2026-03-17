@@ -93,7 +93,6 @@ export class MovieCardComponent implements OnInit {
   getStatusLabel(): string {
     switch (this.status) {
       case 'watched': return '✅ Vi';
-      case 'not_watched': return '❌ Não Vi';
       case 'want_to_watch': return '⭐ Quero Ver';
       default: return '';
     }

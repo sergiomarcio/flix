@@ -202,6 +202,17 @@
       }
     }
 
+    &.neutral {
+      background: rgba(212, 175, 55, 0.08);
+      border-color: rgba(212, 175, 55, 0.25);
+
+      &:hover,
+      &.active {
+        background: rgba(212, 175, 55, 0.18);
+        border-color: #D4AF37;
+      }
+    }
+
     &.disliked {
       background: rgba(239, 68, 68, 0.08);
       border-color: rgba(239, 68, 68, 0.25);

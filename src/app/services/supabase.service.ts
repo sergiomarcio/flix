@@ -3,7 +3,7 @@ import { createClient, SupabaseClient, User } from '@supabase/supabase-js';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from '../../environments/environment';
 
-export type WatchStatus = 'watched' | 'not_watched' | 'want_to_watch';
+export type WatchStatus = 'watched' | 'want_to_watch';
 export type SeriesStatus = 'watching' | 'watched' | 'want_to_watch';
 
 export interface UserSeries {
@@ -41,7 +41,7 @@ export interface UserMovie {
   vote_average: number;
   runtime?: number;
   status: WatchStatus;
-  liked?: boolean | null;
+  liked?: 'liked' | 'neutral' | 'disliked' | null;
   created_at?: string;
   updated_at?: string;
 }
@@ -166,7 +166,7 @@ export class SupabaseService {
     if (error) throw error;
   }
 
-  async setMovieLike(movieId: number, liked: boolean | null): Promise<void> {
+  async setMovieLike(movieId: number, liked: 'liked' | 'neutral' | 'disliked' | null): Promise<void> {
     if (!this.client || !this.userId) throw new Error('Usuário não autenticado.');
     const { error } = await this.client
       .from('user_movies')
@@ -207,13 +207,15 @@ export class SupabaseService {
     want_to_watch: number;
     total_minutes: number;
     liked_minutes: number;
+    neutral_minutes: number;
     disliked_minutes: number;
     unevaluated_minutes: number;
     liked_count: number;
+    neutral_count: number;
     disliked_count: number;
     unevaluated_count: number;
   }> {
-    const empty = { watched: 0, not_watched: 0, want_to_watch: 0, total_minutes: 0, liked_minutes: 0, disliked_minutes: 0, unevaluated_minutes: 0, liked_count: 0, disliked_count: 0, unevaluated_count: 0 };
+    const empty = { watched: 0, not_watched: 0, want_to_watch: 0, total_minutes: 0, liked_minutes: 0, neutral_minutes: 0, disliked_minutes: 0, unevaluated_minutes: 0, liked_count: 0, neutral_count: 0, disliked_count: 0, unevaluated_count: 0 };
     if (!this.client || !this.userId) return empty;
 
     const { data, error } = await this.client
@@ -224,12 +226,13 @@ export class SupabaseService {
     if (error) throw error;
 
     const stats = { ...empty };
-    (data || []).forEach((item: { status: WatchStatus; runtime: number | null; liked: boolean | null }) => {
+    (data || []).forEach((item: { status: WatchStatus; runtime: number | null; liked: 'liked' | 'neutral' | 'disliked' | null }) => {
       stats[item.status]++;
       if (item.status === 'watched' && item.runtime) {
         stats.total_minutes += item.runtime;
-        if (item.liked === true) { stats.liked_minutes += item.runtime; stats.liked_count++; }
-        else if (item.liked === false) { stats.disliked_minutes += item.runtime; stats.disliked_count++; }
+        if (item.liked === 'liked') { stats.liked_minutes += item.runtime; stats.liked_count++; }
+        else if (item.liked === 'neutral') { stats.neutral_minutes += item.runtime; stats.neutral_count++; }
+        else if (item.liked === 'disliked') { stats.disliked_minutes += item.runtime; stats.disliked_count++; }
         else { stats.unevaluated_minutes += item.runtime; stats.unevaluated_count++; }
       }
     });

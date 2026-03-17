@@ -67,6 +67,14 @@
           <div class="like-card-count">{{ likedCount }} {{ likedCount === 1 ? 'filme' : 'filmes' }}</div>
           <div class="like-card-time">{{ likedMinutes > 0 ? formatRuntime(likedMinutes) : '—' }}</div>
         </div>
+        <div class="like-card neutral" [class.active]="likeFilter === 'neutral'" (click)="setLikeFilter('neutral')">
+          <div class="like-card-header">
+            <span class="like-icon">😐</span>
+            <span class="like-title">Mais ou Menos</span>
+          </div>
+          <div class="like-card-count">{{ neutralCount }} {{ neutralCount === 1 ? 'filme' : 'filmes' }}</div>
+          <div class="like-card-time">{{ neutralMinutes > 0 ? formatRuntime(neutralMinutes) : '—' }}</div>
+        </div>
         <div class="like-card disliked" [class.active]="likeFilter === 'disliked'" (click)="setLikeFilter('disliked')">
           <div class="like-card-header">
             <span class="like-icon">👎</span>
@@ -122,6 +130,7 @@
       <h2 class="section-title">
         <span *ngIf="!likeFilter">🎞️ Filmes contabilizados</span>
         <span *ngIf="likeFilter === 'liked'">👍 Filmes que gostei</span>
+        <span *ngIf="likeFilter === 'neutral'">😐 Filmes mais ou menos</span>
         <span *ngIf="likeFilter === 'disliked'">👎 Filmes que não gostei</span>
         <span *ngIf="likeFilter === 'unevaluated'">🤷 Filmes sem avaliação</span>
         <span class="count-badge">{{ filteredWatchedMovies.length }}</span>

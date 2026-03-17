@@ -6,9 +6,9 @@
       <span class="star">★</span> {{ getRating() }}
     </div>
 
-    <!-- <div class="status-badge" [class]="getStatusClass()" *ngIf="status">
+    <div class="status-badge" [class]="getStatusClass()" *ngIf="status">
       {{ getStatusLabel() }}
-    </div> -->
+    </div>
 
     <div class="card-overlay">
       <div class="movie-info-overlay">
@@ -23,9 +23,6 @@
       <div class="status-menu" *ngIf="showStatusMenu" (click)="$event.stopPropagation()">
         <button class="menu-item watched" (click)="setStatus($event, 'watched')">
           ✅ Vi
-        </button>
-        <button class="menu-item not-watched" (click)="setStatus($event, 'not_watched')">
-          ❌ Não Vi
         </button>
         <button class="menu-item want-to-watch" (click)="setStatus($event, 'want_to_watch')">
           ⭐ Quero Ver

@@ -19,7 +19,7 @@ export class MovieDetailComponent implements OnInit {
   similarMovies: Movie[] = [];
   trailer: MovieVideo | null = null;
   status: WatchStatus | null = null;
-  liked: boolean | null = null;
+  liked: 'liked' | 'neutral' | 'disliked' | null = null;
   loading = true;
   saving = false;
   showTrailer = false;
@@ -82,6 +82,10 @@ export class MovieDetailComponent implements OnInit {
         status: newStatus
       });
       this.status = newStatus;
+      if (newStatus === 'want_to_watch') {
+        await this.supabaseService.setMovieLike(this.movie.id, null);
+        this.liked = null;
+      }
     } catch (err) {
       console.error('Erro ao salvar:', err);
     } finally {
@@ -89,7 +93,7 @@ export class MovieDetailComponent implements OnInit {
     }
   }
 
-  async setLike(value: boolean): Promise<void> {
+  async setLike(value: 'liked' | 'neutral' | 'disliked'): Promise<void> {
     if (!this.movie) return;
     this.saving = true;
     try {

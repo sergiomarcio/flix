@@ -143,19 +143,6 @@
             }
           }
 
-          &.not-watched {
-
-            &.active,
-            &:hover {
-              background: rgba(239, 68, 68, 0.2);
-              border-color: #ef4444;
-              color: #f87171;
-            }
-
-            &.active {
-              background: rgba(239, 68, 68, 0.3);
-            }
-          }
 
           &.want-to-watch {
 
@@ -224,6 +211,20 @@
 
               &.active {
                 background: rgba(34, 197, 94, 0.3);
+              }
+            }
+
+            &.neutral {
+
+              &.active,
+              &:hover {
+                background: rgba(212, 175, 55, 0.2);
+                border-color: #D4AF37;
+                color: #D4AF37;
+              }
+
+              &.active {
+                background: rgba(212, 175, 55, 0.3);
               }
             }
 

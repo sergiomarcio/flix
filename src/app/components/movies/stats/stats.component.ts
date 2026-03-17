@@ -17,11 +17,13 @@ interface WatchedMovie extends UserMovie {
 })
 export class MovieStatsComponent implements OnInit {
   loading = true;
-  likeFilter: 'liked' | 'disliked' | 'unevaluated' | null = null;
+  likeFilter: 'liked' | 'neutral' | 'disliked' | 'unevaluated' | null = null;
   totalMinutes = 0;
   likedMinutes = 0;
+  neutralMinutes = 0;
   dislikedMinutes = 0;
   likedCount = 0;
+  neutralCount = 0;
   dislikedCount = 0;
   unevaluatedCount = 0;
   unevaluatedMinutes = 0;
@@ -50,8 +52,10 @@ export class MovieStatsComponent implements OnInit {
       this.notWatchedCount = stats.not_watched;
       this.totalMinutes = stats.total_minutes;
       this.likedMinutes = stats.liked_minutes;
+      this.neutralMinutes = stats.neutral_minutes;
       this.dislikedMinutes = stats.disliked_minutes;
       this.likedCount = stats.liked_count;
+      this.neutralCount = stats.neutral_count;
       this.dislikedCount = stats.disliked_count;
       this.unevaluatedCount = stats.unevaluated_count;
       this.unevaluatedMinutes = stats.unevaluated_minutes;
@@ -68,13 +72,14 @@ export class MovieStatsComponent implements OnInit {
 
   get filteredWatchedMovies(): WatchedMovie[] {
     if (!this.likeFilter) return this.watchedMovies;
-    if (this.likeFilter === 'liked') return this.watchedMovies.filter(m => m.liked === true);
-    if (this.likeFilter === 'disliked') return this.watchedMovies.filter(m => m.liked === false);
+    if (this.likeFilter === 'liked') return this.watchedMovies.filter(m => m.liked === 'liked');
+    if (this.likeFilter === 'neutral') return this.watchedMovies.filter(m => m.liked === 'neutral');
+    if (this.likeFilter === 'disliked') return this.watchedMovies.filter(m => m.liked === 'disliked');
     if (this.likeFilter === 'unevaluated') return this.watchedMovies.filter(m => m.liked == null);
     return this.watchedMovies;
   }
 
-  setLikeFilter(filter: 'liked' | 'disliked' | 'unevaluated'): void {
+  setLikeFilter(filter: 'liked' | 'neutral' | 'disliked' | 'unevaluated'): void {
     this.likeFilter = this.likeFilter === filter ? null : filter;
   }
 

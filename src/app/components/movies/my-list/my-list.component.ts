@@ -18,7 +18,7 @@ export class MyListComponent implements OnInit {
   sortBy: 'name' | 'year' = 'name';
   sortDir: 'asc' | 'desc' = 'asc';
   loading = true;
-  stats = { watched: 0, not_watched: 0, want_to_watch: 0 };
+  stats = { watched: 0, want_to_watch: 0 };
 
   constructor(
     private supabaseService: SupabaseService,
@@ -75,8 +75,8 @@ export class MyListComponent implements OnInit {
   getStatusLabel(status: WatchStatus): string {
     switch (status) {
       case 'watched': return '✅ Vi';
-      case 'not_watched': return '❌ Não Vi';
       case 'want_to_watch': return '⭐ Quero Ver';
+      default: return '';
     }
   }
 

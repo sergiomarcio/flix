@@ -71,21 +71,18 @@
             <p class="season-episodes">{{ season.episode_count }} episódios</p>
             <p class="season-year">{{ season.air_date?.substring(0,4) }}</p>
             <p class="season-progress" *ngIf="getSeasonWatchedCount(season.season_number) > 0">
-              <span class="watched-count">{{ getSeasonWatchedCount(season.season_number) }}/{{ season.episode_count }}</span> assistidos
+              <span class="watched-count">{{ getSeasonWatchedCount(season.season_number) }}/{{ season.episode_count
+                }}</span> assistidos
             </p>
           </div>
           <ng-container *ngIf="!markingSet.has(season.season_number); else loadingBtn">
-            <button *ngIf="!isSeasonFullyWatched(season) && season.episode_count > 0"
-              class="mark-all-btn"
-              (click)="markSeasonAllWatched(season, $event)"
-              title="Marcar todos como assistidos">
-              ✓  Marcar Todos os Episódios da Temporada como Assistidos
+            <button *ngIf="!isSeasonFullyWatched(season) && season.episode_count > 0" class="mark-all-btn"
+              (click)="markSeasonAllWatched(season, $event)" title="Marcar todos como assistidos">
+              ✓ Todos
             </button>
-            <button *ngIf="isSeasonFullyWatched(season)"
-              class="mark-all-btn done"
-              (click)="unmarkSeasonAllWatched(season, $event)"
-              title="Desmarcar todos os episódios">
-              ❌ Desmarcar Todos os Episódios da Temporada
+            <button *ngIf="isSeasonFullyWatched(season)" class="mark-all-btn done"
+              (click)="unmarkSeasonAllWatched(season, $event)" title="Desmarcar todos os episódios">
+              ✅ Desmarcar
             </button>
           </ng-container>
           <ng-template #loadingBtn>
