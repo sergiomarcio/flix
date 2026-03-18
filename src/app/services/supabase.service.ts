@@ -349,6 +349,81 @@ export class SupabaseService {
     if (error) throw error;
   }
 
+  // ── Admin ─────────────────────────────────────────────────
+
+  async getUsers(): Promise<{ uid: string; email: string }[]> {
+    if (!this.client) return [];
+    const { data, error } = await this.client.rpc('get_all_users');
+    if (error) throw error;
+    return data || [];
+  }
+
+  async getUserMoviesAdmin(userId: string): Promise<UserMovie[]> {
+    if (!this.client) return [];
+    const { data, error } = await this.client
+      .from('user_movies')
+      .select('*')
+      .eq('user_id', userId)
+      .order('updated_at', { ascending: false });
+    if (error) throw error;
+    return data || [];
+  }
+
+  async getMovieStatsAdmin(userId: string): Promise<{
+    watched: number; want_to_watch: number; total_minutes: number;
+    liked_count: number; neutral_count: number; disliked_count: number; unevaluated_count: number;
+    liked_minutes: number; neutral_minutes: number; disliked_minutes: number; unevaluated_minutes: number;
+  }> {
+    const empty = { watched: 0, want_to_watch: 0, total_minutes: 0, liked_count: 0, neutral_count: 0, disliked_count: 0, unevaluated_count: 0, liked_minutes: 0, neutral_minutes: 0, disliked_minutes: 0, unevaluated_minutes: 0 };
+    if (!this.client) return empty;
+    const { data, error } = await this.client
+      .from('user_movies').select('status, runtime, liked').eq('user_id', userId);
+    if (error) return empty;
+    const s = { ...empty };
+    (data || []).forEach((item: { status: WatchStatus; runtime: number | null; liked: string | null }) => {
+      if (item.status === 'watched') {
+        s.watched++;
+        if (item.runtime) {
+          s.total_minutes += item.runtime;
+          if (item.liked === 'liked')        { s.liked_count++;      s.liked_minutes += item.runtime; }
+          else if (item.liked === 'neutral') { s.neutral_count++;    s.neutral_minutes += item.runtime; }
+          else if (item.liked === 'disliked'){ s.disliked_count++;   s.disliked_minutes += item.runtime; }
+          else                               { s.unevaluated_count++;s.unevaluated_minutes += item.runtime; }
+        }
+      } else if (item.status === 'want_to_watch') s.want_to_watch++;
+    });
+    return s;
+  }
+
+  async getSeriesStatsAdmin(userId: string): Promise<{
+    total_minutes: number; total_episodes: number; watching: number; watched: number; want_to_watch: number;
+  }> {
+    const empty = { total_minutes: 0, total_episodes: 0, watching: 0, watched: 0, want_to_watch: 0 };
+    if (!this.client) return empty;
+    const pageSize = 1000;
+    const allEpisodes: { runtime: number | null }[] = [];
+    let from = 0;
+    while (true) {
+      const { data, error } = await this.client
+        .from('user_episodes').select('runtime').eq('user_id', userId)
+        .range(from, from + pageSize - 1);
+      if (error || !data || data.length === 0) break;
+      allEpisodes.push(...data);
+      if (data.length < pageSize) break;
+      from += pageSize;
+    }
+    const { data: seriesData } = await this.client
+      .from('user_series').select('status').eq('user_id', userId);
+    const s = { ...empty };
+    allEpisodes.forEach(e => { s.total_episodes++; if (e.runtime) s.total_minutes += e.runtime; });
+    (seriesData || []).forEach((x: { status: SeriesStatus }) => {
+      if (x.status === 'watching') s.watching++;
+      else if (x.status === 'watched') s.watched++;
+      else if (x.status === 'want_to_watch') s.want_to_watch++;
+    });
+    return s;
+  }
+
   async getSeriesStats(): Promise<{
     total_minutes: number;
     total_episodes: number;

@@ -125,6 +125,19 @@
             color: #a5b4fc;
           }
         }
+
+        &.admin {
+          background: rgba(239, 68, 68, 0.1);
+          border-color: rgba(239, 68, 68, 0.35);
+          color: rgba(252, 165, 165, 0.85);
+
+          &:hover,
+          &.active {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: #ef4444;
+            color: #fca5a5;
+          }
+        }
       }
     }
   }

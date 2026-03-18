@@ -40,6 +40,9 @@
       <span class="nav-group-label">&nbsp;</span>
       <div class="nav-group-links">
         <a routerLink="/sobre" routerLinkActive="active">Sobre</a>
+        @if (isAdmin) {
+          <a routerLink="/admin" routerLinkActive="active" class="pill admin">Admin</a>
+        }
       </div>
     </div>
 
@@ -123,6 +126,11 @@
     <a routerLink="/sobre" routerLinkActive="active" class="drawer-item" (click)="menuOpen = false">
       <span class="di-icon">ℹ️</span><span class="di-text">Sobre</span>
     </a>
+    @if (isAdmin) {
+      <a routerLink="/admin" routerLinkActive="active" class="drawer-item" (click)="menuOpen = false">
+        <span class="di-icon">🛠️</span><span class="di-text">Admin</span>
+      </a>
+    }
 
     @if (userEmail) {
       <div class="drawer-logout">

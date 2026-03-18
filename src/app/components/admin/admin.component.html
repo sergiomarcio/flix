@@ -1,0 +1,178 @@
+<div class="admin-page">
+
+  <div class="admin-header">
+    <h1>Administração</h1>
+    <p class="admin-subtitle">Visualização de listas de usuários</p>
+  </div>
+
+  <div class="admin-layout">
+
+    <!-- Lista de usuários -->
+    <aside class="users-panel">
+      <h2 class="panel-title">Usuários</h2>
+
+      <div class="users-loading" *ngIf="loadingUsers">
+        <span>Carregando...</span>
+      </div>
+
+      <ul class="users-list" *ngIf="!loadingUsers">
+        <li *ngFor="let user of users" class="user-item" [class.active]="selectedUser?.uid === user.uid"
+          (click)="selectUser(user)">
+          <div class="user-avatar">{{ user.email.charAt(0).toUpperCase() }}</div>
+          <span class="user-email">{{ user.email }}</span>
+        </li>
+        <li *ngIf="users.length === 0" class="users-empty">Nenhum usuário encontrado.</li>
+      </ul>
+    </aside>
+
+    <!-- Painel principal -->
+    <main class="movies-panel">
+
+      <div class="empty-state" *ngIf="!selectedUser">
+        <span>👈</span>
+        <p>Selecione um usuário para ver os dados dele</p>
+      </div>
+
+      <ng-container *ngIf="selectedUser">
+
+        <!-- Cabeçalho do usuário -->
+        <div class="user-heading">
+          <div class="user-heading-avatar">{{ selectedUser.email.charAt(0).toUpperCase() }}</div>
+          <span class="user-heading-email">{{ selectedUser.email }}</span>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+          <button [class.active]="activeTab === 'movies'" (click)="activeTab = 'movies'">🎬 Filmes</button>
+          <button [class.active]="activeTab === 'stats'" (click)="activeTab = 'stats'">📊 Estatísticas</button>
+        </div>
+
+        <!-- ── TAB: FILMES ── -->
+        <ng-container *ngIf="activeTab === 'movies'">
+          <div class="filter-tabs">
+            <button [class.active]="statusFilter === 'all'" (click)="statusFilter = 'all'">
+              Todos ({{ movies.length }})
+            </button>
+            <button [class.active]="statusFilter === 'watched'" (click)="statusFilter = 'watched'">
+              Assistidos ({{ watchedCount }})
+            </button>
+            <button [class.active]="statusFilter === 'want_to_watch'" (click)="statusFilter = 'want_to_watch'">
+              Quero Ver ({{ wantCount }})
+            </button>
+          </div>
+
+          <div class="movies-loading" *ngIf="loadingMovies">
+            <span class="spinner">🎬</span>
+            <p>Carregando filmes...</p>
+          </div>
+
+          <div class="movies-list" *ngIf="!loadingMovies">
+            <div class="movie-row" *ngFor="let m of filteredMovies">
+              <img [src]="getPosterUrl(m.poster_path)" [alt]="m.movie_title" class="movie-poster" />
+              <div class="movie-info">
+                <span class="movie-title">{{ m.movie_title }}</span>
+                <div class="movie-meta">
+                  <span>{{ getYear(m.release_date) }}</span>
+                  <span class="rating">★ {{ m.vote_average | number:'1.1-1' }}</span>
+                  <span *ngIf="m.runtime">{{ m.runtime }}min</span>
+                </div>
+              </div>
+              <div class="movie-right">
+                <span class="status-badge" [class]="m.status">
+                  {{ m.status === 'watched' ? 'Assistido' : 'Quero Ver' }}
+                </span>
+                <span class="liked-icon">{{ likedLabel(m.liked) }}</span>
+              </div>
+            </div>
+            <p class="empty" *ngIf="filteredMovies.length === 0">Nenhum filme nesta categoria.</p>
+          </div>
+        </ng-container>
+
+        <!-- ── TAB: ESTATÍSTICAS ── -->
+        <ng-container *ngIf="activeTab === 'stats'">
+
+          <div class="stats-loading" *ngIf="loadingStats">
+            <span class="spinner">📊</span>
+            <p>Carregando estatísticas...</p>
+          </div>
+
+          <ng-container *ngIf="!loadingStats && movieStats && seriesStats">
+
+            <!-- Filmes -->
+            <h3 class="stats-section-title">🎬 Filmes</h3>
+            <div class="stats-grid cols-3">
+              <div class="stat-card gold">
+                <span class="stat-icon">✅</span>
+                <span class="stat-number">{{ movieStats.watched }}</span>
+                <span class="stat-label">Assistidos</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-icon">⭐</span>
+                <span class="stat-number">{{ movieStats.want_to_watch }}</span>
+                <span class="stat-label">Quer Ver</span>
+              </div>
+              <div class="stat-card gold">
+                <span class="stat-icon">⏱️</span>
+                <span class="stat-number">{{ formatTime(movieStats.total_minutes) }}</span>
+                <span class="stat-label">Tempo Total</span>
+              </div>
+            </div>
+
+            <!-- Filmes Assistidos-->
+            <h3 class="stats-section-title">🎬 Dentre os Filmes Assistidos</h3>
+            <div class="stats-grid cols-3">
+              <div class="stat-card liked">
+                <span class="stat-icon">👍</span>
+                <span class="stat-number">{{ movieStats.liked_count }}</span>
+                <span class="stat-label">Gostou</span>
+              </div>
+              <div class="stat-card neutral">
+                <span class="stat-icon">😐</span>
+                <span class="stat-number">{{ movieStats.neutral_count }}</span>
+                <span class="stat-label">Achou Mais ou Menos</span>
+              </div>
+              <div class="stat-card disliked">
+                <span class="stat-icon">👎</span>
+                <span class="stat-number">{{ movieStats.disliked_count }}</span>
+                <span class="stat-label">Não Gostou</span>
+              </div>
+            </div>
+
+            <!-- Séries -->
+            <h3 class="stats-section-title">📺 Séries</h3>
+            <div class="stats-grid">
+              <div class="stat-card indigo">
+                <span class="stat-icon">▶️</span>
+                <span class="stat-number">{{ seriesStats.watching }}</span>
+                <span class="stat-label">Assistindo</span>
+              </div>
+              <div class="stat-card green">
+                <span class="stat-icon">✅</span>
+                <span class="stat-number">{{ seriesStats.watched }}</span>
+                <span class="stat-label">Concluídas</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-icon">⭐</span>
+                <span class="stat-number">{{ seriesStats.want_to_watch }}</span>
+                <span class="stat-label">Quero Ver</span>
+              </div>
+              <div class="stat-card indigo">
+                <span class="stat-icon">🎞️</span>
+                <span class="stat-number">{{ seriesStats.total_episodes }}</span>
+                <span class="stat-label">Episódios</span>
+              </div>
+              <div class="stat-card indigo">
+                <span class="stat-icon">⏱️</span>
+                <span class="stat-number">{{ formatTime(seriesStats.total_minutes) }}</span>
+                <span class="stat-label">Tempo Total</span>
+              </div>
+            </div>
+
+          </ng-container>
+        </ng-container>
+
+      </ng-container>
+
+    </main>
+  </div>
+</div>
