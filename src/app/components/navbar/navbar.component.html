@@ -6,36 +6,31 @@
     </a>
   </div>
 
-  <button class="menu-toggle" (click)="toggleMenu()" [class.open]="menuOpen">
-    <span></span><span></span><span></span>
-  </button>
+  <!-- Desktop nav links -->
+  <div class="navbar-links desktop-nav">
 
-  <div class="navbar-links" [class.open]="menuOpen">
-
-    <!-- Módulo Filmes -->
     <div class="nav-group">
-      <span class="nav-group-label">🎬 Filmes</span>
+      <span class="nav-group-label">Filmes</span>
       <div class="nav-group-links">
-        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="menuOpen = false">Explorar</a>
-        <a routerLink="/popular" routerLinkActive="active" (click)="menuOpen = false">Populares</a>
-        <a routerLink="/top-rated" routerLinkActive="active" (click)="menuOpen = false">Mais Votados</a>
-        <a routerLink="/now-playing" routerLinkActive="active" (click)="menuOpen = false">Em Cartaz</a>
-        <a routerLink="/my-list" routerLinkActive="active" class="pill gold" (click)="menuOpen = false">📋 Minha Lista</a>
-        <a routerLink="/movie-stats" routerLinkActive="active" class="pill gold" (click)="menuOpen = false">⏱️ Stats</a>
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Explorar</a>
+        <a routerLink="/popular" routerLinkActive="active">Populares</a>
+        <a routerLink="/top-rated" routerLinkActive="active">Mais Votados</a>
+        <a routerLink="/now-playing" routerLinkActive="active">Em Cartaz</a>
+        <a routerLink="/my-list" routerLinkActive="active" class="pill gold">Minha Lista</a>
+        <a routerLink="/movie-stats" routerLinkActive="active" class="pill gold">Estatísticas</a>
       </div>
     </div>
 
     <div class="nav-divider"></div>
 
-    <!-- Módulo Séries -->
     <div class="nav-group">
-      <span class="nav-group-label">📺 Séries</span>
+      <span class="nav-group-label">Séries</span>
       <div class="nav-group-links">
-        <a routerLink="/series" routerLinkActive="active" (click)="menuOpen = false">Explorar</a>
-        <a routerLink="/series-popular" routerLinkActive="active" (click)="menuOpen = false">Populares</a>
-        <a routerLink="/series-top-rated" routerLinkActive="active" (click)="menuOpen = false">Mais Votadas</a>
-        <a routerLink="/my-series-list" routerLinkActive="active" class="pill indigo" (click)="menuOpen = false">📋 Minha Lista</a>
-        <a routerLink="/series-stats" routerLinkActive="active" class="pill indigo" (click)="menuOpen = false">⏱️ Stats</a>
+        <a routerLink="/series" routerLinkActive="active">Explorar</a>
+        <a routerLink="/series-popular" routerLinkActive="active">Populares</a>
+        <a routerLink="/series-top-rated" routerLinkActive="active">Mais Votadas</a>
+        <a routerLink="/my-series-list" routerLinkActive="active" class="pill indigo">Minha Lista</a>
+        <a routerLink="/series-stats" routerLinkActive="active" class="pill indigo">Estatísticas</a>
       </div>
     </div>
 
@@ -44,7 +39,7 @@
     <div class="nav-group">
       <span class="nav-group-label">&nbsp;</span>
       <div class="nav-group-links">
-        <a routerLink="/sobre" routerLinkActive="active" (click)="menuOpen = false">Sobre</a>
+        <a routerLink="/sobre" routerLinkActive="active">Sobre</a>
       </div>
     </div>
 
@@ -55,4 +50,88 @@
       </div>
     }
   </div>
+
+  <!-- Mobile hamburger -->
+  <button class="menu-toggle" (click)="toggleMenu()" [class.open]="menuOpen">
+    <span></span><span></span><span></span>
+  </button>
+
+  <!-- Mobile drawer -->
+  <div class="navbar-links mobile-drawer" [class.open]="menuOpen">
+
+    <!-- Cabeçalho do drawer -->
+    <div class="drawer-header">
+      <div class="drawer-avatar">
+        @if (userEmail) {
+          {{ userEmail.charAt(0).toUpperCase() }}
+        } @else {
+          🎬
+        }
+      </div>
+      <div class="drawer-user-info">
+        <span class="drawer-email-user">{{ emailUser }}</span>
+        @if (emailDomain) {
+          <span class="drawer-email-domain">{{ emailDomain }}</span>
+        }
+      </div>
+      <button class="drawer-close" (click)="menuOpen = false">✕</button>
+    </div>
+
+    <!-- Filmes -->
+    <span class="drawer-section-label">🎬 Filmes</span>
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="drawer-item" (click)="menuOpen = false">
+      <span class="di-icon">🔍</span><span class="di-text">Explorar</span>
+    </a>
+    <a routerLink="/popular" routerLinkActive="active" class="drawer-item" (click)="menuOpen = false">
+      <span class="di-icon">🔥</span><span class="di-text">Populares</span>
+    </a>
+    <a routerLink="/top-rated" routerLinkActive="active" class="drawer-item" (click)="menuOpen = false">
+      <span class="di-icon">⭐</span><span class="di-text">Mais Votados</span>
+    </a>
+    <a routerLink="/now-playing" routerLinkActive="active" class="drawer-item" (click)="menuOpen = false">
+      <span class="di-icon">🎟️</span><span class="di-text">Em Cartaz</span>
+    </a>
+    <a routerLink="/my-list" routerLinkActive="active" class="drawer-item" (click)="menuOpen = false">
+      <span class="di-icon">📋</span><span class="di-text">Minha Lista</span>
+    </a>
+    <a routerLink="/movie-stats" routerLinkActive="active" class="drawer-item" (click)="menuOpen = false">
+      <span class="di-icon">⏱️</span><span class="di-text">Estatísticas</span>
+    </a>
+
+    <div class="drawer-divider"></div>
+
+    <!-- Séries -->
+    <span class="drawer-section-label">📺 Séries</span>
+    <a routerLink="/series" routerLinkActive="active" class="drawer-item" (click)="menuOpen = false">
+      <span class="di-icon">🔍</span><span class="di-text">Explorar</span>
+    </a>
+    <a routerLink="/series-popular" routerLinkActive="active" class="drawer-item" (click)="menuOpen = false">
+      <span class="di-icon">🔥</span><span class="di-text">Populares</span>
+    </a>
+    <a routerLink="/series-top-rated" routerLinkActive="active" class="drawer-item" (click)="menuOpen = false">
+      <span class="di-icon">⭐</span><span class="di-text">Mais Votadas</span>
+    </a>
+    <a routerLink="/my-series-list" routerLinkActive="active" class="drawer-item" (click)="menuOpen = false">
+      <span class="di-icon">📋</span><span class="di-text">Minha Lista</span>
+    </a>
+    <a routerLink="/series-stats" routerLinkActive="active" class="drawer-item" (click)="menuOpen = false">
+      <span class="di-icon">⏱️</span><span class="di-text">Estatísticas</span>
+    </a>
+
+    <div class="drawer-divider"></div>
+
+    <a routerLink="/sobre" routerLinkActive="active" class="drawer-item" (click)="menuOpen = false">
+      <span class="di-icon">ℹ️</span><span class="di-text">Sobre</span>
+    </a>
+
+    @if (userEmail) {
+      <div class="drawer-logout">
+        <button class="btn-logout" (click)="logout()">Sair</button>
+      </div>
+    }
+  </div>
 </nav>
+
+@if (menuOpen) {
+  <div class="nav-overlay" (click)="menuOpen = false"></div>
+}

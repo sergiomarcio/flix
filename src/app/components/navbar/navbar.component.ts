@@ -28,6 +28,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.sub?.unsubscribe();
   }
 
+  get emailUser(): string {
+    return this.userEmail ? this.userEmail.split('@')[0] : 'FLIX';
+  }
+
+  get emailDomain(): string {
+    if (!this.userEmail || !this.userEmail.includes('@')) return '';
+    return '@' + this.userEmail.split('@')[1];
+  }
+
   toggleMenu(): void {
     this.menuOpen = !this.menuOpen;
   }
