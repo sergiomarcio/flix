@@ -6,12 +6,10 @@ import { catchError, firstValueFrom, forkJoin, of } from 'rxjs';
 import { SafeUrlPipe } from '../../../pipes/safe-url.pipe';
 import { SeriesStatus, SupabaseService, WatchedEpisode } from '../../../services/supabase.service';
 import { MovieCastMember, MovieImage, MovieVideo, TVSeason, TVShowDetail, TmdbService, WatchProvider } from '../../../services/tmdb.service';
-import { PersonModalComponent } from '../../person-modal/person-modal.component';
-
 @Component({
   selector: 'app-series-detail',
   standalone: true,
-  imports: [CommonModule, SafeUrlPipe, PersonModalComponent],
+  imports: [CommonModule, SafeUrlPipe],
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss'
 })
@@ -31,7 +29,6 @@ export class SeriesDetailComponent implements OnInit {
   photos: MovieImage[] = [];
   cast: MovieCastMember[] = [];
   showAllCast = false;
-  selectedPersonId: number | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -258,6 +255,8 @@ export class SeriesDetailComponent implements OnInit {
   }
 
   goBack(): void { this.location.back(); }
+
+  goToPerson(id: number): void { this.router.navigate(['/person', id]); }
   openTrailer(): void { this.showTrailer = true; }
   closeTrailer(): void { this.showTrailer = false; }
 }

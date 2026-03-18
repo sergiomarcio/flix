@@ -96,7 +96,7 @@
     <div class="cast-section" *ngIf="cast.length">
       <h2 class="section-title">Elenco</h2>
       <div class="cast-grid">
-        <div class="cast-card" *ngFor="let member of visibleCast" (click)="selectedPersonId = member.id">
+        <div class="cast-card" *ngFor="let member of visibleCast" (click)="goToPerson(member.id)">
           <img [src]="getProfileUrl(member.profile_path)" [alt]="member.name" class="cast-photo" />
           <div class="cast-info">
             <span class="cast-name">{{ member.name }}</span>
@@ -152,10 +152,6 @@
     </div>
   </div>
 </div>
-
-<!-- Person Modal -->
-<app-person-modal *ngIf="selectedPersonId" [personId]="selectedPersonId" (closed)="selectedPersonId = null">
-</app-person-modal>
 
 <!-- Trailer Modal -->
 <div class="trailer-modal" *ngIf="showTrailer" (click)="closeTrailer()">

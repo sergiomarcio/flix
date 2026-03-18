@@ -5,10 +5,11 @@ import { MovieHomeComponent } from './components/movies/home/home.component';
 import { MovieListComponent } from './components/movies/list/list.component';
 import { MyListComponent } from './components/movies/my-list/my-list.component';
 import { MovieStatsComponent } from './components/movies/stats/stats.component';
+import { PersonComponent } from './components/person/person.component';
 import { SeriesDetailComponent } from './components/series/detail/detail.component';
 import { SeriesHomeComponent } from './components/series/home/home.component';
-import { MySeriesListComponent } from './components/series/my-list/my-list.component';
 import { SeriesListComponent } from './components/series/list/list.component';
+import { MySeriesListComponent } from './components/series/my-list/my-list.component';
 import { SeasonDetailComponent } from './components/series/season-detail/season-detail.component';
 import { SeriesStatsComponent } from './components/series/stats/stats.component';
 import { SobreComponent } from './components/sobre/sobre.component';
@@ -35,6 +36,7 @@ export const routes: Routes = [
   { path: 'series/:id', component: SeriesDetailComponent, canActivate: [authGuard] },
   { path: 'series/:id/season/:season', component: SeasonDetailComponent, canActivate: [authGuard] },
 
+  { path: 'person/:id', component: PersonComponent, canActivate: [authGuard] },
   { path: 'sobre', component: SobreComponent },
   { path: '**', redirectTo: '' }
 ];

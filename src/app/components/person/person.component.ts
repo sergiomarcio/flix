@@ -1,6 +1,6 @@
-import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { Router } from '@angular/router';
+import { CommonModule, Location } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { PersonDetails, TmdbService } from '../../services/tmdb.service';
 
@@ -15,16 +15,13 @@ interface CombinedCredit {
 }
 
 @Component({
-  selector: 'app-person-modal',
+  selector: 'app-person',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './person-modal.component.html',
-  styleUrl: './person-modal.component.scss'
+  templateUrl: './person.component.html',
+  styleUrl: './person.component.scss'
 })
-export class PersonModalComponent implements OnChanges {
-  @Input() personId: number | null = null;
-  @Output() closed = new EventEmitter<void>();
-
+export class PersonComponent implements OnInit {
   person: PersonDetails | null = null;
   credits: CombinedCredit[] = [];
   loading = false;
@@ -32,12 +29,16 @@ export class PersonModalComponent implements OnChanges {
   sortDir: 'asc' | 'desc' = 'desc';
   typeFilter: 'all' | 'movie' | 'tv' = 'all';
 
-  constructor(private tmdb: TmdbService, private router: Router) { }
+  constructor(
+    private tmdb: TmdbService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private location: Location
+  ) { }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['personId'] && this.personId) {
-      this.load(this.personId);
-    }
+  ngOnInit(): void {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    if (id) this.load(id);
   }
 
   load(id: number): void {
@@ -80,7 +81,6 @@ export class PersonModalComponent implements OnChanges {
             type: 'tv' as const
           }));
 
-        // Deduplicate TV by id (same show may appear multiple times)
         const uniqueSeries = series.filter((t, i, arr) => arr.findIndex(x => x.id === t.id) === i);
 
         this.credits = [...movies, ...uniqueSeries];
@@ -128,14 +128,15 @@ export class PersonModalComponent implements OnChanges {
     return date ? date.substring(0, 4) : '—';
   }
 
+  goBack(): void {
+    this.location.back();
+  }
+
   navigate(credit: CombinedCredit): void {
-    this.closed.emit();
     if (credit.type === 'movie') {
       this.router.navigate(['/movie', credit.id]);
     } else {
       this.router.navigate(['/series', credit.id]);
     }
   }
-
-  close(): void { this.closed.emit(); }
 }
