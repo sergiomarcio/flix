@@ -28,7 +28,7 @@ export class SeasonDetailComponent implements OnInit {
     private router: Router,
     private tmdb: TmdbService,
     private supabase: SupabaseService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(async params => {
@@ -51,7 +51,7 @@ export class SeasonDetailComponent implements OnInit {
     });
     this.tmdb.getShowDetail(this.seriesId).subscribe({
       next: (show) => { this.showDetail = show; },
-      error: () => {}
+      error: () => { }
     });
   }
 
@@ -77,7 +77,7 @@ export class SeasonDetailComponent implements OnInit {
           .filter(e => e.season_number === this.seasonNumber)
           .map(e => e.episode_number)
       );
-    } catch {}
+    } catch { }
   }
 
   isWatched(ep: TVEpisode): boolean {
