@@ -18,6 +18,8 @@ interface WatchedMovie extends UserMovie {
 export class MovieStatsComponent implements OnInit {
   loading = true;
   likeFilter: 'liked' | 'neutral' | 'disliked' | 'unevaluated' | null = null;
+  sortBy: 'name' | 'year' = 'name';
+  sortDir: 'asc' | 'desc' = 'asc';
   totalMinutes = 0;
   likedMinutes = 0;
   neutralMinutes = 0;
@@ -31,6 +33,7 @@ export class MovieStatsComponent implements OnInit {
   wantToWatchCount = 0;
   notWatchedCount = 0;
   watchedMovies: WatchedMovie[] = [];
+  displayedMovies: WatchedMovie[] = [];
   moviesWithoutRuntime: UserMovie[] = [];
 
   constructor(
@@ -63,6 +66,7 @@ export class MovieStatsComponent implements OnInit {
       const watched = await this.supabaseService.getMoviesByStatus('watched');
       this.watchedMovies = watched.filter((m: UserMovie) => m.runtime && m.runtime > 0) as WatchedMovie[];
       this.moviesWithoutRuntime = watched.filter((m: UserMovie) => !m.runtime || m.runtime === 0);
+      this.applySort();
     } catch (err) {
       console.error('Erro ao carregar estatísticas:', err);
     } finally {
@@ -70,17 +74,36 @@ export class MovieStatsComponent implements OnInit {
     }
   }
 
-  get filteredWatchedMovies(): WatchedMovie[] {
-    if (!this.likeFilter) return this.watchedMovies;
-    if (this.likeFilter === 'liked') return this.watchedMovies.filter(m => m.liked === 'liked');
-    if (this.likeFilter === 'neutral') return this.watchedMovies.filter(m => m.liked === 'neutral');
-    if (this.likeFilter === 'disliked') return this.watchedMovies.filter(m => m.liked === 'disliked');
-    if (this.likeFilter === 'unevaluated') return this.watchedMovies.filter(m => m.liked == null);
-    return this.watchedMovies;
+  private applySort(): void {
+    let list = this.watchedMovies;
+    if (this.likeFilter === 'liked')       list = list.filter(m => m.liked === 'liked');
+    if (this.likeFilter === 'neutral')     list = list.filter(m => m.liked === 'neutral');
+    if (this.likeFilter === 'disliked')    list = list.filter(m => m.liked === 'disliked');
+    if (this.likeFilter === 'unevaluated') list = list.filter(m => m.liked == null);
+    this.displayedMovies = [...list].sort((a, b) => {
+      if (this.sortBy === 'name') {
+        const cmp = (a.movie_title || '').localeCompare(b.movie_title || '');
+        return this.sortDir === 'asc' ? cmp : -cmp;
+      }
+      const yearCmp = (a.release_date || '').substring(0, 4).localeCompare((b.release_date || '').substring(0, 4));
+      if (yearCmp !== 0) return this.sortDir === 'asc' ? yearCmp : -yearCmp;
+      return (a.movie_title || '').localeCompare(b.movie_title || '');
+    });
   }
 
   setLikeFilter(filter: 'liked' | 'neutral' | 'disliked' | 'unevaluated'): void {
     this.likeFilter = this.likeFilter === filter ? null : filter;
+    this.applySort();
+  }
+
+  setSort(field: 'name' | 'year'): void {
+    if (this.sortBy === field) {
+      this.sortDir = this.sortDir === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortBy = field;
+      this.sortDir = 'asc';
+    }
+    this.applySort();
   }
 
   get totalHours(): number {

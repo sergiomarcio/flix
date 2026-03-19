@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
+import { SeriesStatus, SupabaseService } from '../../../services/supabase.service';
 import { TVResponse, TVShow, TmdbService } from '../../../services/tmdb.service';
 
 interface PageConfig {
@@ -25,6 +26,7 @@ export class SeriesListComponent implements OnInit, OnDestroy {
   currentPage = 1;
   totalPages = 1;
 
+  statusMap = new Map<number, SeriesStatus>();
   private destroy$ = new Subject<void>();
 
   private configs: Record<string, PageConfig> = {
@@ -43,10 +45,15 @@ export class SeriesListComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private tmdb: TmdbService
+    private tmdb: TmdbService,
+    private supabase: SupabaseService
   ) {}
 
   ngOnInit(): void {
+    this.supabase.getUserSeries().then(list => {
+      this.statusMap = new Map(list.map(s => [s.series_id, s.status]));
+    });
+
     this.route.data.pipe(takeUntil(this.destroy$)).subscribe(data => {
       const type = data['type'] as string;
       const config = this.configs[type];
@@ -95,5 +102,16 @@ export class SeriesListComponent implements OnInit, OnDestroy {
 
   getYear(date: string): string {
     return date ? date.substring(0, 4) : '';
+  }
+
+  getStatus(show: TVShow): SeriesStatus | null {
+    return this.statusMap.get(show.id) ?? null;
+  }
+
+  statusLabel(status: SeriesStatus): string {
+    if (status === 'watched')       return '✅ Concluída';
+    if (status === 'watching')      return '▶ Assistindo';
+    if (status === 'want_to_watch') return '⭐ Quero Ver';
+    return '';
   }
 }

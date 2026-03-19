@@ -81,6 +81,118 @@
   }
 }
 
+.status-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+
+  @media (max-width: 500px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.status-card {
+  border-radius: 14px;
+  padding: 1.4rem 1.2rem;
+  border: 1px solid transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  cursor: pointer;
+  transition: transform 0.15s, background 0.15s;
+
+  &:hover { transform: translateY(-2px); }
+
+  &.watching {
+    background: rgba(99, 102, 241, 0.08);
+    border-color: rgba(99, 102, 241, 0.25);
+    &:hover, &.active { background: rgba(99, 102, 241, 0.18); border-color: #6366f1; }
+  }
+
+  &.watched {
+    background: rgba(34, 197, 94, 0.08);
+    border-color: rgba(34, 197, 94, 0.25);
+    &:hover, &.active { background: rgba(34, 197, 94, 0.18); border-color: #22c55e; }
+  }
+
+  &.want-to-watch {
+    background: rgba(212, 175, 55, 0.08);
+    border-color: rgba(212, 175, 55, 0.25);
+    &:hover, &.active { background: rgba(212, 175, 55, 0.18); border-color: #D4AF37; }
+  }
+
+  .status-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .status-icon { font-size: 1.3rem; }
+
+    .status-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+  }
+
+  .status-card-count {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .status-card-time {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.45);
+  }
+}
+
+.sort-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+
+  .sort-label {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.35);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  button {
+    padding: 0.25rem 0.8rem;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.78rem;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+
+    &:hover { border-color: rgba(212, 175, 55, 0.4); color: #D4AF37; }
+    &.active { border-color: #D4AF37; color: #D4AF37; background: rgba(212, 175, 55, 0.08); }
+  }
+}
+
+.clear-filter {
+  margin-left: auto;
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  padding: 0.2rem 0.7rem;
+  font-size: 0.75rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover { border-color: rgba(239, 68, 68, 0.5); color: #f87171; }
+}
+
 .section-title {
   font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 1rem;
   display: flex; align-items: center; gap: 0.6rem;
@@ -104,7 +216,8 @@
 
     .series-info { flex: 1; min-width: 0;
       .series-name { display: block; font-size: 0.9rem; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-      .series-episodes { display: block; font-size: 0.78rem; color: rgba(255,255,255,0.4); margin-top: 0.2rem; }
+      .series-year { display: block; font-size: 0.75rem; color: rgba(255,255,255,0.35); margin-top: 0.1rem; }
+      .series-episodes { display: block; font-size: 0.78rem; color: rgba(255,255,255,0.4); margin-top: 0.15rem; }
     }
 
     .series-time {

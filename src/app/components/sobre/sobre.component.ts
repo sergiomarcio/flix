@@ -21,5 +21,6 @@ export class SobreComponent {
     { name: 'TMDB API', desc: 'Dados de filmes e séries', icon: '🎬', color: '#01b4e4' },
     { name: 'SCSS', desc: 'Estilização avançada', icon: '🎨', color: '#cc6699' },
     { name: 'RxJS', desc: 'Programação reativa', icon: '🔄', color: '#b7178c' },
+    { name: 'Netlify', desc: 'Hospedagem e deploy', icon: '🌐', color: '#00c7b7' },
   ];
 }

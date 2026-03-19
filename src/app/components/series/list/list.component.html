@@ -9,12 +9,13 @@
   </div>
 
   <div class="shows-grid" *ngIf="shows.length > 0">
-    <div class="show-card" *ngFor="let show of shows" (click)="goToShow(show)">
+    <div class="show-card" *ngFor="let show of shows" (click)="goToShow(show)" [class.has-status]="getStatus(show)">
       <div class="card-poster">
         <img [src]="getImageUrl(show.poster_path)" [alt]="show.name" loading="lazy" />
         <div class="rating-badge">
           <span class="star">★</span> {{ show.vote_average.toFixed(1) }}
         </div>
+        <div class="status-badge" *ngIf="getStatus(show)" [class]="getStatus(show)!">{{ statusLabel(getStatus(show)!) }}</div>
       </div>
       <div class="card-info">
         <h3 class="card-title">{{ show.name }}</h3>

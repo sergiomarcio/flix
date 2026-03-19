@@ -70,6 +70,9 @@
           <span class="year">{{ getYear(movie.release_date) }}</span>
           <span class="rating">★ {{ movie.vote_average.toFixed(1) }}</span>
         </div>
+        <span *ngIf="movie.status === 'watched'" class="like-badge" [class]="movie.liked || 'none'">
+          {{ getLikeLabel(movie) }}
+        </span>
       </div>
 
       <div class="movie-status">

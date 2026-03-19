@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject, debounceTime, distinctUntilChanged, of, switchMap, takeUntil } from 'rxjs';
+import { SeriesStatus, SupabaseService } from '../../../services/supabase.service';
 import { TVResponse, TVShow, TmdbService } from '../../../services/tmdb.service';
 
 @Component({
@@ -28,10 +29,15 @@ export class SeriesHomeComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   private heroInterval: ReturnType<typeof setInterval> | null = null;
 
-  constructor(private tmdb: TmdbService, private router: Router) { }
+  statusMap = new Map<number, SeriesStatus>();
+
+  constructor(private tmdb: TmdbService, private router: Router, private supabase: SupabaseService) { }
 
   ngOnInit(): void {
     this.loadTrending();
+    this.supabase.getUserSeries().then(list => {
+      this.statusMap = new Map(list.map(s => [s.series_id, s.status]));
+    });
 
     this.searchSubject.pipe(
       debounceTime(400),
@@ -128,5 +134,16 @@ export class SeriesHomeComponent implements OnInit, OnDestroy {
 
   getYear(date: string): string {
     return date ? date.substring(0, 4) : '';
+  }
+
+  getStatus(show: TVShow): SeriesStatus | null {
+    return this.statusMap.get(show.id) ?? null;
+  }
+
+  statusLabel(status: SeriesStatus): string {
+    if (status === 'watched')      return '✅ Concluída';
+    if (status === 'watching')     return '▶ Assistindo';
+    if (status === 'want_to_watch') return '⭐ Quero Ver';
+    return '';
   }
 }

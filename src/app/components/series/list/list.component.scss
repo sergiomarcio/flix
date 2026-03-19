@@ -100,6 +100,25 @@
 
       .star { color: #D4AF37; }
     }
+
+    .status-badge {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      font-size: 0.65rem;
+      padding: 3px 7px;
+      border-radius: 4px;
+      font-weight: 700;
+
+      &.watched      { background: rgba(34, 197, 94, 0.85);  color: #fff; }
+      &.watching     { background: rgba(99, 102, 241, 0.85); color: #fff; }
+      &.want_to_watch { background: rgba(212, 175, 55, 0.85); color: #000; }
+    }
+  }
+
+  &.has-status .card-poster {
+    border: 2px solid rgba(212, 175, 55, 0.4);
+    border-radius: 8px;
   }
 
   .card-info {

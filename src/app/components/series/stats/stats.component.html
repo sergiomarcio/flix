@@ -52,36 +52,61 @@
       </div>
     </div>
 
-    <!-- Contadores -->
-    <div class="counters-grid">
-      <div class="counter-card total">
-        <span class="counter-icon">📺</span>
-        <span class="counter-value">{{ totalSeriesCount }}</span>
-        <span class="counter-label">Total de Séries</span>
-      </div>
-      <div class="counter-card watching">
-        <span class="counter-icon">▶</span>
-        <span class="counter-value">{{ watchingCount }}</span>
-        <span class="counter-label">Assistindo</span>
-      </div>
-      <div class="counter-card watched">
-        <span class="counter-icon">✅</span>
-        <span class="counter-value">{{ watchedCount }}</span>
-        <span class="counter-label">Concluídas</span>
-      </div>
-    </div>
 
     <!-- Por série -->
     <div class="series-list" *ngIf="seriesProgress.length > 0">
       <h2 class="section-title">
-        📺 Séries contabilizadas
-        <span class="count-badge">{{ seriesProgress.length }}</span>
+        📺 Séries
+        <span class="count-badge">{{ displayedSeries.length }}</span>
+        <button class="clear-filter" *ngIf="statusFilter" (click)="clearStatusFilter()">✕ limpar</button>
       </h2>
+
+      <div class="status-cards">
+        <div class="status-card watching" [class.active]="statusFilter === 'watching'"
+          (click)="setStatusFilter('watching')">
+          <div class="status-card-header">
+            <span class="status-icon">▶</span>
+            <span class="status-title">Assistindo</span>
+          </div>
+          <div class="status-card-count">{{ watchingCount }} {{ watchingCount === 1 ? 'série' : 'séries' }}</div>
+          <div class="status-card-time">{{ watchingMinutes > 0 ? formatRuntime(watchingMinutes) : '—' }}</div>
+        </div>
+        <div class="status-card watched" [class.active]="statusFilter === 'watched'"
+          (click)="setStatusFilter('watched')">
+          <div class="status-card-header">
+            <span class="status-icon">✅</span>
+            <span class="status-title">Concluídas</span>
+          </div>
+          <div class="status-card-count">{{ watchedCount }} {{ watchedCount === 1 ? 'série' : 'séries' }}</div>
+          <div class="status-card-time">{{ watchedMinutes > 0 ? formatRuntime(watchedMinutes) : '—' }}</div>
+        </div>
+        <div class="status-card want-to-watch" [class.active]="statusFilter === 'want_to_watch'"
+          (click)="setStatusFilter('want_to_watch')">
+          <div class="status-card-header">
+            <span class="status-icon">⭐</span>
+            <span class="status-title">Quero Ver</span>
+          </div>
+          <div class="status-card-count">{{ wantToWatchCount }} {{ wantToWatchCount === 1 ? 'série' : 'séries' }}</div>
+          <div class="status-card-time">—</div>
+        </div>
+      </div>
+
+      <div class="sort-bar">
+        <span class="sort-label">Ordenar:</span>
+        <button [class.active]="sortBy === 'name'" (click)="setSort('name')">
+          Nome {{ sortBy === 'name' ? (sortDir === 'asc' ? '↑' : '↓') : '' }}
+        </button>
+        <button [class.active]="sortBy === 'year'" (click)="setSort('year')">
+          Ano {{ sortBy === 'year' ? (sortDir === 'asc' ? '↑' : '↓') : '' }}
+        </button>
+      </div>
+
       <div class="series-rows">
-        <div class="series-row" *ngFor="let sp of seriesProgress" (click)="goToSeries(sp.series.series_id)">
+        <div class="series-row" *ngFor="let sp of displayedSeries" (click)="goToSeries(sp.series.series_id)">
           <img [src]="getPosterUrl(sp.series.poster_path)" [alt]="sp.series.series_name" />
           <div class="series-info">
             <span class="series-name">{{ sp.series.series_name }}</span>
+            <span class="series-year">{{ sp.series.first_air_date | date:'yyyy' }}</span>
             <span class="series-episodes">{{ sp.watchedEpisodes }} ep. vistos</span>
           </div>
           <div class="series-time">

@@ -80,6 +80,16 @@ export class MyListComponent implements OnInit {
     }
   }
 
+  getLikeLabel(movie: UserMovie): string {
+    if (movie.status !== 'watched') return '';
+    switch (movie.liked) {
+      case 'liked':    return '👍 Gostei';
+      case 'neutral':  return '😐 Mais ou Menos';
+      case 'disliked': return '👎 Não Gostei';
+      default:         return '— Sem Avaliação';
+    }
+  }
+
   getYear(date: string): string {
     return date ? date.substring(0, 4) : '';
   }

@@ -349,6 +349,35 @@
   }
 }
 
+.sort-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+
+  .sort-label {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.35);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  button {
+    padding: 0.25rem 0.8rem;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.78rem;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+
+    &:hover { border-color: rgba(212, 175, 55, 0.4); color: #D4AF37; }
+    &.active { border-color: #D4AF37; color: #D4AF37; background: rgba(212, 175, 55, 0.08); }
+  }
+}
+
 // Listas de filmes
 .section-title {
   font-size: 1.1rem;
