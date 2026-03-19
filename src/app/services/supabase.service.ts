@@ -121,18 +121,35 @@ export class SupabaseService {
 
   async signUp(email: string, password: string): Promise<void> {
     if (!this.client) throw new Error('Supabase não configurado.');
-    const { error } = await this.client.auth.signUp({
+
+    const { data, error } = await this.client.auth.signUp({
       email,
       password,
       options: { emailRedirectTo: 'https://zingy-praline-4bf85e.netlify.app/' }
     });
     if (error) throw error;
+
+    if (data.user) {
+      await this.client.functions.invoke('notify-new-user', {
+        body: { user: data.user, event: 'USER_CREATED' },
+      });
+    }
   }
 
   async signIn(email: string, password: string): Promise<void> {
     if (!this.client) throw new Error('Supabase não configurado.');
-    const { error } = await this.client.auth.signInWithPassword({ email, password });
+
+    const { data, error } = await this.client.auth.signInWithPassword({ email, password });
     if (error) throw error;
+
+    if (data.user && data.session) {
+      await this.client.functions.invoke('notify-new-user', {
+        body: { user: data.user, event: 'SIGNED_IN' },
+        headers: {
+          Authorization: `Bearer ${data.session.access_token}`,
+        },
+      });
+    }
   }
 
   async signOut(): Promise<void> {
@@ -409,10 +426,10 @@ export class SupabaseService {
         s.watched++;
         if (item.runtime) {
           s.total_minutes += item.runtime;
-          if (item.liked === 'liked')        { s.liked_count++;      s.liked_minutes += item.runtime; }
-          else if (item.liked === 'neutral') { s.neutral_count++;    s.neutral_minutes += item.runtime; }
-          else if (item.liked === 'disliked'){ s.disliked_count++;   s.disliked_minutes += item.runtime; }
-          else                               { s.unevaluated_count++;s.unevaluated_minutes += item.runtime; }
+          if (item.liked === 'liked') { s.liked_count++; s.liked_minutes += item.runtime; }
+          else if (item.liked === 'neutral') { s.neutral_count++; s.neutral_minutes += item.runtime; }
+          else if (item.liked === 'disliked') { s.disliked_count++; s.disliked_minutes += item.runtime; }
+          else { s.unevaluated_count++; s.unevaluated_minutes += item.runtime; }
         }
       } else if (item.status === 'want_to_watch') s.want_to_watch++;
     });
