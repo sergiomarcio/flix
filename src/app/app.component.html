@@ -1,5 +1,5 @@
 @if (!splashDone) {
-<app-splash-screen (done)="splashDone = true"></app-splash-screen>
+<app-splash (done)="splashDone = true"></app-splash>
 }
 
 @if (supabase.currentUser$ | async) {

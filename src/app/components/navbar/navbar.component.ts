@@ -45,6 +45,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.menuOpen = !this.menuOpen;
   }
 
+  goToPeople(): void {
+    sessionStorage.removeItem('people_search_state');
+    this.menuOpen = false;
+    this.router.navigate(['/people']);
+  }
+
   async logout(): Promise<void> {
     await this.supabase.signOut();
     this.menuOpen = false;

@@ -465,6 +465,12 @@ export class SupabaseService {
     return s;
   }
 
+  async deleteUser(userId: string): Promise<void> {
+    if (!this.client) throw new Error('No client');
+    const { error } = await this.client.rpc('delete_user_completely', { user_id_to_delete: userId });
+    if (error) throw error;
+  }
+
   async getSeriesStats(): Promise<{
     total_minutes: number;
     total_episodes: number;

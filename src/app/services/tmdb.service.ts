@@ -76,6 +76,15 @@ export interface WatchProvidersResponse {
   results: Record<string, WatchProviderResult>;
 }
 
+export interface PersonSearchResult {
+  id: number;
+  name: string;
+  profile_path: string | null;
+  known_for_department: string;
+  popularity: number;
+  known_for: { id: number; title?: string; name?: string; media_type: string; poster_path: string | null }[];
+}
+
 export interface PersonDetails {
   id: number;
   name: string;
@@ -396,6 +405,12 @@ export class TmdbService {
   getPersonTVCredits(id: number): Observable<{ cast: PersonTVCredit[]; crew: PersonTVCrewCredit[] }> {
     return this.http.get<{ cast: PersonTVCredit[]; crew: PersonTVCrewCredit[] }>(
       `${this.baseUrl}/person/${id}/tv_credits?${this.buildParams()}`
+    );
+  }
+
+  searchPerson(query: string, page = 1): Observable<{ results: PersonSearchResult[]; total_pages: number; total_results: number }> {
+    return this.http.get<{ results: PersonSearchResult[]; total_pages: number; total_results: number }>(
+      `${this.baseUrl}/search/person?${this.buildParams({ query, page: page.toString() })}`
     );
   }
 

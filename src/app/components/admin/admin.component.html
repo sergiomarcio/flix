@@ -20,6 +20,11 @@
           (click)="selectUser(user)">
           <div class="user-avatar">{{ user.email.charAt(0).toUpperCase() }}</div>
           <span class="user-email">{{ user.email }}</span>
+          <button class="delete-user-btn" *ngIf="selectedUser?.uid === user.uid"
+            [disabled]="deletingUserId === user.uid"
+            (click)="deleteUser(user, $event)" title="Excluir usuário">
+            {{ deletingUserId === user.uid ? '...' : '🗑️' }}
+          </button>
         </li>
         <li *ngIf="users.length === 0" class="users-empty">Nenhum usuário encontrado.</li>
       </ul>

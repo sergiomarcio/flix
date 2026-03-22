@@ -98,6 +98,21 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    flex: 1;
+  }
+
+  .delete-user-btn {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.25rem;
+    border-radius: 4px;
+    transition: background 0.15s;
+
+    &:hover { background: rgba(220, 38, 38, 0.15); }
+    &:disabled { cursor: wait; opacity: 0.5; }
   }
 }
 

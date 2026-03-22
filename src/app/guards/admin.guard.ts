@@ -15,7 +15,7 @@ export const adminGuard: CanActivateFn = async () => {
   }
 
   if (supabase.currentUser?.email !== ADMIN_EMAIL) {
-    router.navigate(['/']);
+    router.navigate(['/movies']);
     return false;
   }
 

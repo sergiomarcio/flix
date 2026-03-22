@@ -5,13 +5,13 @@ import { SupabaseService, UserMovie, WatchStatus } from '../../../services/supab
 import { TmdbService } from '../../../services/tmdb.service';
 
 @Component({
-  selector: 'app-my-list',
+  selector: 'app-my-movies-list',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './my-list.component.html',
-  styleUrl: './my-list.component.scss'
+  templateUrl: './my-movies-list.component.html',
+  styleUrl: './my-movies-list.component.scss'
 })
-export class MyListComponent implements OnInit {
+export class MyMoviesListComponent implements OnInit {
   allMovies: UserMovie[] = [];
   filteredMovies: UserMovie[] = [];
   activeFilter: WatchStatus | 'all' = 'all';

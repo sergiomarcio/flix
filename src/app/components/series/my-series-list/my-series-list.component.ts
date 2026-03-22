@@ -9,8 +9,8 @@ import { TmdbService } from '../../../services/tmdb.service';
   selector: 'app-my-series-list',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './my-list.component.html',
-  styleUrl: './my-list.component.scss'
+  templateUrl: './my-series-list.component.html',
+  styleUrl: './my-series-list.component.scss'
 })
 export class MySeriesListComponent implements OnInit {
   allSeries: UserSeries[] = [];

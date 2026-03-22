@@ -57,10 +57,10 @@ export class LoginComponent {
     try {
       if (this.mode === 'login') {
         await this.supabase.signIn(this.email, this.password);
-        this.router.navigate(['/']);
+        this.router.navigate(['/movies']);
       } else {
         await this.supabase.signUp(this.email, this.password);
-        this.router.navigate(['/']);
+        this.router.navigate(['/movies']);
       }
     } catch (err: unknown) {
       this.errorMessage = this.parseError(err);

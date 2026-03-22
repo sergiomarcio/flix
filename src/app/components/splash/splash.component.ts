@@ -2,13 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-splash-screen',
+  selector: 'app-splash',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './splash-screen.component.html',
-  styleUrl: './splash-screen.component.scss'
+  templateUrl: './splash.component.html',
+  styleUrl: './splash.component.scss'
 })
-export class SplashScreenComponent implements OnInit {
+export class SplashComponent implements OnInit {
   @Output() done = new EventEmitter<void>();
 
   visible = true;

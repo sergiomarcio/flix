@@ -13,10 +13,10 @@
       <span class="nav-group-label">Filmes</span>
       <div class="nav-group-links">
         <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Explorar</a>
-        <a routerLink="/popular" routerLinkActive="active">Populares</a>
-        <a routerLink="/top-rated" routerLinkActive="active">Mais Votados</a>
-        <a routerLink="/now-playing" routerLinkActive="active">Em Cartaz</a>
-        <a routerLink="/my-list" routerLinkActive="active" class="pill gold">Minha Lista</a>
+        <a routerLink="/movies-popular" routerLinkActive="active">Populares</a>
+        <a routerLink="/movies-top-rated" routerLinkActive="active">Mais Votados</a>
+        <a routerLink="/movies-now-playing" routerLinkActive="active">Em Cartaz</a>
+        <a routerLink="/my-movies-list" routerLinkActive="active" class="pill gold">Minha Lista</a>
         <a routerLink="/movie-stats" routerLinkActive="active" class="pill gold">Estatísticas</a>
       </div>
     </div>
@@ -37,20 +37,29 @@
     <div class="nav-divider"></div>
 
     <div class="nav-group">
+      <span class="nav-group-label">Pessoas</span>
+      <div class="nav-group-links">
+        <a routerLink="/people" routerLinkActive="active" (click)="goToPeople()">Buscar</a>
+      </div>
+    </div>
+
+    <div class="nav-divider"></div>
+
+    <div class="nav-group">
       <span class="nav-group-label">&nbsp;</span>
       <div class="nav-group-links">
         <a routerLink="/sobre" routerLinkActive="active">Sobre</a>
         @if (isAdmin) {
-          <a routerLink="/admin" routerLinkActive="active" class="pill admin">Admin</a>
+        <a routerLink="/admin" routerLinkActive="active" class="pill admin">Admin</a>
         }
       </div>
     </div>
 
     @if (userEmail) {
-      <div class="user-section">
-        <span class="user-email">{{ userEmail }}</span>
-        <button class="btn-logout" (click)="logout()">Sair</button>
-      </div>
+    <div class="user-section">
+      <span class="user-email">{{ userEmail }}</span>
+      <button class="btn-logout" (click)="logout()">Sair</button>
+    </div>
     }
   </div>
 
@@ -66,15 +75,15 @@
     <div class="drawer-header">
       <div class="drawer-avatar">
         @if (userEmail) {
-          {{ userEmail.charAt(0).toUpperCase() }}
+        {{ userEmail.charAt(0).toUpperCase() }}
         } @else {
-          🎬
+        🎬
         }
       </div>
       <div class="drawer-user-info">
         <span class="drawer-email-user">{{ emailUser }}</span>
         @if (emailDomain) {
-          <span class="drawer-email-domain">{{ emailDomain }}</span>
+        <span class="drawer-email-domain">{{ emailDomain }}</span>
         }
       </div>
       <button class="drawer-close" (click)="menuOpen = false">✕</button>
@@ -82,10 +91,11 @@
 
     <!-- Filmes -->
     <span class="drawer-section-label">🎬 Filmes</span>
-    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="drawer-item" (click)="menuOpen = false">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="drawer-item"
+      (click)="menuOpen = false">
       <span class="di-icon">🔍</span><span class="di-text">Explorar</span>
     </a>
-    <a routerLink="/popular" routerLinkActive="active" class="drawer-item" (click)="menuOpen = false">
+    <a routerLink="/movies-popular" routerLinkActive="active" class="drawer-item" (click)="menuOpen = false">
       <span class="di-icon">🔥</span><span class="di-text">Populares</span>
     </a>
     <a routerLink="/top-rated" routerLinkActive="active" class="drawer-item" (click)="menuOpen = false">
@@ -94,7 +104,7 @@
     <a routerLink="/now-playing" routerLinkActive="active" class="drawer-item" (click)="menuOpen = false">
       <span class="di-icon">🎟️</span><span class="di-text">Em Cartaz</span>
     </a>
-    <a routerLink="/my-list" routerLinkActive="active" class="drawer-item" (click)="menuOpen = false">
+    <a routerLink="/my-movies-list" routerLinkActive="active" class="drawer-item" (click)="menuOpen = false">
       <span class="di-icon">📋</span><span class="di-text">Minha Lista</span>
     </a>
     <a routerLink="/movie-stats" routerLinkActive="active" class="drawer-item" (click)="menuOpen = false">
@@ -123,23 +133,31 @@
 
     <div class="drawer-divider"></div>
 
+    <!-- Pessoas -->
+    <span class="drawer-section-label">🎭 Pessoas</span>
+    <a routerLink="/people" routerLinkActive="active" class="drawer-item" (click)="goToPeople()">
+      <span class="di-icon">🔍</span><span class="di-text">Buscar Pessoa</span>
+    </a>
+
+    <div class="drawer-divider"></div>
+
     <a routerLink="/sobre" routerLinkActive="active" class="drawer-item" (click)="menuOpen = false">
       <span class="di-icon">ℹ️</span><span class="di-text">Sobre</span>
     </a>
     @if (isAdmin) {
-      <a routerLink="/admin" routerLinkActive="active" class="drawer-item" (click)="menuOpen = false">
-        <span class="di-icon">🛠️</span><span class="di-text">Admin</span>
-      </a>
+    <a routerLink="/admin" routerLinkActive="active" class="drawer-item" (click)="menuOpen = false">
+      <span class="di-icon">🛠️</span><span class="di-text">Admin</span>
+    </a>
     }
 
     @if (userEmail) {
-      <div class="drawer-logout">
-        <button class="btn-logout" (click)="logout()">Sair</button>
-      </div>
+    <div class="drawer-logout">
+      <button class="btn-logout" (click)="logout()">Sair</button>
+    </div>
     }
   </div>
 </nav>
 
 @if (menuOpen) {
-  <div class="nav-overlay" (click)="menuOpen = false"></div>
+<div class="nav-overlay" (click)="menuOpen = false"></div>
 }

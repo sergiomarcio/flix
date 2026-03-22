@@ -1,0 +1,76 @@
+<div class="people-page">
+
+  <div class="search-bar">
+    <span class="search-icon">🔍</span>
+    <input
+      type="text"
+      placeholder="Buscar ator, diretor, roteirista..."
+      [(ngModel)]="searchQuery"
+      (ngModelChange)="onSearchChange()"
+      class="search-input"
+    />
+    @if (searchQuery) {
+      <button class="clear-btn" (click)="clearSearch()">✕</button>
+    }
+  </div>
+
+  @if (results.length > 0) {
+    <div class="dept-filters">
+      @for (f of filters; track f.key) {
+        @if (f.key === 'all' || countByDept(f.key) > 0) {
+          <button
+            class="dept-pill"
+            [class.active]="deptFilter === f.key"
+            (click)="deptFilter = f.key"
+          >
+            {{ f.icon }} {{ f.label }}
+            <span class="pill-count">{{ countByDept(f.key) }}</span>
+          </button>
+        }
+      }
+    </div>
+  }
+
+  @if (loading) {
+    <div class="loading">Buscando...</div>
+  }
+
+  @if (!loading && searchQuery && results.length === 0) {
+    <div class="empty">Nenhuma pessoa encontrada para "{{ searchQuery }}"</div>
+  }
+
+  @if (!loading && filtered.length > 0) {
+    <div class="results-grid">
+      @for (person of filtered; track person.id) {
+        <div class="person-card" (click)="goToPerson(person.id)">
+          <div class="person-photo">
+            <img [src]="getImageUrl(person.profile_path)" [alt]="person.name" loading="lazy" [class.no-photo]="!person.profile_path" (error)="onImageError($event)" />
+          </div>
+          <div class="person-info">
+            <div class="person-name">{{ person.name }}</div>
+            <div class="person-dept">{{ deptLabel(person.known_for_department) }}</div>
+            @if (knownForLabel(person)) {
+              <div class="person-known">{{ knownForLabel(person) }}</div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    @if (currentPage < totalPages) {
+      <div class="load-more-wrap">
+        <button class="load-more-btn" (click)="loadMore()" [disabled]="loadingMore">
+          {{ loadingMore ? 'Carregando...' : 'Ver mais' }}
+        </button>
+      </div>
+    }
+  }
+
+  @if (!searchQuery) {
+    <div class="placeholder">
+      <div class="placeholder-icon">🎭</div>
+      <div class="placeholder-text">Digite o nome de um ator, diretor ou roteirista</div>
+    </div>
+  }
+
+</div>

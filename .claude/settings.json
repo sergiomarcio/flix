@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(update-config)",
+      "Skill(update-config:*)",
+      "Bash(netstat -ano)",
+      "Bash(findstr :4200)",
+      "Bash(tasklist /FI \"PID eq 32616\")",
+      "Bash(python -X utf8 -c \"import sys,json,io; d=json.load\\(io.TextIOWrapper\\(sys.stdin.buffer,encoding=''''utf-8''''\\)\\); print\\(repr\\(d.get\\(''''prompt'''',''''''''\\)\\)\\)\")"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\sergi\\.claude"
+    ]
+  }
+}

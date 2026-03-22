@@ -31,6 +31,7 @@ export class AdminComponent implements OnInit {
   loadingUsers = true;
   loadingMovies = false;
   loadingStats = false;
+  deletingUserId: string | null = null;
   statusFilter: WatchStatus | 'all' = 'all';
   activeTab: 'movies' | 'stats' = 'movies';
 
@@ -38,7 +39,7 @@ export class AdminComponent implements OnInit {
 
   ngOnInit(): void {
     this.supabase.getUsers().then(users => {
-      this.users = users;
+      this.users = users.filter(u => u.email !== 'sergiomarcio@gmail.com');
       this.loadingUsers = false;
     }).catch(() => { this.loadingUsers = false; });
   }
@@ -106,5 +107,26 @@ export class AdminComponent implements OnInit {
   likedPercent(count: number): number {
     if (!this.movieStats?.watched) return 0;
     return Math.round((count / this.movieStats.watched) * 100);
+  }
+
+  deleteUser(user: UserRow, event: Event): void {
+    event.stopPropagation();
+    const confirmed = confirm(`Excluir o usuário "${user.email}"?\n\nTodos os filmes, séries, episódios e comentários dele serão removidos permanentemente.`);
+    if (!confirmed) return;
+
+    this.deletingUserId = user.uid;
+    this.supabase.deleteUser(user.uid).then(() => {
+      this.users = this.users.filter(u => u.uid !== user.uid);
+      if (this.selectedUser?.uid === user.uid) {
+        this.selectedUser = null;
+        this.movies = [];
+        this.movieStats = null;
+        this.seriesStats = null;
+      }
+      this.deletingUserId = null;
+    }).catch(err => {
+      alert('Erro ao excluir usuário: ' + err.message);
+      this.deletingUserId = null;
+    });
   }
 }
