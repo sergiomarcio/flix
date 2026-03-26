@@ -83,7 +83,7 @@ export class SupabaseService {
     const url = environment.supabaseUrl;
     const key = environment.supabaseAnonKey;
 
-    if (url && url !== 'YOUR_SUPABASE_URL' && key && key !== 'YOUR_SUPABASE_ANON_KEY') {
+    if (url && key) {
       this._client = createClient(url, key, {
         auth: {
           lock: <R>(_name: string, _acquireTimeout: number, fn: () => Promise<R>): Promise<R> => fn(),
