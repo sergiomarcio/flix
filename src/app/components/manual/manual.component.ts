@@ -89,10 +89,11 @@ export class ManualComponent {
       items: [
         {
           title: 'Explorar Séries',
-          desc: 'Igual ao Explorar de Filmes, mas para séries. Banner hero com tendências rotativas e barra de pesquisa em tempo real.',
+          desc: 'Banner hero com as séries em tendência, que troca automaticamente a cada 5 segundos. Barra de pesquisa em tempo real para buscar qualquer série.',
           tips: [
             'As séries que já estão na sua lista aparecem com um badge de status (Assistindo, Concluída, Quero Ver).',
-            'Pesquise qualquer série pelo título e navegue pelos resultados.'
+            'Pesquise qualquer série pelo título — os resultados aparecem automaticamente enquanto você digita.',
+            'Ao clicar em uma série e depois pressionar "← Voltar" no detalhe, você retorna exatamente ao mesmo ponto — com o scroll, a pesquisa e os resultados preservados.'
           ]
         },
         {
@@ -111,6 +112,7 @@ export class ManualComponent {
             'Cada temporada exibe uma barra de progresso mostrando quantos episódios você já assistiu.',
             'Clique em uma temporada para abrir o detalhe completo com todos os episódios.',
             'Marque episódios individuais como assistidos diretamente nessa tela, usando os botões rápidos.',
+            'Se a série ainda não estiver na sua lista e você marcar uma temporada inteira como assistida, ela é adicionada automaticamente com o status "Assistindo".',
             'Veja onde a série está disponível no Brasil para streaming, aluguel ou compra.',
             'Clique em "← Voltar" para retornar à lista ou à tela anterior.'
           ]
@@ -121,7 +123,8 @@ export class ManualComponent {
           tips: [
             'Clique no botão de check em cada episódio para marcá-lo como assistido ou não assistido.',
             'Clique no título ou na imagem de um episódio para abrir o modal com todos os detalhes.',
-            'Use "Marcar todos" para marcar toda a temporada de uma vez.'
+            'Use "Marcar todos" para marcar toda a temporada de uma vez.',
+            'Se a série ainda não estiver na sua lista e você marcar qualquer episódio como assistido, ela é adicionada automaticamente com o status "Assistindo".'
           ]
         },
         {
@@ -140,7 +143,8 @@ export class ManualComponent {
           tips: [
             'Filtre por status: Todas, Assistindo, Concluída ou Quero Ver.',
             'Ordene por título ou ano de estreia.',
-            'Clique na série para abrir o detalhe completo.'
+            'Clique na série para abrir o detalhe completo.',
+            'Ao remover uma série da lista, todos os episódios marcados como assistidos também são excluídos permanentemente.'
           ]
         },
         {

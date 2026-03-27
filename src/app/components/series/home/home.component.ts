@@ -6,6 +6,19 @@ import { Subject, debounceTime, distinctUntilChanged, of, switchMap, takeUntil }
 import { SeriesStatus, SupabaseService } from '../../../services/supabase.service';
 import { TVResponse, TVShow, TmdbService } from '../../../services/tmdb.service';
 
+interface HomeState {
+  searchQuery: string;
+  shows: TVShow[];
+  isSearching: boolean;
+  currentPage: number;
+  totalPages: number;
+  trendingShows: TVShow[];
+  heroIndex: number;
+  scrollY: number;
+}
+
+const STATE_KEY = 'series_home_state';
+
 @Component({
   selector: 'app-series-home',
   standalone: true,
@@ -34,10 +47,26 @@ export class SeriesHomeComponent implements OnInit, OnDestroy {
   constructor(private tmdb: TmdbService, private router: Router, private supabase: SupabaseService) { }
 
   ngOnInit(): void {
-    this.loadTrending();
     this.supabase.getUserSeries().then(list => {
       this.statusMap = new Map(list.map(s => [s.series_id, s.status]));
     });
+
+    const saved = sessionStorage.getItem(STATE_KEY);
+    if (saved) {
+      const state: HomeState = JSON.parse(saved);
+      this.searchQuery = state.searchQuery;
+      this.shows = state.shows;
+      this.isSearching = state.isSearching;
+      this.currentPage = state.currentPage;
+      this.totalPages = state.totalPages;
+      this.trendingShows = state.trendingShows;
+      this.heroIndex = state.heroIndex;
+      this.heroShow = this.trendingShows[this.heroIndex] ?? null;
+      this.startHeroRotation();
+      setTimeout(() => window.scrollTo({ top: state.scrollY, behavior: 'instant' }), 0);
+    } else {
+      this.loadTrending();
+    }
 
     this.searchSubject.pipe(
       debounceTime(400),
@@ -121,6 +150,17 @@ export class SeriesHomeComponent implements OnInit, OnDestroy {
   }
 
   goToShow(show: TVShow): void {
+    const state: HomeState = {
+      searchQuery: this.searchQuery,
+      shows: this.shows,
+      isSearching: this.isSearching,
+      currentPage: this.currentPage,
+      totalPages: this.totalPages,
+      trendingShows: this.trendingShows,
+      heroIndex: this.heroIndex,
+      scrollY: window.scrollY
+    };
+    sessionStorage.setItem(STATE_KEY, JSON.stringify(state));
     this.router.navigate(['/series', show.id]);
   }
 
