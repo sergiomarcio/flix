@@ -59,6 +59,8 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: center;
+  height: 64px;
   padding: 0 1.2rem;
 
   .nav-group-label {
@@ -74,6 +76,7 @@
     display: flex;
     align-items: center;
     gap: 1.2rem;
+    min-height: 26px;
 
     a {
       color: rgba(255, 255, 255, 0.75);
@@ -149,12 +152,14 @@
   height: 32px;
   background: rgba(255, 255, 255, 0.12);
   flex-shrink: 0;
+  align-self: center;
 }
 
 // Seção do usuário
 .user-section {
   display: flex;
   align-items: center;
+  align-self: center;
   gap: 0.75rem;
   padding-left: 1.2rem;
   margin-left: 0.4rem;
@@ -259,7 +264,10 @@
   .navbar {
     padding: 0 1rem;
 
-    .brand-name { font-size: 1.6rem; letter-spacing: 4px; }
+    .brand-name {
+      font-size: 1.6rem;
+      letter-spacing: 4px;
+    }
 
     .menu-toggle {
       display: flex;
@@ -353,7 +361,9 @@
     flex-shrink: 0;
     transition: color 0.2s;
 
-    &:hover { color: #fff; }
+    &:hover {
+      color: #fff;
+    }
   }
 
   // Section labels
