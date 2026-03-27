@@ -25,7 +25,8 @@
         <div class="section-title-row">
           <span class="section-icon">{{ section.icon }}</span>
           <h2 class="section-title">{{ section.title }}</h2>
-          <span class="item-count">{{ section.items.length }} {{ section.items.length === 1 ? 'tópico' : 'tópicos' }}</span>
+          <span class="item-count">{{ section.items.length }} {{ section.items.length === 1 ? 'tópico' : 'tópicos'
+            }}</span>
         </div>
         <span class="chevron" [class.open]="activeSection === section.id">›</span>
       </div>

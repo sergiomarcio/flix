@@ -54,7 +54,9 @@ export class ManualComponent {
           desc: 'Página completa com todas as informações do filme: sinopse, elenco, diretor, roteiristas, fotos, trailer, onde assistir no Brasil e filmes similares.',
           tips: [
             'Marque o filme como "Quero Ver" ou "Vi" usando os botões de status.',
-            'Após marcar como "Vi", avalie o filme com 👍 Gostei, 😐 Mais ou Menos ou 👎 Não Gostei.',
+            'Para remover o filme da sua lista, clique novamente no status ativo — ele será desmarcado.',
+            'Após marcar como "Vi", avalie o filme com 👍 Gostei, 😐 Mais ou Menos ou 👎 Não Gostei. Clique na mesma avaliação novamente para removê-la.',
+            'O elenco exibe inicialmente 6 atores. Clique em "Ver mais" para expandir até 15.',
             'Clique em "Assistir Trailer" para abrir o trailer do YouTube diretamente na página.',
             'Veja onde o filme está disponível para streaming, aluguel ou compra no Brasil.',
             'Deixe comentários com texto, emojis e GIFs. Você pode editar ou apagar seus próprios comentários.',
@@ -77,8 +79,10 @@ export class ManualComponent {
           desc: 'Painel com métricas do seu histórico de filmes assistidos: total de horas na tela, quantidades por avaliação e lista detalhada.',
           tips: [
             'Veja o total de tempo gasto assistindo filmes convertido em horas e minutos.',
+            'O painel exibe o tempo assistido separado por avaliação: Gostei, Mais ou Menos e Não Gostei.',
             'Filtre a lista de filmes por avaliação: Gostei, Mais ou Menos, Não Gostei ou Sem Avaliação.',
-            'Ordene os filmes por título ou ano dentro de cada filtro.'
+            'Ordene os filmes por título (A–Z ou Z–A) ou por ano de lançamento dentro de cada filtro.',
+            'Clique em um filme da lista para ir diretamente ao seu detalhe.'
           ]
         }
       ]
@@ -110,10 +114,12 @@ export class ManualComponent {
           desc: 'Página completa da série com sinopse, elenco, fotos, trailer, onde assistir e todas as temporadas com progresso de episódios.',
           tips: [
             'Marque a série como "Quero Ver", "Assistindo" ou "Concluída".',
+            'Para remover a série da sua lista, clique novamente no status ativo — ela será removida junto com todos os episódios marcados.',
             'Cada temporada exibe uma barra de progresso mostrando quantos episódios você já assistiu.',
             'Clique em uma temporada para abrir o detalhe completo com todos os episódios.',
-            'Marque episódios individuais como assistidos diretamente nessa tela, usando os botões rápidos.',
+            'Use o botão de check na temporada para marcar todos os episódios como assistidos de uma vez. Clique novamente para desmarcar a temporada inteira.',
             'Se a série ainda não estiver na sua lista e você marcar uma temporada inteira como assistida, ela é adicionada automaticamente com o status "Assistindo".',
+            'O elenco exibe inicialmente 6 atores. Clique em "Ver mais" para expandir até 15.',
             'Veja onde a série está disponível no Brasil para streaming, aluguel ou compra.',
             'Clique em "← Voltar" para retornar à lista ou à tela anterior.'
           ]
@@ -152,10 +158,12 @@ export class ManualComponent {
           title: 'Estatísticas de Séries',
           desc: 'Painel com o total de episódios assistidos, tempo acumulado e progresso por série.',
           tips: [
-            'Veja o total de horas assistidas em séries.',
-            'Filtre por status para focar em séries que está assistindo, já concluiu ou quer assistir.',
-            'Ao clicar em uma série nas estatísticas e depois voltar, o filtro e a ordenação são preservados.',
-            'Ordene por título ou ano dentro de cada filtro.'
+            'Veja o total de horas assistidas em séries e o total de episódios.',
+            'O painel exibe contagens separadas por status: Assistindo, Concluída e Quero Ver.',
+            'Filtre a lista por status para focar em séries que está assistindo, já concluiu ou quer assistir.',
+            'Ordene por título (A–Z ou Z–A) ou por ano de estreia dentro de cada filtro.',
+            'Ao clicar em uma série e depois voltar, o filtro, a ordenação e o scroll são preservados exatamente como estavam.',
+            'Clique em uma série para ir diretamente ao seu detalhe.'
           ]
         }
       ]
