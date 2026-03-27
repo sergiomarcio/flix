@@ -1,0 +1,245 @@
+.manual-page {
+  min-height: 100vh;
+  background: #0a0a0a;
+  padding-top: 64px;
+  padding-bottom: 4rem;
+}
+
+// Hero
+.manual-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3.5rem 2rem 2.5rem;
+  text-align: center;
+
+  .hero-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.5));
+  }
+
+  h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 0.75rem;
+    letter-spacing: -0.5px;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+
+    strong {
+      color: #D4AF37;
+    }
+  }
+}
+
+// Índice rápido
+.toc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0 2rem 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+
+  .toc-label {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.35);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-right: 0.25rem;
+  }
+
+  .toc-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.65);
+    border-radius: 20px;
+    padding: 0.35rem 0.85rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+
+    &:hover {
+      background: rgba(212, 175, 55, 0.12);
+      border-color: rgba(212, 175, 55, 0.4);
+      color: #D4AF37;
+    }
+  }
+}
+
+// Conteúdo
+.manual-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+// Seção (acordeão)
+.section {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+
+  &:has(.section-header:hover) {
+    border-color: rgba(212, 175, 55, 0.25);
+  }
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 1.25rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s;
+
+  &:hover {
+    background: rgba(212, 175, 55, 0.05);
+  }
+
+  .section-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section-icon {
+    font-size: 1.3rem;
+  }
+
+  .section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+  }
+
+  .item-count {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    padding: 0.15rem 0.55rem;
+  }
+
+  .chevron {
+    font-size: 1.4rem;
+    color: rgba(255, 255, 255, 0.35);
+    transition: transform 0.25s ease;
+    line-height: 1;
+
+    &.open {
+      transform: rotate(90deg);
+      color: #D4AF37;
+    }
+  }
+}
+
+// Itens da seção
+.section-items {
+  padding: 0 1.25rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.manual-item {
+  padding-top: 1.25rem;
+
+  & + & {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .item-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #D4AF37;
+    margin: 0 0 0.5rem;
+  }
+
+  .item-desc {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.65);
+    line-height: 1.65;
+    margin: 0 0 0.75rem;
+  }
+
+  .item-tips {
+    margin: 0;
+    padding-left: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+
+    li {
+      font-size: 0.82rem;
+      color: rgba(255, 255, 255, 0.5);
+      line-height: 1.55;
+
+      &::marker {
+        color: rgba(212, 175, 55, 0.5);
+      }
+    }
+  }
+}
+
+// Voltar
+.back-link {
+  text-align: center;
+  padding: 2.5rem 1rem 0;
+
+  a {
+    color: rgba(212, 175, 55, 0.7);
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: color 0.2s;
+
+    &:hover {
+      color: #D4AF37;
+    }
+  }
+}
+
+// Mobile
+@media (max-width: 600px) {
+  .manual-hero {
+    padding: 2.5rem 1.25rem 2rem;
+
+    h1 { font-size: 1.7rem; }
+  }
+
+  .toc {
+    padding: 0 1.25rem 1.5rem;
+  }
+
+  .manual-content {
+    padding: 0 1rem;
+  }
+
+  .section-header {
+    padding: 1rem;
+  }
+
+  .section-items {
+    padding: 0 1rem 1rem;
+  }
+}

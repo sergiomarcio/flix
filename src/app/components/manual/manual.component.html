@@ -1,0 +1,60 @@
+<div class="manual-page">
+
+  <div class="manual-hero">
+    <div class="hero-icon">📖</div>
+    <h1>Manual da Aplicação</h1>
+    <p class="hero-subtitle">Guia completo de funcionalidades do <strong>FLIX</strong></p>
+  </div>
+
+  <!-- Índice rápido -->
+  <div class="toc">
+    <span class="toc-label">Ir para:</span>
+    @for (section of sections; track section.id) {
+    <button class="toc-btn" (click)="scrollTo(section.id)">
+      <span>{{ section.icon }}</span> {{ section.title }}
+    </button>
+    }
+  </div>
+
+  <div class="manual-content">
+
+    @for (section of sections; track section.id) {
+    <div class="section" [id]="section.id">
+
+      <div class="section-header" (click)="toggle(section.id)">
+        <div class="section-title-row">
+          <span class="section-icon">{{ section.icon }}</span>
+          <h2 class="section-title">{{ section.title }}</h2>
+          <span class="item-count">{{ section.items.length }} {{ section.items.length === 1 ? 'tópico' : 'tópicos' }}</span>
+        </div>
+        <span class="chevron" [class.open]="activeSection === section.id">›</span>
+      </div>
+
+      @if (activeSection === section.id) {
+      <div class="section-items">
+        @for (item of section.items; track item.title) {
+        <div class="manual-item">
+          <h3 class="item-title">{{ item.title }}</h3>
+          <p class="item-desc">{{ item.desc }}</p>
+          @if (item.tips && item.tips.length > 0) {
+          <ul class="item-tips">
+            @for (tip of item.tips; track tip) {
+            <li>{{ tip }}</li>
+            }
+          </ul>
+          }
+        </div>
+        }
+      </div>
+      }
+
+    </div>
+    }
+
+  </div>
+
+  <div class="back-link">
+    <a routerLink="/sobre">← Voltar ao Sobre</a>
+  </div>
+
+</div>

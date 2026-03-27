@@ -11,6 +11,16 @@ interface PageConfig {
   loader: (page: number) => any;
 }
 
+interface ListState {
+  type: string;
+  shows: TVShow[];
+  currentPage: number;
+  totalPages: number;
+  scrollY: number;
+}
+
+const STATE_KEY = 'series_list_state';
+
 @Component({
   selector: 'app-series-list',
   standalone: true,
@@ -57,12 +67,25 @@ export class SeriesListComponent implements OnInit, OnDestroy {
     this.route.data.pipe(takeUntil(this.destroy$)).subscribe(data => {
       const type = data['type'] as string;
       const config = this.configs[type];
-      if (config) {
-        this.shows = [];
-        this.pageTitle = config.title;
-        this.pageIcon = config.icon;
-        this.loadShows(config, 1);
+      if (!config) return;
+
+      this.pageTitle = config.title;
+      this.pageIcon = config.icon;
+
+      const saved = sessionStorage.getItem(STATE_KEY);
+      if (saved) {
+        const state: ListState = JSON.parse(saved);
+        if (state.type === type) {
+          this.shows = state.shows;
+          this.currentPage = state.currentPage;
+          this.totalPages = state.totalPages;
+          setTimeout(() => window.scrollTo({ top: state.scrollY, behavior: 'instant' }), 0);
+          return;
+        }
       }
+
+      this.shows = [];
+      this.loadShows(config, 1);
     });
   }
 
@@ -93,6 +116,15 @@ export class SeriesListComponent implements OnInit, OnDestroy {
   }
 
   goToShow(show: TVShow): void {
+    const type = this.route.snapshot.data['type'] as string;
+    const state: ListState = {
+      type,
+      shows: this.shows,
+      currentPage: this.currentPage,
+      totalPages: this.totalPages,
+      scrollY: window.scrollY
+    };
+    sessionStorage.setItem(STATE_KEY, JSON.stringify(state));
     this.router.navigate(['/series', show.id]);
   }
 

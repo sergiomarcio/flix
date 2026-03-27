@@ -296,6 +296,58 @@
   }
 }
 
+// Manual link
+.manual-link-section {
+  margin-top: 0.5rem;
+}
+
+.manual-link-btn {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: rgba(212, 175, 55, 0.06);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 10px;
+  text-decoration: none;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(212, 175, 55, 0.12);
+    border-color: rgba(212, 175, 55, 0.45);
+    transform: translateY(-1px);
+  }
+
+  .manual-link-icon {
+    font-size: 1.6rem;
+    flex-shrink: 0;
+  }
+
+  .manual-link-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .manual-link-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #D4AF37;
+  }
+
+  .manual-link-sub {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .manual-link-arrow {
+    font-size: 1.5rem;
+    color: rgba(212, 175, 55, 0.5);
+    line-height: 1;
+  }
+}
+
 // Back
 .back-link {
   margin-top: 1rem;
