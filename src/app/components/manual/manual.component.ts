@@ -247,12 +247,14 @@ export class ManualComponent {
       items: [
         {
           title: 'Menu Desktop',
-          desc: 'No computador, a barra de navegação no topo exibe todos os módulos organizados por seção: Filmes, Séries, Pessoas e itens gerais.',
+          desc: 'No computador, a barra de navegação no topo exibe os módulos organizados por seção. Os grupos Filmes e Séries se alternam: apenas um fica visível por vez.',
           tips: [
-            'Os links ativos ficam destacados em dourado.',
-            'Na seção Filmes: Explorar, Populares, Mais Votados, Em Cartaz, Minha Lista, Agenda e Estatísticas.',
-            'Na seção Séries: Explorar, Populares, Mais Votadas, Minha Lista, Agenda e Estatísticas.',
+            'Por padrão, o grupo Filmes fica visível com os links: Explorar, Populares, Mais Votados, Em Cartaz, Minha Lista, Agenda e Estatísticas.',
+            'No cabeçalho do grupo aparece "FILMES · séries ›". Clique em "séries ›" para ocultar Filmes, exibir o grupo Séries e navegar para a tela de Explorar Séries.',
+            'Com o grupo Séries visível, o cabeçalho exibe "‹ filmes · SÉRIES". Clique em "‹ filmes" para voltar ao grupo Filmes e navegar para a tela de Explorar Filmes.',
+            'O grupo Séries contém: Explorar, Populares, Mais Votadas, Minha Lista, Agenda e Estatísticas.',
             'Os botões "Minha Lista", "Agenda" e "Estatísticas" têm estilo visual diferenciado (pills) para fácil identificação.',
+            'Os links ativos ficam destacados em dourado.',
             'Seu e-mail aparece no canto direito, dividido em usuário e domínio.',
             'Clique em "Sair" para encerrar a sessão.'
           ]

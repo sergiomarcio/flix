@@ -96,12 +96,12 @@ export class SeriesScheduleComponent implements OnInit {
 
   private buildGroups(items: ScheduleItem[]): void {
     const bucketDefs: { bucket: DateBucket; label: string; emoji: string }[] = [
-      { bucket: 'today',               label: 'Hoje',             emoji: '📅' },
-      { bucket: 'this_week',           label: 'Esta Semana',      emoji: '🗓️' },
-      { bucket: 'next_week',           label: 'Próxima Semana',   emoji: '📆' },
-      { bucket: 'future',              label: 'Em Breve',         emoji: '⏳' },
-      { bucket: 'no_date',             label: 'Aguardando Data',  emoji: '🔔' },
-      { bucket: 'want_to_watch_no_date', label: 'Quero Ver',      emoji: '⭐' },
+      { bucket: 'today',                 label: 'Hoje',             emoji: '📅' },
+      { bucket: 'this_week',             label: 'Esta Semana',      emoji: '🗓️' },
+      { bucket: 'next_week',             label: 'Próxima Semana',   emoji: '📆' },
+      { bucket: 'future',                label: 'Em Breve',         emoji: '⏳' },
+      { bucket: 'no_date',               label: 'Aguardando Data',  emoji: '🔔' },
+      { bucket: 'want_to_watch_no_date', label: 'Quero Ver',        emoji: '⭐' },
     ];
 
     const grouped = new Map<DateBucket, ScheduleItem[]>();

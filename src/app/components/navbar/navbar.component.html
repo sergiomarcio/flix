@@ -18,8 +18,12 @@
 
     <div class="nav-divider"></div>
 
+    @if (desktopGroup === 'filmes') {
     <div class="nav-group">
-      <span class="nav-group-label">Filmes</span>
+      <div class="nav-group-label-row">
+        <span class="nav-group-label">Filmes</span>
+        <button class="nav-switch" (click)="desktopGroup = 'series'; router.navigate(['/series'])">Séries ›</button>
+      </div>
       <div class="nav-group-links">
         <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Explorar</a>
         <a routerLink="/movies-popular" routerLinkActive="active">Populares</a>
@@ -30,11 +34,14 @@
         <a routerLink="/movie-stats" routerLinkActive="active" class="pill gold">Estatísticas</a>
       </div>
     </div>
+    }
 
-    <div class="nav-divider"></div>
-
+    @if (desktopGroup === 'series') {
     <div class="nav-group">
-      <span class="nav-group-label">Séries</span>
+      <div class="nav-group-label-row">
+        <button class="nav-switch" (click)="desktopGroup = 'filmes'; router.navigate(['/movies'])">‹ Filmes</button>
+        <span class="nav-group-label">Séries</span>
+      </div>
       <div class="nav-group-links">
         <a routerLink="/series" routerLinkActive="active">Explorar</a>
         <a routerLink="/series-popular" routerLinkActive="active">Populares</a>
@@ -44,6 +51,7 @@
         <a routerLink="/series-stats" routerLinkActive="active" class="pill indigo">Estatísticas</a>
       </div>
     </div>
+    }
 
     <div class="nav-divider"></div>
 

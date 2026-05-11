@@ -13,10 +13,11 @@ import { SupabaseService } from '../../services/supabase.service';
 export class NavbarComponent implements OnInit, OnDestroy {
   menuOpen = false;
   userEmail: string | null = null;
+  desktopGroup: 'filmes' | 'series' = 'filmes';
 
   private sub?: Subscription;
 
-  constructor(private supabase: SupabaseService, private router: Router) { }
+  constructor(private supabase: SupabaseService, public router: Router) { }
 
   ngOnInit(): void {
     this.sub = this.supabase.currentUser$.subscribe(user => {
