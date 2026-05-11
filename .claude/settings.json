@@ -11,7 +11,10 @@
       "Bash(npm show:*)",
       "Bash(git add:*)",
       "Bash(git rm:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(cd /d \"d:\\\\Desenvolvimento\\\\projetos\\\\github\\\\flix\")",
+      "Bash(Get-ChildItem -Path \".\" -Directory)",
+      "Bash(Select-Object Name)"
     ],
     "additionalDirectories": [
       "C:\\Users\\sergi\\.claude"

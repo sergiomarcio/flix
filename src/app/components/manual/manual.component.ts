@@ -75,6 +75,20 @@ export class ManualComponent {
           ]
         },
         {
+          title: 'Agenda de Filmes',
+          desc: 'Visualize todos os filmes que você quer ver organizados por data de lançamento. Acesse pelo link "Agenda" na seção Filmes da navbar.',
+          tips: [
+            'Apenas filmes marcados como "Quero Ver" aparecem na agenda.',
+            'Os filmes são agrupados automaticamente em: Disponível, Esta Semana, Este Mês, Em Breve, Lançamentos Anteriores e Sem Data.',
+            'O grupo "Disponível" exibe apenas filmes lançados no mês corrente ou no mês anterior, ordenados do mais recente para o mais antigo.',
+            'O grupo "Lançamentos Anteriores" reúne filmes lançados há mais de dois meses que ainda estão na sua lista de "Quero Ver", também ordenados do mais recente para o mais antigo.',
+            'Os grupos de datas futuras (Esta Semana, Este Mês, Em Breve) são ordenados do lançamento mais próximo para o mais distante.',
+            'Cada card exibe o título, ano, nota, duração e a data exata de lançamento formatada em português.',
+            'A etiqueta de tempo (ex: "Em 5 dias", "Amanhã", "Há 3 dias") é calculada automaticamente a partir da data de hoje.',
+            'Clique em qualquer card para abrir o detalhe completo do filme.'
+          ]
+        },
+        {
           title: 'Estatísticas de Filmes',
           desc: 'Painel com métricas do seu histórico de filmes assistidos: total de horas na tela, quantidades por avaliação e lista detalhada.',
           tips: [
@@ -155,6 +169,20 @@ export class ManualComponent {
           ]
         },
         {
+          title: 'Agenda de Séries',
+          desc: 'Acompanhe os próximos episódios das séries que você assiste ou quer ver, organizados por data de exibição. Acesse pelo link "Agenda" na seção Séries da navbar.',
+          tips: [
+            'Apenas séries com status "Assistindo" ou "Quero Ver" aparecem na agenda.',
+            'Para cada série, o aplicativo consulta o TMDB para obter o próximo episódio agendado.',
+            'Os episódios são agrupados em: Hoje, Esta Semana, Próxima Semana, Em Breve, Aguardando Data e Quero Ver.',
+            'O grupo "Aguardando Data" reúne séries em andamento cujo próximo episódio ainda não tem data confirmada.',
+            'O grupo "Quero Ver" exibe séries que você quer assistir mas que não têm próximo episódio agendado (ex.: séries finalizadas ou canceladas).',
+            'Cada card exibe o código do episódio (ex: S02E05), o nome do episódio, a data formatada em português e a etiqueta de tempo ("Hoje!", "Amanhã", "Em X dias").',
+            'Quando disponível, uma miniatura da cena do episódio é exibida no canto do card.',
+            'Clique em qualquer card para abrir o detalhe completo da série.'
+          ]
+        },
+        {
           title: 'Estatísticas de Séries',
           desc: 'Painel com o total de episódios assistidos, tempo acumulado e progresso por série.',
           tips: [
@@ -222,7 +250,9 @@ export class ManualComponent {
           desc: 'No computador, a barra de navegação no topo exibe todos os módulos organizados por seção: Filmes, Séries, Pessoas e itens gerais.',
           tips: [
             'Os links ativos ficam destacados em dourado.',
-            'Os botões "Minha Lista" e "Estatísticas" têm estilo visual diferenciado para fácil identificação.',
+            'Na seção Filmes: Explorar, Populares, Mais Votados, Em Cartaz, Minha Lista, Agenda e Estatísticas.',
+            'Na seção Séries: Explorar, Populares, Mais Votadas, Minha Lista, Agenda e Estatísticas.',
+            'Os botões "Minha Lista", "Agenda" e "Estatísticas" têm estilo visual diferenciado (pills) para fácil identificação.',
             'Seu e-mail aparece no canto direito, dividido em usuário e domínio.',
             'Clique em "Sair" para encerrar a sessão.'
           ]
@@ -232,7 +262,7 @@ export class ManualComponent {
           desc: 'Em telas menores, a navegação é acessada pelo botão de menu (☰) no canto superior direito, que abre um painel lateral.',
           tips: [
             'O painel lateral exibe seu avatar com a inicial do e-mail, nome de usuário e domínio.',
-            'Todos os itens de navegação ficam organizados em seções com ícones.',
+            'Todos os itens de navegação ficam organizados em seções com ícones, incluindo os links de Agenda (🎬 para Filmes, 📅 para Séries).',
             'Toque fora do painel ou no botão X para fechá-lo.',
             'O botão "Sair" fica ao fundo do painel.'
           ]

@@ -164,6 +164,16 @@ export interface TVShow {
   popularity: number;
 }
 
+export interface TVNextEpisode {
+  air_date: string;
+  episode_number: number;
+  season_number: number;
+  name: string;
+  overview: string;
+  still_path: string | null;
+  runtime: number | null;
+}
+
 export interface TVShowDetail extends TVShow {
   genres: { id: number; name: string }[];
   tagline: string;
@@ -173,6 +183,8 @@ export interface TVShowDetail extends TVShow {
   episode_run_time: number[];
   seasons: TVSeason[];
   production_companies: { id: number; name: string }[];
+  next_episode_to_air: TVNextEpisode | null;
+  last_episode_to_air: TVNextEpisode | null;
 }
 
 export interface TVSeason {

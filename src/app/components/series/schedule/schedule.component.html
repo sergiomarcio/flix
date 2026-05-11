@@ -1,0 +1,81 @@
+<div class="schedule-page">
+  <div class="page-header">
+    <h1>📅 Agenda de Séries</h1>
+    <p class="subtitle">Próximos episódios das séries que você acompanha</p>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-container" *ngIf="loading">
+    <div class="spin-icon">📅</div>
+    <p>Carregando agenda...</p>
+  </div>
+
+  <div *ngIf="!loading">
+    <!-- Empty state -->
+    <div class="empty-state" *ngIf="totalItems === 0">
+      <span class="empty-icon">📺</span>
+      <p>Adicione séries à sua lista para acompanhar a agenda de episódios.</p>
+      <button class="explore-btn" (click)="router.navigate(['/series'])">Explorar Séries</button>
+    </div>
+
+    <!-- Schedule groups -->
+    <div class="groups-wrapper" *ngIf="totalItems > 0">
+      <div class="group" *ngFor="let group of groups">
+        <div class="group-header">
+          <span class="group-emoji">{{ group.emoji }}</span>
+          <h2 class="group-title">{{ group.label }}</h2>
+          <span class="group-badge">{{ group.items.length }}</span>
+        </div>
+
+        <div class="cards-list">
+          <div
+            class="schedule-card"
+            *ngFor="let item of group.items"
+            (click)="goToSeries(item.userSeries.series_id)"
+          >
+            <img
+              [src]="getPosterUrl(item.userSeries.poster_path)"
+              [alt]="item.userSeries.series_name"
+              class="card-poster"
+            />
+
+            <div class="card-info">
+              <h3 class="series-name">{{ item.userSeries.series_name }}</h3>
+
+              <div class="next-ep" *ngIf="item.detail.next_episode_to_air">
+                <span class="ep-code">{{ formatEpCode(item.detail.next_episode_to_air.season_number, item.detail.next_episode_to_air.episode_number) }}</span>
+                <span class="ep-dot">·</span>
+                <span class="ep-name">{{ item.detail.next_episode_to_air.name }}</span>
+              </div>
+
+              <div class="no-next-ep" *ngIf="!item.detail.next_episode_to_air">
+                <span class="show-ended-label">{{ getShowStatusLabel(item.detail.status) }}</span>
+              </div>
+
+              <div class="air-row" *ngIf="item.airDate">
+                <span class="air-date">{{ formatDate(item.airDate) }}</span>
+                <span
+                  class="days-label"
+                  [class.today-label]="getDaysLabel(item.airDate) === 'Hoje!'"
+                >{{ getDaysLabel(item.airDate) }}</span>
+              </div>
+            </div>
+
+            <div class="card-side">
+              <span class="status-pill" [class]="item.userSeries.status">
+                {{ getStatusLabel(item.userSeries.status) }}
+              </span>
+              <div class="still-wrap" *ngIf="item.detail.next_episode_to_air?.still_path">
+                <img
+                  [src]="getStillUrl(item.detail.next_episode_to_air!.still_path)"
+                  alt="cena do episódio"
+                  class="ep-still"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

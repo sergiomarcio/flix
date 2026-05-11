@@ -1,0 +1,268 @@
+.schedule-page {
+  padding: 84px 2rem 4rem;
+  max-width: 900px;
+  margin: 0 auto;
+
+  .page-header {
+    margin-bottom: 2.5rem;
+
+    h1 {
+      font-size: clamp(1.3rem, 3vw, 1.35rem);
+      font-weight: 700;
+      color: #fff;
+      font-family: "Ubuntu", sans-serif;
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
+
+      &::after {
+        content: '';
+        display: block;
+        width: 32px;
+        height: 3px;
+        background: linear-gradient(to right, #D4AF37, transparent);
+        border-radius: 2px;
+        margin-left: 0.2rem;
+        align-self: center;
+      }
+    }
+
+    .subtitle {
+      color: rgba(255, 255, 255, 0.5);
+      margin-top: 0.3rem;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5rem 2rem;
+  color: rgba(255, 255, 255, 0.5);
+
+  .spin-icon {
+    font-size: 2.5rem;
+    animation: spin 1.5s linear infinite;
+    margin-bottom: 1rem;
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5rem 2rem;
+  color: rgba(255, 255, 255, 0.45);
+  text-align: center;
+  gap: 1rem;
+
+  .empty-icon { font-size: 3.5rem; }
+
+  p { font-size: 0.95rem; max-width: 340px; line-height: 1.6; }
+
+  .explore-btn {
+    margin-top: 0.5rem;
+    padding: 0.55rem 1.5rem;
+    border-radius: 20px;
+    border: 1px solid rgba(212, 175, 55, 0.5);
+    background: rgba(212, 175, 55, 0.08);
+    color: #D4AF37;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      background: rgba(212, 175, 55, 0.16);
+      border-color: #D4AF37;
+    }
+  }
+}
+
+// ─── Groups ──────────────────────────────────────────────────────────────────
+
+.groups-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.group {
+  .group-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+
+    .group-emoji { font-size: 1.2rem; }
+
+    .group-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.85);
+      letter-spacing: 0.3px;
+      font-family: "Ubuntu", sans-serif;
+    }
+
+    .group-badge {
+      margin-left: auto;
+      background: rgba(212, 175, 55, 0.12);
+      color: #D4AF37;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.1rem 0.55rem;
+    }
+  }
+}
+
+// ─── Cards ───────────────────────────────────────────────────────────────────
+
+.cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.schedule-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(212, 175, 55, 0.3);
+    transform: translateY(-1px);
+  }
+
+  .card-poster {
+    width: 48px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+
+  .card-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    .movie-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .meta-row {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+
+      .year, .runtime {
+        font-size: 0.78rem;
+        color: rgba(255, 255, 255, 0.45);
+      }
+
+      .rating {
+        font-size: 0.78rem;
+        color: #D4AF37;
+      }
+    }
+
+    .air-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-top: 0.1rem;
+
+      .air-date {
+        font-size: 0.78rem;
+        color: rgba(255, 255, 255, 0.45);
+        text-transform: capitalize;
+      }
+
+      .days-label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #D4AF37;
+        background: rgba(212, 175, 55, 0.1);
+        border-radius: 10px;
+        padding: 0.1rem 0.5rem;
+
+        &.today-label {
+          color: #4ade80;
+          background: rgba(34, 197, 94, 0.12);
+        }
+
+        &.available-label {
+          color: rgba(255, 255, 255, 0.5);
+          background: rgba(255, 255, 255, 0.06);
+        }
+      }
+    }
+  }
+
+  .card-side {
+    flex-shrink: 0;
+
+    .want-badge {
+      padding: 0.25rem 0.7rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: rgba(212, 175, 55, 0.12);
+      color: #D4AF37;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      white-space: nowrap;
+    }
+  }
+}
+
+// ─── Responsive ──────────────────────────────────────────────────────────────
+
+@media (max-width: 600px) {
+  .schedule-page {
+    padding: 84px 1rem 3rem;
+  }
+
+  .schedule-card {
+    padding: 0.7rem 0.8rem;
+    gap: 0.75rem;
+
+    .card-poster {
+      width: 42px;
+      height: 63px;
+    }
+
+    .card-info {
+      .movie-name { font-size: 0.88rem; }
+    }
+  }
+}
+
+@media (max-width: 400px) {
+  .schedule-card .card-side { display: none; }
+}
