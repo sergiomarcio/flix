@@ -20,7 +20,7 @@ export class SeasonDetailComponent implements OnInit {
   seasonNumber = 0;
   loading = true;
   saving = false;
-  watchedSet = new Set<number>();
+  watchedMap = new Map<number, number>(); // episode_number → times_watched
   selectedEpisode: TVEpisode | null = null;
 
   constructor(
@@ -72,16 +72,20 @@ export class SeasonDetailComponent implements OnInit {
   async loadWatched(): Promise<void> {
     try {
       const episodes = await this.supabase.getWatchedEpisodes(this.seriesId);
-      this.watchedSet = new Set(
+      this.watchedMap = new Map(
         episodes
           .filter(e => e.season_number === this.seasonNumber)
-          .map(e => e.episode_number)
+          .map(e => [e.episode_number, e.times_watched || 1])
       );
     } catch { }
   }
 
   isWatched(ep: TVEpisode): boolean {
-    return this.watchedSet.has(ep.episode_number);
+    return this.watchedMap.has(ep.episode_number);
+  }
+
+  getTimesWatched(ep: TVEpisode): number {
+    return this.watchedMap.get(ep.episode_number) || 0;
   }
 
   async toggleEpisode(ep: TVEpisode): Promise<void> {
@@ -89,24 +93,74 @@ export class SeasonDetailComponent implements OnInit {
     try {
       if (this.isWatched(ep)) {
         await this.supabase.removeEpisodeWatched(this.seriesId, this.seasonNumber, ep.episode_number);
-        this.watchedSet.delete(ep.episode_number);
+        this.watchedMap.delete(ep.episode_number);
       } else {
         const episode: WatchedEpisode = {
           series_id: this.seriesId,
           season_number: this.seasonNumber,
           episode_number: ep.episode_number,
           episode_name: ep.name,
-          runtime: ep.runtime ?? undefined
+          runtime: ep.runtime ?? undefined,
+          times_watched: 1
         };
         await Promise.all([
           this.supabase.setEpisodeWatched(episode),
           this.ensureSeriesInList(),
         ]);
-        this.watchedSet.add(ep.episode_number);
+        this.watchedMap.set(ep.episode_number, 1);
       }
-      this.watchedSet = new Set(this.watchedSet); // trigger change detection
+      this.watchedMap = new Map(this.watchedMap);
     } catch (err) {
       console.error('Erro ao salvar episódio:', err);
+    } finally {
+      this.saving = false;
+    }
+  }
+
+  async incrementEpisode(ep: TVEpisode, event: MouseEvent): Promise<void> {
+    event.stopPropagation();
+    this.saving = true;
+    try {
+      const newCount = (this.watchedMap.get(ep.episode_number) || 0) + 1;
+      await this.supabase.setEpisodeWatched({
+        series_id: this.seriesId,
+        season_number: this.seasonNumber,
+        episode_number: ep.episode_number,
+        episode_name: ep.name,
+        runtime: ep.runtime ?? undefined,
+        times_watched: newCount
+      });
+      this.watchedMap.set(ep.episode_number, newCount);
+      this.watchedMap = new Map(this.watchedMap);
+    } catch (err) {
+      console.error('Erro ao incrementar episódio:', err);
+    } finally {
+      this.saving = false;
+    }
+  }
+
+  async decrementEpisode(ep: TVEpisode, event: MouseEvent): Promise<void> {
+    event.stopPropagation();
+    this.saving = true;
+    try {
+      const current = this.watchedMap.get(ep.episode_number) || 0;
+      if (current <= 1) {
+        await this.supabase.removeEpisodeWatched(this.seriesId, this.seasonNumber, ep.episode_number);
+        this.watchedMap.delete(ep.episode_number);
+      } else {
+        await this.supabase.setEpisodeWatched({
+          series_id: this.seriesId,
+          season_number: this.seasonNumber,
+          episode_number: ep.episode_number,
+          episode_name: ep.name,
+          runtime: ep.runtime ?? undefined,
+          times_watched: current - 1
+        });
+        this.watchedMap.set(ep.episode_number, current - 1);
+      }
+      this.watchedMap = new Map(this.watchedMap);
+    } catch (err) {
+      console.error('Erro ao decrementar episódio:', err);
     } finally {
       this.saving = false;
     }
@@ -124,12 +178,18 @@ export class SeasonDetailComponent implements OnInit {
             season_number: this.seasonNumber,
             episode_number: ep.episode_number,
             episode_name: ep.name,
-            runtime: ep.runtime ?? undefined
+            runtime: ep.runtime ?? undefined,
+            times_watched: 1
           })
         ),
         this.ensureSeriesInList(),
       ]);
-      this.watchedSet = new Set(this.season.episodes.map(e => e.episode_number));
+      for (const ep of this.season.episodes) {
+        if (!this.watchedMap.has(ep.episode_number)) {
+          this.watchedMap.set(ep.episode_number, 1);
+        }
+      }
+      this.watchedMap = new Map(this.watchedMap);
     } catch (err) {
       console.error(err);
     } finally {
@@ -137,7 +197,37 @@ export class SeasonDetailComponent implements OnInit {
     }
   }
 
-  get watchedCount(): number { return this.watchedSet.size; }
+  async markAllWatchedAgain(): Promise<void> {
+    if (!this.season) return;
+    this.saving = true;
+    try {
+      await Promise.all(
+        this.season.episodes.map(ep => {
+          const newCount = (this.watchedMap.get(ep.episode_number) || 1) + 1;
+          return this.supabase.setEpisodeWatched({
+            series_id: this.seriesId,
+            season_number: this.seasonNumber,
+            episode_number: ep.episode_number,
+            episode_name: ep.name,
+            runtime: ep.runtime ?? undefined,
+            times_watched: newCount
+          });
+        })
+      );
+      for (const ep of this.season.episodes) {
+        const newCount = (this.watchedMap.get(ep.episode_number) || 1) + 1;
+        this.watchedMap.set(ep.episode_number, newCount);
+      }
+      this.watchedMap = new Map(this.watchedMap);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      this.saving = false;
+    }
+  }
+
+  get watchedCount(): number { return this.watchedMap.size; }
+  get isAllWatched(): boolean { return this.totalCount > 0 && this.watchedCount >= this.totalCount; }
   get totalCount(): number { return this.season?.episodes?.length || 0; }
   get progressPercent(): number {
     if (!this.totalCount) return 0;

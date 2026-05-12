@@ -19,7 +19,7 @@ export class SeriesDetailComponent implements OnInit {
   loading = true;
   saving = false;
   showTrailer = false;
-  seasonWatchedMap: Map<number, Set<number>> = new Map();
+  seasonWatchedMap: Map<number, Map<number, number>> = new Map(); // season → episode → times_watched
   markingSet = new Set<number>();
   streamingProviders: WatchProvider[] = [];
   rentProviders: WatchProvider[] = [];
@@ -82,10 +82,10 @@ export class SeriesDetailComponent implements OnInit {
   async loadSeasonWatched(seriesId: number): Promise<void> {
     try {
       const episodes = await this.supabase.getWatchedEpisodes(seriesId);
-      const map = new Map<number, Set<number>>();
+      const map = new Map<number, Map<number, number>>();
       for (const ep of episodes) {
-        if (!map.has(ep.season_number)) map.set(ep.season_number, new Set());
-        map.get(ep.season_number)!.add(ep.episode_number);
+        if (!map.has(ep.season_number)) map.set(ep.season_number, new Map());
+        map.get(ep.season_number)!.set(ep.episode_number, ep.times_watched || 1);
       }
       this.seasonWatchedMap = map;
     } catch {}
@@ -107,7 +107,7 @@ export class SeriesDetailComponent implements OnInit {
     try {
       const detail = await firstValueFrom(this.tmdb.getSeasonDetail(this.show.id, season.season_number));
       if (!detail) return;
-      const watched = this.seasonWatchedMap.get(season.season_number) ?? new Set<number>();
+      const watched = this.seasonWatchedMap.get(season.season_number) ?? new Map<number, number>();
       const unwatched = detail.episodes.filter(ep => !watched.has(ep.episode_number));
       await Promise.all(unwatched.map(ep =>
         this.supabase.setEpisodeWatched({
@@ -115,11 +115,15 @@ export class SeriesDetailComponent implements OnInit {
           season_number: season.season_number,
           episode_number: ep.episode_number,
           episode_name: ep.name,
-          runtime: ep.runtime ?? undefined
+          runtime: ep.runtime ?? undefined,
+          times_watched: 1
         } as WatchedEpisode)
       ));
-      const newSet = new Set<number>(detail.episodes.map(e => e.episode_number));
-      this.seasonWatchedMap = new Map(this.seasonWatchedMap).set(season.season_number, newSet);
+      const newMap = new Map(watched);
+      for (const ep of detail.episodes) {
+        if (!newMap.has(ep.episode_number)) newMap.set(ep.episode_number, 1);
+      }
+      this.seasonWatchedMap = new Map(this.seasonWatchedMap).set(season.season_number, newMap);
       if (!this.status) {
         await this.supabase.setSeriesStatus({
           series_id: this.show!.id,
@@ -140,6 +144,38 @@ export class SeriesDetailComponent implements OnInit {
     }
   }
 
+  async markSeasonWatchedAgain(season: TVSeason, event: MouseEvent): Promise<void> {
+    event.stopPropagation();
+    if (!this.show || this.markingSet.has(season.season_number)) return;
+    this.markingSet = new Set(this.markingSet);
+    this.markingSet.add(season.season_number);
+    try {
+      const detail = await firstValueFrom(this.tmdb.getSeasonDetail(this.show.id, season.season_number));
+      if (!detail) return;
+      const watched = this.seasonWatchedMap.get(season.season_number) ?? new Map<number, number>();
+      await Promise.all(detail.episodes.map(ep => {
+        const newCount = (watched.get(ep.episode_number) || 1) + 1;
+        return this.supabase.setEpisodeWatched({
+          series_id: this.show!.id,
+          season_number: season.season_number,
+          episode_number: ep.episode_number,
+          episode_name: ep.name,
+          runtime: ep.runtime ?? undefined,
+          times_watched: newCount
+        } as WatchedEpisode);
+      }));
+      const newMap = new Map<number, number>(
+        detail.episodes.map(ep => [ep.episode_number, (watched.get(ep.episode_number) || 1) + 1])
+      );
+      this.seasonWatchedMap = new Map(this.seasonWatchedMap).set(season.season_number, newMap);
+    } catch (err) {
+      console.error('Erro ao marcar temporada como vista novamente:', err);
+    } finally {
+      this.markingSet.delete(season.season_number);
+      this.markingSet = new Set(this.markingSet);
+    }
+  }
+
   async unmarkSeasonAllWatched(season: TVSeason, event: MouseEvent): Promise<void> {
     event.stopPropagation();
     if (!this.show || this.markingSet.has(season.season_number)) return;
@@ -147,7 +183,7 @@ export class SeriesDetailComponent implements OnInit {
     this.markingSet.add(season.season_number);
     try {
       await this.supabase.removeSeasonWatched(this.show.id, season.season_number);
-      this.seasonWatchedMap = new Map(this.seasonWatchedMap).set(season.season_number, new Set());
+      this.seasonWatchedMap = new Map(this.seasonWatchedMap).set(season.season_number, new Map());
     } catch (err) {
       console.error('Erro ao desmarcar temporada:', err);
     } finally {

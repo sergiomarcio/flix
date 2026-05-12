@@ -28,6 +28,7 @@ export interface WatchedEpisode {
   episode_number: number;
   episode_name?: string;
   runtime?: number;
+  times_watched?: number;
   watched_at?: string;
 }
 
@@ -481,11 +482,11 @@ export class SupabaseService {
     const empty = { total_minutes: 0, total_episodes: 0, watching: 0, watched: 0, want_to_watch: 0 };
     if (!this.client) return empty;
     const pageSize = 1000;
-    const allEpisodes: { runtime: number | null }[] = [];
+    const allEpisodes: { runtime: number | null; times_watched: number | null }[] = [];
     let from = 0;
     while (true) {
       const { data, error } = await this.client
-        .from('user_episodes').select('runtime').eq('user_id', userId)
+        .from('user_episodes').select('runtime, times_watched').eq('user_id', userId)
         .range(from, from + pageSize - 1);
       if (error || !data || data.length === 0) break;
       allEpisodes.push(...data);
@@ -495,7 +496,11 @@ export class SupabaseService {
     const { data: seriesData } = await this.client
       .from('user_series').select('status').eq('user_id', userId);
     const s = { ...empty };
-    allEpisodes.forEach(e => { s.total_episodes++; if (e.runtime) s.total_minutes += e.runtime; });
+    allEpisodes.forEach(e => {
+      const tw = e.times_watched || 1;
+      s.total_episodes += tw;
+      if (e.runtime) s.total_minutes += e.runtime * tw;
+    });
     (seriesData || []).forEach((x: { status: SeriesStatus }) => {
       if (x.status === 'watching') s.watching++;
       else if (x.status === 'watched') s.watched++;
@@ -521,12 +526,12 @@ export class SupabaseService {
     if (!this.client || !this.userId) return empty;
 
     const pageSize = 1000;
-    const allEpisodes: { runtime: number | null }[] = [];
+    const allEpisodes: { runtime: number | null; times_watched: number | null }[] = [];
     let from = 0;
     while (true) {
       const { data, error } = await this.client
         .from('user_episodes')
-        .select('runtime')
+        .select('runtime, times_watched')
         .eq('user_id', this.userId)
         .range(from, from + pageSize - 1);
       if (error) break;
@@ -541,8 +546,9 @@ export class SupabaseService {
 
     const stats = { ...empty };
     allEpisodes.forEach((e) => {
-      stats.total_episodes++;
-      if (e.runtime) stats.total_minutes += e.runtime;
+      const tw = e.times_watched || 1;
+      stats.total_episodes += tw;
+      if (e.runtime) stats.total_minutes += e.runtime * tw;
     });
     (seriesData || []).forEach((s: { status: SeriesStatus }) => {
       if (s.status === 'watching') stats.watching++;

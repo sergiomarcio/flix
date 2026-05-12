@@ -14,7 +14,8 @@
       "Bash(git commit:*)",
       "Bash(cd /d \"d:\\\\Desenvolvimento\\\\projetos\\\\github\\\\flix\")",
       "Bash(Get-ChildItem -Path \".\" -Directory)",
-      "Bash(Select-Object Name)"
+      "Bash(Select-Object Name)",
+      "Bash(ionic --version)"
     ],
     "additionalDirectories": [
       "C:\\Users\\sergi\\.claude"

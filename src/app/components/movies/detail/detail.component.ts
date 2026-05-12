@@ -200,6 +200,12 @@ export class MovieDetailComponent implements OnInit {
     return this.movie.release_date.substring(0, 4);
   }
 
+  getReleaseDate(): string {
+    if (!this.movie?.release_date) return '';
+    const [y, m, d] = this.movie.release_date.split('-').map(Number);
+    return new Date(y, m - 1, d).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' });
+  }
+
   getRuntime(): string {
     if (!this.movie?.runtime) return '';
     const h = Math.floor(this.movie.runtime / 60);

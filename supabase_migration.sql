@@ -117,3 +117,10 @@ CREATE POLICY "Usuário lê seus episódios"     ON user_episodes FOR SELECT USI
 CREATE POLICY "Usuário insere seus episódios" ON user_episodes FOR INSERT WITH CHECK (auth.uid() = user_id);
 CREATE POLICY "Usuário atualiza seus episódios" ON user_episodes FOR UPDATE USING (auth.uid() = user_id);
 CREATE POLICY "Usuário exclui seus episódios"  ON user_episodes FOR DELETE USING (auth.uid() = user_id);
+
+-- =============================================================
+-- MIGRAÇÃO: Adicionar campo times_watched em user_episodes
+-- Execute este SQL no Supabase > SQL Editor
+-- =============================================================
+ALTER TABLE user_episodes
+  ADD COLUMN IF NOT EXISTS times_watched INTEGER NOT NULL DEFAULT 1;

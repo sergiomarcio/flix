@@ -139,10 +139,16 @@
               (click)="markSeasonAllWatched(season, $event)" title="Marcar todos como assistidos">
               ✓ Marcar Todos
             </button>
-            <button *ngIf="isSeasonFullyWatched(season)" class="mark-all-btn done"
-              (click)="unmarkSeasonAllWatched(season, $event)" title="Desmarcar todos os episódios">
-              ✅ Desmarcar Todos
-            </button>
+            <div *ngIf="isSeasonFullyWatched(season)" class="season-watched-actions" (click)="$event.stopPropagation()">
+              <button class="mark-all-btn rewatch"
+                (click)="markSeasonWatchedAgain(season, $event)" title="Assistir novamente">
+                ↩ Ver novamente
+              </button>
+              <button class="unmark-season-btn"
+                (click)="unmarkSeasonAllWatched(season, $event)" title="Desmarcar todos os episódios">
+                🗑
+              </button>
+            </div>
           </ng-container>
           <ng-template #loadingBtn>
             <button class="mark-all-btn loading" disabled>⏳</button>

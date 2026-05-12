@@ -96,8 +96,8 @@ export class SeriesStatsComponent implements OnInit, OnDestroy {
         const eps = epMap.get(s.series_id) || [];
         return {
           series: s,
-          watchedEpisodes: eps.length,
-          totalMinutes: eps.reduce((acc, e) => acc + (e.runtime || 0), 0)
+          watchedEpisodes: eps.reduce((acc, e) => acc + (e.times_watched || 1), 0),
+          totalMinutes: eps.reduce((acc, e) => acc + (e.runtime || 0) * (e.times_watched || 1), 0)
         };
       });
 

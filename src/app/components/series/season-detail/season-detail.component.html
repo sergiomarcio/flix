@@ -19,8 +19,11 @@
         <strong>{{ watchedCount }}</strong> / {{ totalCount }} episódios vistos
       </span>
       <span class="progress-percent">{{ progressPercent }}%</span>
-      <button class="mark-all-btn" *ngIf="watchedCount < totalCount" (click)="markAllWatched()" [disabled]="saving">
+      <button class="mark-all-btn" *ngIf="!isAllWatched" (click)="markAllWatched()" [disabled]="saving">
         ✅ Marcar todos
+      </button>
+      <button class="mark-all-btn rewatch" *ngIf="isAllWatched" (click)="markAllWatchedAgain()" [disabled]="saving">
+        ↩ Ver novamente
       </button>
     </div>
     <div class="progress-bar">
@@ -35,8 +38,15 @@
       *ngFor="let ep of season.episodes"
       [class.watched]="isWatched(ep)"
     >
-      <div class="ep-check" (click)="toggleEpisode(ep)">
-        <span class="check-icon">{{ isWatched(ep) ? '✅' : '⬜' }}</span>
+      <div class="ep-check-area">
+        <div class="ep-check" (click)="toggleEpisode(ep)">
+          <span class="check-icon">{{ isWatched(ep) ? '✅' : '⬜' }}</span>
+        </div>
+        <div class="ep-counter" *ngIf="isWatched(ep)">
+          <button class="counter-btn" (click)="decrementEpisode(ep, $event)" [disabled]="saving">−</button>
+          <span class="counter-value">×{{ getTimesWatched(ep) }}</span>
+          <button class="counter-btn" (click)="incrementEpisode(ep, $event)" [disabled]="saving">+</button>
+        </div>
       </div>
 
       <div class="ep-still" *ngIf="ep.still_path" (click)="selectedEpisode = ep">
