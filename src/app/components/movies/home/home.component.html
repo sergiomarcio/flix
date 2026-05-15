@@ -24,15 +24,13 @@
 
   <!-- Loading -->
   <div class="loading-container" *ngIf="loading && !isSearching">
-    <div class="film-reel">🎞️</div>
-    <p>Carregando...</p>
+    <div class="spinner"></div>
   </div>
 
   <!-- Search Results -->
   <section class="movies-section" *ngIf="isSearching">
     <div class="loading-container" *ngIf="loading && movies.length === 0">
-      <div class="film-reel">🎞️</div>
-      <p>Carregando...</p>
+      <div class="spinner"></div>
     </div>
     <ng-container *ngIf="!loading || movies.length > 0">
       <div class="section-header">

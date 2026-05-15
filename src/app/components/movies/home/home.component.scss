@@ -177,24 +177,21 @@
 
 .loading-container {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 4rem;
-  color: rgba(255, 255, 255, 0.5);
 
-  .film-reel {
-    font-size: 3rem;
-    animation: spin 1.5s linear infinite;
-    margin-bottom: 1rem;
+  .spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid rgba(212, 175, 55, 0.2);
+    border-top-color: #D4AF37;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
   }
 }
 
 @keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-
   to {
     transform: rotate(360deg);
   }

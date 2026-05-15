@@ -28,16 +28,8 @@
         </div>
 
         <div class="cards-list">
-          <div
-            class="schedule-card"
-            *ngFor="let movie of group.items"
-            (click)="goToMovie(movie.movie_id)"
-          >
-            <img
-              [src]="getPosterUrl(movie.poster_path)"
-              [alt]="movie.movie_title"
-              class="card-poster"
-            />
+          <div class="schedule-card" *ngFor="let movie of group.items" (click)="goToMovie(movie.movie_id)">
+            <img [src]="getPosterUrl(movie.poster_path)" [alt]="movie.movie_title" class="card-poster" />
 
             <div class="card-info">
               <h3 class="movie-name">{{ movie.movie_title }}</h3>
@@ -50,11 +42,9 @@
 
               <div class="air-row" *ngIf="movie.release_date">
                 <span class="air-date">{{ formatDate(movie.release_date) }}</span>
-                <span
-                  class="days-label"
-                  [class.today-label]="getDaysLabel(movie.release_date) === 'Hoje!'"
-                  [class.available-label]="isAvailable(movie.release_date)"
-                >{{ getDaysLabel(movie.release_date) }}</span>
+                <span class="days-label" [class.today-label]="getDaysLabel(movie.release_date) === 'Hoje!'"
+                  [class.available-label]="isAvailable(movie.release_date)">{{ getDaysLabel(movie.release_date)
+                  }}</span>
               </div>
             </div>
 

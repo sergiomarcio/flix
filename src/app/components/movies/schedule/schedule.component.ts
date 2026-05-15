@@ -30,7 +30,7 @@ export class MovieScheduleComponent implements OnInit {
     private supabase: SupabaseService,
     private tmdb: TmdbService,
     public router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.today = new Date();
@@ -65,8 +65,8 @@ export class MovieScheduleComponent implements OnInit {
     if (!date) return 'no_date';
     const diffDays = Math.floor((date.getTime() - this.today.getTime()) / 86400000);
     if (diffDays > 30) return 'future';
-    if (diffDays > 7)  return 'this_month';
-    if (diffDays > 0)  return 'this_week';
+    if (diffDays > 7) return 'this_month';
+    if (diffDays > 0) return 'this_week';
     // Já lançado — verifica se é do mês corrente ou do mês anterior
     const prevMonth = new Date(this.today.getFullYear(), this.today.getMonth() - 1, 1);
     const movieMonth = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -77,12 +77,12 @@ export class MovieScheduleComponent implements OnInit {
 
   private buildGroups(movies: UserMovie[]): void {
     const bucketDefs: { bucket: DateBucket; label: string; emoji: string }[] = [
-      { bucket: 'available',  label: 'Disponível',            emoji: '🎬' },
-      { bucket: 'this_week',  label: 'Esta Semana',           emoji: '🗓️' },
-      { bucket: 'this_month', label: 'Este Mês',              emoji: '📆' },
-      { bucket: 'future',     label: 'Em Breve',              emoji: '⏳' },
-      { bucket: 'older',      label: 'Lançamentos Anteriores', emoji: '🎞️' },
-      { bucket: 'no_date',    label: 'Sem Data',              emoji: '❓' },
+      { bucket: 'available', label: 'Disponível', emoji: '🎬' },
+      { bucket: 'this_week', label: 'Esta Semana', emoji: '🗓️' },
+      { bucket: 'this_month', label: 'Este Mês', emoji: '📆' },
+      { bucket: 'future', label: 'Em Breve', emoji: '⏳' },
+      { bucket: 'older', label: 'Lançamentos Anteriores', emoji: '🎞️' },
+      { bucket: 'no_date', label: 'Sem Data', emoji: '❓' },
     ];
 
     const grouped = new Map<DateBucket, UserMovie[]>();

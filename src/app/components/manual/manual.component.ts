@@ -132,6 +132,7 @@ export class ManualComponent {
             'Cada temporada exibe uma barra de progresso mostrando quantos episódios você já assistiu.',
             'Clique em uma temporada para abrir o detalhe completo com todos os episódios.',
             'Use o botão de check na temporada para marcar todos os episódios como assistidos de uma vez. Clique novamente para desmarcar a temporada inteira.',
+            'Quando todos os episódios de uma temporada estão assistidos, aparecem dois botões: "↩ Ver novamente" (incrementa o contador de todos os episódios) e 🗑 (desmarca toda a temporada).',
             'Se a série ainda não estiver na sua lista e você marcar uma temporada inteira como assistida, ela é adicionada automaticamente com o status "Assistindo".',
             'O elenco exibe inicialmente 6 atores. Clique em "Ver mais" para expandir até 15.',
             'Veja onde a série está disponível no Brasil para streaming, aluguel ou compra.',
@@ -143,8 +144,9 @@ export class ManualComponent {
           desc: 'Lista todos os episódios de uma temporada com datas de exibição, sinopse e opção de marcar como assistido.',
           tips: [
             'Clique no botão de check em cada episódio para marcá-lo como assistido ou não assistido.',
+            'Quando um episódio está marcado como assistido, aparece um contador (×N) com botões − e + para registrar quantas vezes você já o assistiu.',
+            'Quando todos os episódios estão assistidos, o botão "Marcar todos" vira "↩ Ver novamente" — clique para incrementar o contador de todos os episódios da temporada de uma vez.',
             'Clique no título ou na imagem de um episódio para abrir o modal com todos os detalhes.',
-            'Use "Marcar todos" para marcar toda a temporada de uma vez.',
             'Se a série ainda não estiver na sua lista e você marcar qualquer episódio como assistido, ela é adicionada automaticamente com o status "Assistindo".'
           ]
         },
