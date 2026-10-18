@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map, shareReplay } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface Movie {
@@ -18,6 +18,7 @@ export interface Movie {
 }
 
 export interface MovieDetail extends Movie {
+  imdb_id?: string | null;
   genres: { id: number; name: string }[];
   runtime: number;
   tagline: string;
@@ -25,6 +26,12 @@ export interface MovieDetail extends Movie {
   budget: number;
   revenue: number;
   production_companies: { id: number; name: string; logo_path: string }[];
+}
+
+export interface MovieTitles {
+  id: number;
+  title: string;
+  original_title: string;
 }
 
 export interface MovieCastMember {
@@ -270,6 +277,7 @@ export interface MultiSearchResponse {
   providedIn: 'root'
 })
 export class TmdbService {
+  private movieTitles = new Map<string, Observable<MovieTitles | null>>();
   private baseUrl = environment.tmdbBaseUrl;
   private apiKey = environment.tmdbApiKey;
   private imageBaseUrl = environment.tmdbImageBaseUrl;
@@ -329,6 +337,15 @@ export class TmdbService {
     return this.http.get<MovieDetail>(
       `${this.baseUrl}/movie/${id}?${this.buildParams()}`
     );
+  }
+
+  getMovieTitlesByImdbId(imdbId: string): Observable<MovieTitles | null> {
+    if (!this.movieTitles.has(imdbId)) {
+      this.movieTitles.set(imdbId, this.http.get<{ movie_results: MovieTitles[] }>(
+        `${this.baseUrl}/find/${encodeURIComponent(imdbId)}?${this.buildParams({ external_source: 'imdb_id' })}`
+      ).pipe(map(response => response.movie_results[0] || null), shareReplay(1)));
+    }
+    return this.movieTitles.get(imdbId)!;
   }
 
   getMovieVideos(id: number): Observable<{ results: MovieVideo[] }> {

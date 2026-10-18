@@ -1,0 +1,51 @@
+<section class="oscars" aria-labelledby="oscars-heading" [attr.aria-busy]="loading">
+  <h3 id="oscars-heading">OSCARS <span class="award-count" *ngIf="awards.length">{{ awards.length }}</span></h3>
+  <p class="hint" *ngIf="loading" role="status">Consultando premiações...</p>
+  <p class="hint" *ngIf="!loading && !imdbId">Premiações indisponíveis para este filme.</p>
+  <div *ngIf="failed" role="status">
+    <p class="hint">Não foi possível carregar os Oscars.</p>
+    <button class="retry" type="button" (click)="load()">Tentar novamente</button>
+  </div>
+  <ng-container *ngIf="!loading && !failed && imdbId && throughYear">
+    <p class="hint" *ngIf="!awards.length">Nenhuma vitória encontrada na base consultada, com edições até {{ throughYear
+      }}.</p>
+    <p class="hint" *ngIf="awards.length">Selecione uma categoria para ver os indicados da mesma edição.</p>
+    <div class="award" *ngFor="let award of awards">
+      <button class="category" type="button" (click)="toggle(award.id)" [title]="award.category"
+        [attr.aria-expanded]="expandedId === award.id" [attr.aria-controls]="'oscar-panel-' + award.id">
+        <span><strong>{{ award.label }}</strong><span class="edition">{{ award.year }} · {{ award.ceremony }}ª
+            edição</span></span>
+        <span aria-hidden="true">{{ expandedId === award.id ? '−' : '+' }}</span>
+      </button>
+      <div class="nominees" [id]="'oscar-panel-' + award.id" *ngIf="expandedId === award.id">
+        <h4>Indicados a {{ award.label }} · {{ award.year }}</h4>
+        <ul>
+          <li *ngFor="let nominee of award.nominees" [class.winner]="nominee.winner"
+            [class.current-movie]="nominee.imdbIds.includes(imdbId)">
+            <div class="nominee-heading">
+              <strong>
+                <ng-container *ngFor="let film of getFilms(nominee); let last = last">
+                  <a *ngIf="film.movieId; else unavailableFilm" class="film-link"
+                    [routerLink]="['/movie', film.movieId]">{{ film.label }}</a>
+                  <ng-template #unavailableFilm>{{ film.label }}</ng-template>
+                  <span *ngIf="!last"> / </span>
+                </ng-container>
+                <ng-container *ngIf="!nominee.films.length">{{ nominee.name || 'Indicação sem filme associado'
+                  }}</ng-container>
+              </strong>
+              <span class="winner-label" *ngIf="nominee.winner">🏆 Vencedor</span>
+            </div>
+            <span class="nominee-name" *ngIf="nominee.films.length && nominee.name">{{ nominee.name }}</span>
+            <span class="nominee-detail" *ngIf="nominee.detail">{{ nominee.detail }}</span>
+          </li>
+        </ul>
+        <p class="hint" *ngIf="award.nominees.length === 1">Esta premiação não possui outros indicados registrados na
+          base.</p>
+        <a [href]="'https://www.oscars.org/oscars/ceremonies/' + award.year" target="_blank"
+          rel="noopener noreferrer">Ver edição no site da Academia ↗</a>
+      </div>
+    </div>
+    <p class="source">Base histórica até {{ throughYear }} · <a href="https://github.com/DLu/oscar_data" target="_blank"
+        rel="noopener noreferrer">Oscar Data</a></p>
+  </ng-container>
+</section>

@@ -8,11 +8,12 @@ import { environment } from '../../../../environments/environment';
 import { MovieComment, SupabaseService, WatchStatus } from '../../../services/supabase.service';
 import { Movie, MovieCastMember, MovieCrewMember, MovieDetail, MovieImage, MovieVideo, TmdbService, WatchProvider } from '../../../services/tmdb.service';
 import { MovieCardComponent } from '../card/card.component';
+import { MovieOscarsComponent } from '../oscars/oscars.component';
 
 @Component({
   selector: 'app-movie-detail',
   standalone: true,
-  imports: [CommonModule, FormsModule, MovieCardComponent, SafeUrlPipe],
+  imports: [CommonModule, FormsModule, MovieCardComponent, SafeUrlPipe, MovieOscarsComponent],
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss'
 })

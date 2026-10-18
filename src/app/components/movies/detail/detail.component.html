@@ -104,6 +104,8 @@
           <p class="companies">{{ getCompanies() }}</p>
         </div>
 
+        <app-movie-oscars [imdbId]="movie.imdb_id"></app-movie-oscars>
+
         <!-- Streaming / Aluguel / Compra -->
         <div class="streaming-section" *ngIf="streamingProviders.length || rentProviders.length || buyProviders.length">
           <div class="providers-group" *ngIf="streamingProviders.length" style="margin-top: 10px;">

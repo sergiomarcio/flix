@@ -51,7 +51,7 @@ export class ManualComponent {
         },
         {
           title: 'Detalhe do Filme',
-          desc: 'Página completa com todas as informações do filme: sinopse, elenco, diretor, roteiristas, fotos, trailer, onde assistir no Brasil e filmes similares.',
+          desc: 'Página completa com todas as informações do filme: sinopse, elenco, diretor, roteiristas, Oscars ganhos, fotos, trailer, onde assistir no Brasil e filmes similares.',
           tips: [
             'Marque o filme como "Quero Ver" ou "Vi" usando os botões de status.',
             'Para remover o filme da sua lista, clique novamente no status ativo — ele será desmarcado.',
@@ -62,6 +62,23 @@ export class ManualComponent {
             'Deixe comentários com texto, emojis e GIFs. Você pode editar ou apagar seus próprios comentários.',
             'Clique no nome de um ator ou membro da equipe para ver o perfil completo dessa pessoa.',
             'Use o botão "← Voltar" para retornar à tela anterior.'
+          ]
+        },
+        {
+          title: 'Oscars do Filme',
+          desc: 'Nos detalhes do filme, abaixo de Produção, a seção OSCARS mostra as categorias ganhas encontradas na base histórica, com edições até 2026. Seu título aparece em dourado e letras maiúsculas, no mesmo estilo de Produção.',
+          tips: [
+            'Cada categoria mostra o ano da cerimônia e o número da edição. O número ao lado de Oscars indica quantas categorias ganhas foram encontradas.',
+            'Clique em uma categoria para ver os filmes e as pessoas indicadas na mesma edição. Clique novamente para recolher a lista.',
+            'Os vencedores aparecem com o destaque 🏆 Vencedor. O filme que você está consultando recebe uma borda dourada.',
+            'Os filmes aparecem no formato "Título no Brasil (Título original)" quando esses nomes estão disponíveis. Eles podem levar alguns instantes para carregar ao abrir a categoria.',
+            'Clique no título de um filme entre os indicados para abrir seus detalhes no Flix. O link aparece quando o filme é identificado; títulos sem identificação disponível permanecem como texto.',
+            'Se os títulos não estiverem disponíveis, o nome registrado na base histórica será mantido.',
+            'Uma mesma categoria pode incluir mais de uma pessoa indicada pelo mesmo filme. Em caso de empate, todos os vencedores são destacados.',
+            'Prêmios especiais ou honorários associados ao filme também podem aparecer, mesmo sem outros indicados registrados.',
+            'Use "Ver edição no site da Academia" para consultar a cerimônia. O link "Oscar Data" identifica a fonte da base histórica.',
+            'A mensagem de nenhuma vitória encontrada se refere aos registros disponíveis até a edição indicada; a base pode ter informações incompletas.',
+            'Se houver erro ao carregar os Oscars, clique em "Tentar novamente". Filmes sem identificação disponível mostram a mensagem de premiações indisponíveis.'
           ]
         },
         {

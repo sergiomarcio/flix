@@ -1,0 +1,161 @@
+:host {
+  display: block;
+  margin: 1.5rem 0;
+}
+
+.oscars {
+  h3 {
+    color: #d4af37;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+  }
+
+  .award-count {
+    border-radius: 20px;
+    background: rgba(212, 175, 55, .15);
+    padding: .15rem .5rem;
+    font-size: .8rem;
+  }
+
+  .hint,
+  .source {
+    color: #aaa;
+    font-size: .85rem;
+    line-height: 1.6;
+    margin-bottom: .7rem;
+  }
+
+  .source {
+    font-size: .75rem;
+    margin-top: .8rem;
+  }
+
+  a {
+    color: #e8c75d;
+    font-size: .8rem;
+    text-underline-offset: 3px;
+  }
+
+  a.film-link {
+    color: inherit;
+    font-size: inherit;
+    text-decoration: underline;
+    text-decoration-color: rgba(212, 175, 55, .5);
+  }
+
+  a.film-link:hover {
+    color: #f0cb5a;
+    text-decoration-color: currentColor;
+  }
+
+  .award {
+    border: 1px solid rgba(212, 175, 55, .25);
+    border-radius: 8px;
+    margin-top: .5rem;
+    overflow: hidden;
+  }
+
+  button {
+    font: inherit;
+    cursor: pointer;
+  }
+
+  button:focus-visible,
+  a:focus-visible {
+    outline: 2px solid #f0cb5a;
+    outline-offset: -3px;
+  }
+
+  .category {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    border: 0;
+    padding: .85rem 1rem;
+    background: rgba(212, 175, 55, .07);
+    color: #f0cb5a;
+    text-align: left;
+  }
+
+  .category:hover,
+  .category[aria-expanded=true] {
+    background: rgba(212, 175, 55, .14);
+  }
+
+  .edition {
+    display: block;
+    margin-top: .3rem;
+    color: #aaa;
+    font-size: .75rem;
+  }
+
+  .nominees {
+    padding: 1rem;
+    background: rgba(10, 10, 10, .6);
+  }
+
+  h4 {
+    color: #ddd;
+    font-size: .85rem;
+    margin-bottom: .8rem;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+  }
+
+  li {
+    padding: .7rem;
+    border-bottom: 1px solid #333;
+    font-size: .85rem;
+    overflow-wrap: anywhere;
+  }
+
+  li.winner {
+    background: rgba(212, 175, 55, .08);
+  }
+
+  li.current-movie {
+    border-left: 3px solid #d4af37;
+  }
+
+  .nominee-heading {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: .4rem;
+    color: #eee;
+  }
+
+  .winner-label {
+    color: #f0cb5a;
+    font-size: .75rem;
+  }
+
+  .nominee-name,
+  .nominee-detail {
+    display: block;
+    color: #bbb;
+    margin-top: .35rem;
+    line-height: 1.5;
+  }
+
+  .nominee-detail {
+    color: #999;
+    font-size: .8rem;
+  }
+
+  .retry {
+    padding: .5rem .8rem;
+    color: #f0cb5a;
+    background: transparent;
+    border: 1px solid #d4af37;
+    border-radius: 4px;
+  }
+}

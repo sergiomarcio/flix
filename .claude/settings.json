@@ -15,7 +15,11 @@
       "Bash(cd /d \"d:\\\\Desenvolvimento\\\\projetos\\\\github\\\\flix\")",
       "Bash(Get-ChildItem -Path \".\" -Directory)",
       "Bash(Select-Object Name)",
-      "Bash(ionic --version)"
+      "Bash(ionic --version)",
+      "Bash(Get-ChildItem \"D:\\\\Vídeos\\\\4K Video Downloader\\\\julia\")",
+      "Bash(Select-Object -ExpandProperty Name)",
+      "Read(//d/V�deos/4K Video Downloader/**)",
+      "Bash(dir /s /b src\\\\app\\\\components)"
     ],
     "additionalDirectories": [
       "C:\\Users\\sergi\\.claude"
