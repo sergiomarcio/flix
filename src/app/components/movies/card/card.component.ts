@@ -1,3 +1,4 @@
+import { OscarBadgeComponent } from '../oscar-badge/oscar-badge.component';
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
@@ -7,7 +8,7 @@ import { Movie, TmdbService } from '../../../services/tmdb.service';
 @Component({
   selector: 'app-movie-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, OscarBadgeComponent],
   templateUrl: './card.component.html',
   styleUrl: './card.component.scss'
 })

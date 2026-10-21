@@ -26,11 +26,15 @@
 
     <!-- Controls -->
     <div class="controls">
+      <div class="type-tabs oscar-filter" role="group" aria-label="Filtrar por Oscar">
+        <button [class.active]="oscarFilter === 'all'" [attr.aria-pressed]="oscarFilter === 'all'" (click)="setOscarFilter('all')">Todos</button>
+        <button [class.active]="oscarFilter === 'oscar'" [attr.aria-pressed]="oscarFilter === 'oscar'" (click)="setOscarFilter('oscar')">Filmes com Oscar</button>
+      </div>
       <div class="type-tabs">
         <button
           *ngFor="let g of groups"
           [class.active]="activeGroup === g.key"
-          (click)="activeGroup = g.key">
+          (click)="setGroup(g.key)">
           {{ g.label }} <span class="tab-count">{{ g.credits.length }}</span>
         </button>
       </div>
@@ -45,6 +49,8 @@
       </div>
     </div>
 
+    <p class="filter-loading" role="status" *ngIf="loadingOscars">Consultando filmes com Oscar...</p>
+
     <!-- Credits list -->
     <div class="credits-list">
       <div class="credit-card" *ngFor="let c of activeCredits" (click)="navigate(c)">
@@ -52,16 +58,19 @@
         <div class="credit-info">
           <div class="credit-top">
             <span class="credit-title">{{ c.title }}</span>
-            <span class="type-badge" [class.movie]="c.type === 'movie'" [class.tv]="c.type === 'tv'">
+            <div class="credit-badges">
+              <app-oscar-badge *ngIf="c.type === 'movie'" [movieId]="c.id"></app-oscar-badge>
+              <span class="type-badge" [class.movie]="c.type === 'movie'" [class.tv]="c.type === 'tv'">
               {{ c.type === 'movie' ? 'Filme' : 'Série' }}
             </span>
+            </div>
           </div>
           <span class="credit-year">{{ getYear(c.date) }}</span>
           <span class="credit-role" *ngIf="c.role">{{ c.role }}</span>
           <span class="user-status" *ngIf="getStatus(c)" [class]="getStatus(c)!">{{ statusLabel(getStatus(c)) }}</span>
         </div>
       </div>
-      <p class="empty" *ngIf="activeCredits.length === 0">Nenhum resultado.</p>
+      <p class="empty" *ngIf="activeCredits.length === 0 && !loadingOscars">{{ oscarFilter === 'oscar' ? 'Nenhum filme com Oscar encontrado nesta aba na base consultada.' : 'Nenhum resultado.' }}</p>
     </div>
 
   </ng-container>

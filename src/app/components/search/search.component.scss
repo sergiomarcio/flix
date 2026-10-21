@@ -207,10 +207,12 @@
       backdrop-filter: blur(4px);
     }
 
+    .poster-badges {
+      position: absolute; top: 8px; right: 8px; z-index: 1;
+      display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap;
+      gap: 4px; max-width: calc(100% - 16px);
+    }
     .rating-badge {
-      position: absolute;
-      top: 8px;
-      right: 8px;
       background: rgba(0, 0, 0, 0.8);
       color: #D4AF37;
       font-size: 0.75rem;

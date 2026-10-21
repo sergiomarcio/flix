@@ -68,6 +68,9 @@ export class ManualComponent {
           title: 'Oscars do Filme',
           desc: 'Nos detalhes do filme, abaixo de Produção, a seção OSCARS mostra as categorias ganhas encontradas na base histórica, com edições até 2026. Seu título aparece em dourado e letras maiúsculas, no mesmo estilo de Produção.',
           tips: [
+            'O selo 🏆 Oscar aparece ao lado da nota nos cartazes, inclusive nas pesquisas, e antes da palavra Filme, no canto direito da linha do título nos cards da página do ator. Os rótulos Filme e Série ficam alinhados à direita. Indica uma vitória do filme em qualquer categoria, não necessariamente do ator.',
+            'Na filmografia, use Todos ou Filmes com Oscar, acima das abas, para filtrar a lista. Filmes com Oscar mostra apenas filmes vencedores da aba selecionada e oculta as séries. Aguarde a consulta terminar; os resultados aparecem aos poucos. As contagens das abas representam o total de créditos. O filtro e a ordenação são preservados ao abrir um filme e voltar.',
+            'O selo carrega ao visualizar o card. Séries não recebem esse selo. A ausência do selo pode indicar falta de registros ou falha de consulta. Abra os detalhes do filme para consultar as categorias.',
             'Cada categoria mostra o ano da cerimônia e o número da edição. O número ao lado de Oscars indica quantas categorias ganhas foram encontradas.',
             'Clique em uma categoria para ver os filmes e as pessoas indicadas na mesma edição. Clique novamente para recolher a lista.',
             'Os vencedores aparecem com o destaque 🏆 Vencedor. O filme que você está consultando recebe uma borda dourada.',

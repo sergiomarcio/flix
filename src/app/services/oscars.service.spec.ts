@@ -13,6 +13,14 @@ describe('OscarsService', () => {
   });
   afterEach(() => http.verify());
 
+  it('identifies winners using only the shared index', () => {
+    service.hasMovieWon('tt123').subscribe(won => expect(won).toBeTrue());
+    http.expectOne('assets/oscars/index.json').flush({ throughYear: 2026, winners: { tt123: [96] } });
+    service.hasMovieWon('tt456').subscribe(won => expect(won).toBeFalse());
+    http.expectNone('assets/oscars/index.json');
+    http.expectNone('assets/oscars/96.json');
+  });
+
   it('does not load ceremonies for a film without wins', () => {
     service.getMovieOscars('tt0000000').subscribe(result => expect(result.awards).toEqual([]));
     http.expectOne('assets/oscars/index.json').flush({ throughYear: 2026, winners: {} });

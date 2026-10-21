@@ -479,3 +479,23 @@ A aplicação é hospedada no **Netlify**.
 | Versão | Data | Destaques |
 |---|---|---|
 | 1.0.0 | 2026-03-17 | Lançamento inicial — catálogo de filmes e séries, autenticação, estatísticas, rastreamento de episódios, PWA |
+
+
+## Indicação de Oscar nos cards
+
+Os cartazes de filmes exibem o selo dourado **🏆 Oscar** ao lado da nota, inclusive nas pesquisas. Na página do ator ou profissional, o selo aparece ao lado da palavra **Filme** no topo do card, em todas as abas da filmografia. Séries não recebem o selo. Ele indica uma vitória do filme em qualquer categoria, incluindo prêmios especiais ou honorários associados ao filme, e não necessariamente um prêmio do ator. Abra o detalhe do filme para consultar as categorias.
+
+O componente compartilhado OscarBadgeComponent consulta ao entrar na área visível e cancela a assinatura quando removido ou quando o filme muda. MovieOscarBadgeService resolve o IMDb ID pelo detalhe do TMDB e compartilha resultados por ID durante a sessão. OscarsService.hasMovieWon consulta apenas o índice local compartilhado, sem baixar as cerimônias. Erros ocultam o selo e permitem nova tentativa em futuras consultas. Os cards carregam independentemente da premiação. Não são necessárias novas chaves de API.
+
+A cobertura é a da base local, com edições até 2026. A ausência de selo não comprova ausência de prêmios: pode haver registros incompletos, identificadores ausentes ou falha de consulta. Em cartazes estreitos, os indicadores podem ocupar duas linhas.
+
+Na filmografia, o rótulo Filme e o selo Oscar ficam no mesmo grupo horizontal (`credit-badges`), no canto direito da linha do título. O grupo não encolhe nem quebra linha; títulos longos usam reticências.
+
+Na filmografia, a ordem dos indicadores é **Oscar, Filme**. O tipo de produção fica sempre por último, com largura mínima comum e texto centralizado, para alinhar Filme e Série pela borda direita, inclusive em filmes sem Oscar.
+
+
+## Filtro de Oscar na filmografia
+
+Acima das abas da filmografia existem apenas duas opções: **Todos** (padrão) e **Filmes com Oscar**. Todos inclui filmes e séries. Filmes com Oscar mostra apenas filmes com vitória confirmada na base local, na aba selecionada, respeitando a ordenação por ano ou nome. As contagens das abas continuam indicando o total de créditos. O filtro acompanha a troca de aba e fica salvo junto da ordenação ao abrir um filme e voltar.
+
+O filtro consulta todos os filmes da aba, inclusive os que ainda não estavam visíveis, com até quatro consultas simultâneas pelo MovieOscarBadgeService, reutilizando seu cache. Há mensagem de consulta em andamento e resultados progressivos; o estado vazio aparece somente ao concluir. Trocar de aba, selecionar Todos ou sair da página cancela as assinaturas anteriores. A cobertura e as limitações são as mesmas do selo: erros, IMDb ausente ou registros incompletos podem omitir vencedores.

@@ -1,3 +1,4 @@
+import { OscarBadgeComponent } from '../movies/oscar-badge/oscar-badge.component';
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -21,7 +22,7 @@ const STATE_KEY = 'multi_search_state';
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, OscarBadgeComponent],
   templateUrl: './search.component.html',
   styleUrl: './search.component.scss'
 })

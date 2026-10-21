@@ -59,8 +59,11 @@
         <span class="media-badge" [class.movie]="item.media_type === 'movie'" [class.tv]="item.media_type === 'tv'">
           {{ item.media_type === 'movie' ? '🎬' : '📺' }}
         </span>
-        <div class="rating-badge" *ngIf="item.vote_average && item.vote_average > 0">
+        <div class="poster-badges">
+          <div class="rating-badge" *ngIf="item.vote_average && item.vote_average > 0">
           <span class="star">★</span> {{ item.vote_average.toFixed(1) }}
+        </div>
+          <app-oscar-badge *ngIf="item.media_type === 'movie'" [movieId]="item.id"></app-oscar-badge>
         </div>
       </div>
       <div class="card-info">

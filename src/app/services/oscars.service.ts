@@ -108,6 +108,11 @@ export class OscarsService {
 
   constructor(private http: HttpClient) {}
 
+  hasMovieWon(imdbId: string): Observable<boolean> {
+    this.index$ ??= this.http.get<OscarIndex>('assets/oscars/index.json').pipe(shareReplay(1));
+    return this.index$.pipe(map(index => !!index.winners[imdbId]?.length));
+  }
+
   getMovieOscars(imdbId: string): Observable<MovieOscars> {
     this.index$ ??= this.http.get<OscarIndex>('assets/oscars/index.json').pipe(shareReplay(1));
     return this.index$.pipe(switchMap(index => {

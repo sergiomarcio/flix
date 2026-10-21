@@ -2,9 +2,12 @@
   <div class="poster-wrapper">
     <img [src]="getImageUrl()" [alt]="movie.title" loading="lazy" />
 
-    <div class="rating-badge">
+    <div class="poster-badges">
+          <div class="rating-badge">
       <span class="star">★</span> {{ getRating() }}
     </div>
+          <app-oscar-badge [movieId]="movie.id"></app-oscar-badge>
+        </div>
 
     <div class="status-badge" [class]="getStatusClass()" *ngIf="status">
       {{ getStatusLabel() }}

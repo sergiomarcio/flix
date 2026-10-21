@@ -1,7 +1,8 @@
+import { MovieOscarBadgeService, OscarBadgeComponent } from '../movies/oscar-badge/oscar-badge.component';
 import { CommonModule, Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { forkJoin } from 'rxjs';
+import { Subscription, finalize, forkJoin, from, map, mergeMap } from 'rxjs';
 import { SupabaseService, WatchStatus, SeriesStatus } from '../../services/supabase.service';
 import { PersonDetails, TmdbService } from '../../services/tmdb.service';
 
@@ -22,6 +23,7 @@ interface CreditGroup {
 }
 
 interface PersonState {
+  oscarFilter?: 'all' | 'oscar';
   activeGroup: string;
   sortBy: 'name' | 'year';
   sortDir: 'asc' | 'desc';
@@ -31,7 +33,7 @@ interface PersonState {
 @Component({
   selector: 'app-person',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, OscarBadgeComponent],
   templateUrl: './person.component.html',
   styleUrl: './person.component.scss'
 })
@@ -39,6 +41,10 @@ export class PersonComponent implements OnInit, OnDestroy {
   person: PersonDetails | null = null;
   groups: CreditGroup[] = [];
   activeGroup = 'actor';
+  oscarFilter: 'all' | 'oscar' = 'all';
+  loadingOscars = false;
+  private oscarResults = new Map<number, boolean>();
+  private oscarSubscription?: Subscription;
   loading = false;
   sortBy: 'name' | 'year' = 'year';
   sortDir: 'asc' | 'desc' = 'desc';
@@ -50,6 +56,7 @@ export class PersonComponent implements OnInit, OnDestroy {
 
   constructor(
     private tmdb: TmdbService,
+    private oscarBadges: MovieOscarBadgeService,
     private supabase: SupabaseService,
     private router: Router,
     private route: ActivatedRoute,
@@ -65,6 +72,7 @@ export class PersonComponent implements OnInit, OnDestroy {
     if (saved) {
       const state: PersonState = JSON.parse(saved);
       this.activeGroup = state.activeGroup;
+      this.oscarFilter = state.oscarFilter === 'oscar' ? 'oscar' : 'all';
       this.sortBy = state.sortBy;
       this.sortDir = state.sortDir;
     }
@@ -80,9 +88,11 @@ export class PersonComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.oscarSubscription?.unsubscribe();
     if (this.savingState) {
       sessionStorage.setItem(this.stateKey, JSON.stringify({
         activeGroup: this.activeGroup,
+        oscarFilter: this.oscarFilter,
         sortBy: this.sortBy,
         sortDir: this.sortDir,
         scrollY: window.scrollY
@@ -177,6 +187,7 @@ export class PersonComponent implements OnInit, OnDestroy {
         }
 
         this.loading = false;
+        this.loadOscarFilter();
 
         // Restore scroll
         const saved = sessionStorage.getItem(this.stateKey);
@@ -193,6 +204,31 @@ export class PersonComponent implements OnInit, OnDestroy {
     });
   }
 
+  setOscarFilter(filter: 'all' | 'oscar'): void {
+    this.oscarFilter = filter;
+    this.loadOscarFilter();
+  }
+
+  setGroup(key: string): void {
+    this.activeGroup = key;
+    this.loadOscarFilter();
+  }
+
+  private loadOscarFilter(): void {
+    this.oscarSubscription?.unsubscribe();
+    this.loadingOscars = false;
+    if (this.oscarFilter !== 'oscar') return;
+    const group = this.groups.find(g => g.key === this.activeGroup);
+    const ids = [...new Set((group?.credits ?? [])
+      .filter(c => c.type === 'movie' && !this.oscarResults.has(c.id)).map(c => c.id))];
+    if (!ids.length) return;
+    this.loadingOscars = true;
+    this.oscarSubscription = from(ids).pipe(
+      mergeMap(id => this.oscarBadges.hasWon(id).pipe(map(won => ({ id, won }))), 4),
+      finalize(() => this.loadingOscars = false)
+    ).subscribe(({ id, won }) => this.oscarResults.set(id, won));
+  }
+
   setSort(field: 'name' | 'year'): void {
     if (this.sortBy === field) {
       this.sortDir = this.sortDir === 'asc' ? 'desc' : 'asc';
@@ -204,7 +240,8 @@ export class PersonComponent implements OnInit, OnDestroy {
 
   get activeCredits(): CreditEntry[] {
     const group = this.groups.find(g => g.key === this.activeGroup);
-    const base = group?.credits ?? [];
+    const base = (group?.credits ?? []).filter(c => this.oscarFilter === 'all' ||
+      (c.type === 'movie' && this.oscarResults.get(c.id) === true));
     return [...base].sort((a, b) => {
       if (this.sortBy === 'name') {
         const cmp = a.title.localeCompare(b.title);
@@ -253,6 +290,7 @@ export class PersonComponent implements OnInit, OnDestroy {
     this.savingState = false;
     sessionStorage.setItem(this.stateKey, JSON.stringify({
       activeGroup: this.activeGroup,
+        oscarFilter: this.oscarFilter,
       sortBy: this.sortBy,
       sortDir: this.sortDir,
       scrollY: window.scrollY
